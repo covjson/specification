@@ -425,7 +425,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
 - A coverage object may have a member with the name `"parameters"` where the value is a list of parameter objects.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name a parameter ID and as value either a range object or a URL.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name a parameter ID and as value either a range object or a URL. The elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count.
 
 ### 3.4. Coverage Collection Objects
 
