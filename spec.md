@@ -64,6 +64,7 @@ TODO
 
 - domain coordinate bounds
 - domain CRS
+- for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
 - check qudt:quantity
 - levels of measurement, categories etc.
 - define profiles (stand-alone, with URLs)
