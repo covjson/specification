@@ -372,13 +372,24 @@ Example:
 
 A CoverageJSON object with the type `"Range"` is a range object.
 
-- A range object must have a member with the name `"values"` where the value is an array of numbers and nulls.
-- A range object may have two members with the names `"offset"` and `"factor"` where the value of each is a number. If those two members are present, a value `v` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
-- If a range object contains the `"offset"` and `"factor"` members it may have a member with the name `"missing"` where the value is an integer. When converting a value `v` which is equal to the value in `"missing"` then this value should be considered as missing.
-- A range object may have two members with the names `"min"` and `"max"` where the value of each is a number. The value of `"min"` must be equal to the minimum value in the `"values"` array, ignoring null. The value of `"max"` must be equal to the maximum value in the `"values"` array, ignoring null.
-- Note that common JSON implementations will use 64-bit floats as data type for `"values"`, therefore precision has to be taken into account both for range objects with and without `"offset"` and `"factor"` members. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floats.
+- A range object must have a member with the name `"values"` where the value is an array of numbers and nulls where nulls represent missing data.
+- A range object may have two members with the names `"validMin"` and `"validMax"` where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
+- If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
+- Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
-**TODO** does offset/factor even make sense for JSON?? you probably need 16 bit integers anyway and encoding them in JSON is probably not much more compact then their floating point representation; possibly define that for CBOR only
+#### 3.2.1. Offset/Factor Encoding (CBOR-only)
+
+A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
+
+- A range object may have two members with the names `"offset"` and `"factor"` where the value of each is a number.
+- If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
+
+#### 3.2.2. Missing Value Encoding (CBOR-only)
+
+If only a small amount of values in `"values"` are missing it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
+
+- If a range object contains the `"validMin"` and `"validMax"` members it may have a member `"missing"` with value `"nonvalid"`.
+- If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
 
 ### 3.3. Coverage Objects
 
