@@ -18,7 +18,7 @@
     "phenomenonTime": "oml:phenomenonTime",
     "observedProperty": "oml:observedProperty",
 
-    "Coverage": ["covjson:Coverage", "oml:Observation"],
+    "Coverage": "covjson:Coverage",
     "coverages": "covjson:coverageCollection",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
