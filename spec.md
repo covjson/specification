@@ -443,7 +443,7 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 ## 4. Linked Data Context
 
-A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"http://.../covjson/basecontext.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time.
+A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"http://.../covjson/basecontext.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Range objects should *not* have a context because range data is currently not suitable to be handled as linked data.
 
 Example:
 ```js
