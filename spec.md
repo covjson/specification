@@ -78,8 +78,10 @@ Parameter objects represent metadata about the values of the coverage in terms o
 - A parameter object may have a member with the name `"description"` where the value must be a string that is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the observed property.
 - A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be a name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
+- A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have `"label"` and `"value"` members and may have `"description"` and `"id"` members. The value of `"label"` must be a name of the category and should be short. The value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the category.
+- A parameter object must not have both `"unit"` and `"categories"` members.
 
-Example:
+Example for a continuous-data parameter:
 ```js
 {
   "type" : "Parameter",
@@ -95,6 +97,28 @@ Example:
     "label" : "degrees Celsius",
     "symbol" : "°C"
   }
+}
+```
+
+Example for a categorical-data parameter:
+```js
+{
+  "type" : "Parameter",
+  "id" : "LCCAT",
+  "description" : "The land cover category.",
+  "observedProperty" : {
+    "id" : "http://foo/land_cover",
+    "label" : "Land Cover",
+    "description" : "longer description..."
+  },
+  "categories": [
+    {
+      "id": "http://.../landcover1/categories/grass",
+      "value": 1,
+      "label": "Grass",
+      "description": "Very green grass."
+    }, ...
+  ]
 }
 ```
 
@@ -408,7 +432,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
 - A coverage object may have a member with the name `"parameters"` where the value is an array of parameter objects.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name the value of `"id"` of a parameter object and as value either a range object or a URL. Each referenced parameter object must be contained in the `"parameters"` member within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name the value of `"id"` of a parameter object and as value either a range object or a URL. Each referenced parameter object must be contained in the `"parameters"` member within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
 
 ### 3.4. Coverage Collection Objects
 
