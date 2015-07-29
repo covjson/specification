@@ -226,20 +226,22 @@ Example:
 
 #### 3.1.5. Trajectory
 
-- A Trajectory domain object must have the member `"sequence"` where the value is an array and each element is an array `[t,x,y,z]` or `[t,x,y]` where each of `t`, `x`, `y`, and `z` is a coordinate value.
-- A Trajectory domain object may have the member `"z"` if the `"sequence"` member does not include a z-component. The value of `"z"` is a coordinate value.
-- The coordinate space of a Trajectory domain object is defined by `[sequence]`, or `[[z],sequence]`, depending on whether `"z"` is defined.
+- A Trajectory domain object must have the members `"x"`, `"y"`, and `"t"` where the value of each is a non-empty array of coordinate values and all arrays must have the same length `n`.
+- A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value.
+- A Trajectory domain object must have the member `"sequence"` where the value is either `["x","y","z","t"]` if `"z"` is an array, or `["x","y","t"]` if `"z"` is a coordinate value or not defined.
+- The coordinate space of a Trajectory domain object is defined by `[zip(t,z,y,x)]` (`"z"` is an array), or `[zip(t,y,x)]` (`"z"` is not defined), or `[[z],zip(t,y,x)]` (`"z"` is a coordinate value), depending on whether and how `"z"` is defined.
 
-**TODO** if t is not optional here, why should it be optional for others?
+**TODO** if t is not optional here, why should it be optional for other domain types?
 
 Example:
 ```js
 {
   "type": "Trajectory",
-  "sequence": [
-    ["2008-01-01T04:00:00Z", 1, 20, 1],
-    ["2008-01-01T04:30:00Z", 2, 22, 4]
-   ]
+  "x": [1,2],
+  "y": [20,21],
+  "z": [1,3],
+  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
+  "sequence": ["x","y","z","t"]
 }
 ```
 
@@ -247,21 +249,21 @@ Example without z:
 ```js
 {
   "type": "Trajectory",
-  "sequence": [
-    ["2008-01-01T04:00:00Z", 1, 20],
-    ["2008-01-01T04:30:00Z", 2, 22]
-   ]
+  "x": [1,2],
+  "y": [20,21],
+  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
+  "sequence": ["x","y","t"]
 }
 ```
 
-Example with z defined separately as constant value:
+Example with z defined as constant value:
 ```js
 {
   "type": "Trajectory",
-  "sequence": [
-    ["2008-01-01T04:00:00Z", 1, 20],
-    ["2008-01-01T04:30:00Z", 2, 22]
-   ],
+  "x": [1,2],
+  "y": [20,21],
+  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"],
+  "sequence": ["x","y","t"],
   "z": 5
 }
 ```
