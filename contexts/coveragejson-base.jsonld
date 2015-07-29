@@ -1,0 +1,28 @@
+{
+  "@context": {
+    "id": "@id",
+    "type": "@type",
+    "covjson": "http://.../vocab#",
+    "w3time": "http://www.w3.org/2006/time#",
+    "oml": "http://def.seegrid.csiro.au/ontology/om/om-lite#",
+    "dct": "http://purl.org/dc/terms/",
+
+    "label": "rdfs:label",
+    "title": "dct:title",
+    "description": "dct:description",
+    "Instant": "w3time:Instant",
+    "dateTime": { "@id": "w3time:inXSDDateTime", "@type": "xsd:dateTime" },
+    "Interval": "w3time:ProperInterval",
+    "start": "w3time:hasBeginning",
+    "end": "w3time:hasEnd",
+    "phenomenonTime": "oml:phenomenonTime",
+    "observedProperty": "oml:observedProperty",
+
+    "Coverage": ["covjson:Coverage", "oml:Observation"],
+    "coverages": "covjson:coverageCollection",
+    "CoverageCollection": "covjson:CoverageCollection",
+    "Parameter": "covjson:Parameter",
+    "parameters": "covjson:parameterCollection",
+    "ParameterCollection": "covjson:ParameterCollection"
+  }
+}
