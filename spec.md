@@ -367,6 +367,11 @@ Example:
 }
 ```
 
+#### 3.1.11. Coordinate Bounds
+
+- For each of the `"x"`, `"y"`, `"z"`, and `"t"` members of a domain object, coordinate bounds may be defined in the members `"xBounds"`, `"yBounds"`, `"zBounds"`, and `"tBounds"`, respectively, where the value of each is an array of coordinate values of length `len*2` with `len` being the array length of the corresponding member for which the bounds are given, or 1 if the corresponding member is not an array.
+- If a domain object member `"x"`, `"y"`, `"z"`, or `"t"` has no corresponding bounds member and is an array, then its bounds may be derived automatically with the formula `bounds(m,i)=[(m[i-1]+m[i])/2, (m[i]+m[i+1])/2]` where `m` is the value of one of `"x"`, `"y"`, `"z"`, or `"t"`, and `i` is the index within the `m` array.
+
 ### 3.2. Range Objects
 
 A CoverageJSON object with the type `"Range"` is a range object.
