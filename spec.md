@@ -64,7 +64,6 @@ TODO
 
 - domain CRS
 - for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
-- be careful with wording when saying that multiple members "may" exist: do both have to exist or each individually?
 - check qudt:quantity
 - levels of measurement, categories etc.
 - define profiles (stand-alone, with URLs)
@@ -297,7 +296,8 @@ Polygons are defined equally to GeoJSON, except that they can only contain `[x,y
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first must be the exterior ring and any others must be interior rings or holes.
 - A Polygon domain object must have the member `"polygon"` where the value is a Polygon.
-- A Polygon domain object may have the members `"t"` and `"z"` where the value of each is a coordinate value.
+- A Polygon domain object may have the member `"t"` where the value is a coordinate value.
+- A Polygon domain object may have the member `"z"` where the value is a coordinate value.
 - The coordinate space of a Polygon domain object is defined by `[[t],[z],[polygon]]`, `[[t],[polygon]]`, `[[z],[polygon]]`, or `[[polygon]]`, depending on which members are defined.
 - Note that the polygon represents a single coordinate within the coordinate space.
 
@@ -335,7 +335,8 @@ Example:
 #### 3.1.9. MultiPolygon
 
 - A MultiPolygon domain object must have the member `"polygon"` where the value is an array of Polygons.
-- A MultiPolygon domain object may have the members `"t"` and `"z"` where the value of each is a coordinate value.
+- A MultiPolygon domain object may have the member `"t"` where the value is a coordinate value.
+- A MultiPolygon domain object may have the member `"z"` where the value is a coordinate value.
 - The coordinate space of a MultiPolygon domain object is defined by `[[t],[z],polygon]`, `[[t],polygon]`, `[[z],polygon]`, or `[polygon]`, depending on which members are defined.
 
 Example:
@@ -381,7 +382,7 @@ Example:
 A CoverageJSON object with the type `"Range"` is a range object.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls where nulls represent missing data.
-- A range object may have two members with the names `"validMin"` and `"validMax"` where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
+- A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
@@ -389,7 +390,7 @@ A CoverageJSON object with the type `"Range"` is a range object.
 
 A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
 
-- A range object may have two members with the names `"offset"` and `"factor"` where the value of each is a number.
+- A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
 - If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
 
 #### 3.2.2. Missing Value Encoding (CBOR-only)
