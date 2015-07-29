@@ -73,6 +73,7 @@ TODO
 
 Parameter objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
 
+- A parameter object may have any number of members (name/value pairs).
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
 - A parameter object must have a member with the name `"id"` where the value must be a unique identifier within the scope of the CoverageJSON object. The parameter `"id"` should be short, e.g. "WIND", as it is used in clients for conveniently accessing the corresponding range object in a coverage object (see section 3.3).
 - A parameter object may have a member with the name `"description"` where the value is a, perhaps lengthy, textual description of the parameter.
@@ -400,9 +401,9 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
 - If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
-- A coverage object may have a member with the name `"parameters"` where the value is a list of parameter objects.
+- A coverage object may have a member with the name `"parameters"` where the value is an array of parameter objects.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name a parameter ID and as value either a range object or a URL. The elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name the value of `"id"` of a parameter object and as value either a range object or a URL. Each referenced parameter object must be contained in the `"parameters"` member within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count.
 
 ### 3.4. Coverage Collection Objects
 
