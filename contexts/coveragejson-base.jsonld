@@ -19,7 +19,7 @@
     "observedProperty": "oml:observedProperty",
 
     "Coverage": "covjson:Coverage",
-    "coverages": "covjson:coverageCollection",
+    "coverages": "covjson:coverage",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
     "parameters": "covjson:parameterCollection",
