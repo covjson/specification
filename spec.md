@@ -66,7 +66,6 @@ TODO
 - domain CRS
 - for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
 - be careful with wording when saying that multiple members "may" exist: do both have to exist or each individually?
-- handle CBOR typed arrays within range, data type / precision issues, unpacking etc.
 - check qudt:quantity
 - levels of measurement, categories etc.
 - define profiles (stand-alone, with URLs)
