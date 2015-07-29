@@ -229,7 +229,7 @@ Example:
 - A Trajectory domain object must have the members `"x"`, `"y"`, and `"t"` where the value of each is a non-empty array of coordinate values and all arrays must have the same length `n`.
 - A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value.
 - A Trajectory domain object must have the member `"sequence"` where the value is either `["x","y","z","t"]` if `"z"` is an array, or `["x","y","t"]` if `"z"` is a coordinate value or not defined.
-- The coordinate space of a Trajectory domain object is defined by `[zip(t,z,y,x)]` if `"z"` is an array, or `[zip(t,y,x)]` if `"z"` is not defined, or `[[z],zip(t,y,x)]` if `"z"` is a coordinate value. `zip` is a function which returns an array of arrays, where the i-th array contains the i-th element from each of the argument arrays in the given order.
+- The coordinate space of a Trajectory domain object is defined by `[zip(x,y,z,t)]` if `"z"` is an array, or `[zip(x,y,t)]` if `"z"` is not defined, or `[[z],zip(x,y,t)]` if `"z"` is a coordinate value. `zip` is a function which returns an array of arrays, where the i-th array contains the i-th element from each of the argument arrays in the given order.
 
 **TODO** if t is not optional here, why should it be optional for other domain types?
 
@@ -270,18 +270,19 @@ Example with z defined as constant value:
 
 #### 3.1.6. Section
 
-- A Section domain object must have the member `"sequence"` where the value is an array and each element is an array `[t,x,y]` where each of `t`, `x`, and `y` is a coordinate value.
+- A Section domain object must have the members `"x"`, `"y"`, and `"t"` where the value of each is a non-empty array of coordinate values and all arrays must have the same length.
 - A Section domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
-- The coordinate space of a Section domain object is defined by `[z,sequence]`.
+- A Section domain object must have the member `"sequence"` where the value is `["x","y","t"]`.
+- The coordinate space of a Section domain object is defined by `[z,zip(x,y,t)]`.
 
 Example:
 ```js
 {
   "type": "Section",
-  "sequence": [
-    ["2008-01-01T04:00:00Z", 1, 20],
-    ["2008-01-01T04:30:00Z", 2, 22]
-   ],
+  "x": [1,2],
+  "y": [20,21],
+  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
+  "sequence": ["x","y","t"]
   "z": [10,20,30]
 }
 ```
