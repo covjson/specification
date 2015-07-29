@@ -118,12 +118,13 @@ A domain object is a CoverageJSON object which defines a coordinate space and th
 - A spatial CRS applies to the members `"x"`, `"y"`, and `"z"` in that axis order and defines the reference system, units, and value type. (**TODO** is this correct?)
 - A temporal CRS applies to the member `"t"` and defines the reference system, units, and value type. (**TODO** is this correct?)
 - In the context of `"x"`, `"y"`, `"z"`, `"t"`, *coordinate value* refers to a value that has the corresponding CRS value type.
+- If a member `"x"`, `"y"`, `"z"`, or `"t"` is an array of coordinate values, then the values in that array must be ordered monotonically according to their ordering relation defined by the used CRS (**FIXME**). Whenever the terms "monotonically increasing" or "monotonically decreasing" are used, the ordering relation as defined by the corresponding CRS shall be used.
 - If not defined, the default spatial CRS is used.
 - If not defined, the default temporal CRS is used.
 - The default spatial CRS is the geographic CRS CRS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84), with `"x"` longitude, `"y"` latitude, `"z"` altitude above the WGS84 reference ellipsoid, longitude and latitude units of decimal degrees and altitude units of metres, and all values being numbers.
 - The default temporal CRS is coordinated universal time (UTC) with times in `YYYY-MM-DDTHH:mm:ss[.sss]Z`, `YYYY-MM-DDTHH:mm:ss[.sss]+-HH:mm` or  `YYYY-MM-DD` string formats (subsets of ISO 8601).
-- A coordinate space is defined by an array `[C1, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * ... * |Cn|`. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1,...,cn]` by assuming an `n`-dimensional array of shape `[|C1|,...,|Cn|]` in row-major order.
-- Each domain type must define its coordinate space in terms of an array `[C1,...,Cn]` where each of `C1` to `Cn` is an array of coordinates.
+- A coordinate space is defined by an array `[C1, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * ... * |Cn|`. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, ..., |Cn|]` in row-major order.
+- Each domain type must define its coordinate space in terms of an array `[C1, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates.
 
 TODO CRS84 is 2D only! either we have separate horizontal CRS = CRS84 and vertical CRS = ??? or we create a 3D version of CRS84, in analogy to [EPSG:4979](http://www.epsg-registry.org/report.htm?type=selection&entity=urn:ogc:def:crs:EPSG::4979&reportDetail=long&title=WGS%2084&style=urn:uuid:report-style:default-with-code&style_name=OGP%20Default%20With%20Code). Check http://www.ogcnetwork.net/node/491 on how to create such a CRS with an axes swapping conversion
 
@@ -154,9 +155,9 @@ O = Optional, single coordinate in coordinate space
 
 #### 3.1.1. Grid
 
-- A Grid domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values.
-- A Grid domain object may have the member `"z"` where the value is a non-empty array of coordinate values.
-- A Grid domain object may have the member `"t"` where the value is a non-empty array of coordinate values.
+- A Grid domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array coordinate values.
+- A Grid domain object may have the member `"z"` where the value is a non-empty array coordinate values.
+- A Grid domain object may have the member `"t"` where the value is a non-empty array coordinate values.
 - The coordinate space of a Grid domain object is defined by `[t,z,y,x]`, or `[t,y,x]`, or `[z,y,x]`, or `[y,x]`, depending on which members are defined.
 
 Example:
@@ -192,7 +193,7 @@ Example:
 
 - A PointSeries domain object must have the members `"x"` and `"y"` where each has a coordinate value.
 - A PointSeries domain object may have the member `"z"` where the value is a coordinate value.
-- A PointSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
+- A PointSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
 - The coordinate space of a PointSeries domain object is defined by `[t,[z],[y],[x]]` or `[t,[y],[x]]`, depending on whether `"z"` is defined.
 
 Example:
@@ -226,7 +227,8 @@ Example:
 
 #### 3.1.5. Trajectory
 
-- A Trajectory domain object must have the members `"x"`, `"y"`, and `"t"` where the value of each is a non-empty array of coordinate values and all arrays must have the same length `n`.
+- A Trajectory domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`.
+- A Trajectory domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
 - A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value.
 - A Trajectory domain object must have the member `"sequence"` where the value is either `["x","y","z","t"]` if `"z"` is an array, or `["x","y","t"]` if `"z"` is a coordinate value or not defined.
 - The coordinate space of a Trajectory domain object is defined by `[zip(x,y,z,t)]` if `"z"` is an array, or `[zip(x,y,t)]` if `"z"` is not defined, or `[[z],zip(x,y,t)]` if `"z"` is a coordinate value. `zip` is a function which returns an array of arrays, where the i-th array contains the i-th element from each of the argument arrays in the given order.
@@ -270,7 +272,8 @@ Example with z defined as constant value:
 
 #### 3.1.6. Section
 
-- A Section domain object must have the members `"x"`, `"y"`, and `"t"` where the value of each is a non-empty array of coordinate values and all arrays must have the same length.
+- A Section domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`.
+- A Section domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
 - A Section domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
 - A Section domain object must have the member `"sequence"` where the value is `["x","y","t"]`.
 - The coordinate space of a Section domain object is defined by `[z,zip(x,y,t)]`.
@@ -313,7 +316,7 @@ Example:
 #### 3.1.8. PolygonSeries
 
 - A PolygonSeries domain object must have the member `"polygon"` where the value is a Polygon.
-- A PolygonSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
+- A PolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
 - A PolygonSeries domain object may have the member `"z"` where the value is a coordinate value.
 - The coordinate space of a PolygonSeries domain object is defined by `[t,[z],[polygon]]` or `[t,[polygon]]` depending on whether `"z"` is defined.
 
@@ -351,7 +354,7 @@ Example:
 #### 3.1.10. MultiPolygonSeries
 
 - A MultiPolygonSeries domain object must have the member `"polygon"` where the value is an array of Polygons.
-- A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
+- A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
 - A MultiPolygonSeries domain object may have the member `"z"` where the value is a coordinate value.
 - The coordinate space of a MultiPolygonSeries domain object is defined by `[t,[z],polygon]` or `[t,polygon]`, depending on whether the `"z"` member is defined.
 
@@ -370,7 +373,7 @@ Example:
 
 #### 3.1.11. Coordinate Bounds
 
-- For each of the `"x"`, `"y"`, `"z"`, and `"t"` members (further called point members) of a domain object, coordinate bounds may be defined in the members `"xBounds"`, `"yBounds"`, `"zBounds"`, and `"tBounds"`, respectively, where the value of each is an array of coordinate values of length `len*2` with `len` being the array length of the point member for which the bounds are given, or 1 if the point member is not an array. For a point member array, a lower and upper bounding coordinate value at positions `2*i` and `2*i+1`, respectively, are given in a bounds array for each point member coordinate value with array index `i`. For a point member which is not an array, the bounds array contains a single pair of lower and upper bounding coordinate values as first and second value, respectively. The lower and upper bounding coordinate values `l` and `u` for a given coordinate `c` must satisfy the constraint `l <= c <= u`.
+- For each of the `"x"`, `"y"`, `"z"`, and `"t"` members (further called point members) of a domain object, coordinate bounds may be defined in the members `"xBounds"`, `"yBounds"`, `"zBounds"`, and `"tBounds"`, respectively, where the value of each is an array of monotonically ordered coordinate values of length `len*2` with `len` being the array length of the point member for which the bounds are given, or 1 if the point member is not an array. For a point member array, a lower and upper bounding coordinate value at positions `2*i` and `2*i+1`, respectively, are given in a bounds array for each point member coordinate value with array index `i`. For a point member which is not an array, the bounds array contains a single pair of lower and upper bounding coordinate values as first and second value, respectively. The lower and upper bounding coordinate values `l` and `u` for a given coordinate `c` must satisfy the constraint `l <= c <= u`.
 - If a domain object member `"x"`, `"y"`, `"z"`, or `"t"` has no corresponding bounds member and is an array, then its bounds may be derived with the formula `bounds(m, i) = [(m[i-1] + m[i]) / 2, (m[i] + m[i+1]) / 2]` where `m` is the value of one of `"x"`, `"y"`, `"z"`, or `"t"`, and `i` is the index within the `m` array.
 
 ### 3.2. Range Objects
