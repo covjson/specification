@@ -37,6 +37,15 @@ WORK-IN-PROGRESS
   </tr>
 </table>
 
+## TODO
+
+- domain CRS
+- for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
+- bbox, time/vertical extents, ... in domain and/or coverage
+- check qudt:quantity
+- levels of measurement, categories etc.
+- define profiles (stand-alone, with URLs)
+
 ## 1. Introduction
 
 CoverageJSON is a format for encoding a variety of coverages like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. CoverageJSON currently supports the following domain types: Grid, Profile, PointSeries, Point, Trajectory, Section, Polygon, MultiPolygon, and MultiPolygonSeries. A range in CoverageJSON  represents coverage values and supports the common offset/factor encoding. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
@@ -59,14 +68,6 @@ TODO
 - JSON-LD is defined in [http://www.w3.org/TR/json-ld/](http://www.w3.org/TR/json-ld/).
 - Concise Binary Object Representation (CBOR) is defined in [IETF RFC 7049](http://tools.ietf.org/rfc/rfc7049.txt).
 - The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [IETF RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
-
-## TODO
-
-- domain CRS
-- for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
-- check qudt:quantity
-- levels of measurement, categories etc.
-- define profiles (stand-alone, with URLs)
 
 ## 2. Parameter Objects
 
