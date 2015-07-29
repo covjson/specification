@@ -105,13 +105,13 @@ CoverageJSON always consists of a single object. This object (referred to as the
 
 - The CoverageJSON object may have any number of members (name/value pairs).
 - The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
-- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"Trajectory"`, `"PointSeries"`, `"Polygon"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
 
 ### 3.1. Domain Objects
 
 A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
 
-- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"Trajectory"`, `"PointSeries"`, and `"Polygon"`. (**TODO** add more types)
+- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
 - The domain object members named `"x"`, `"y"`, and `"z"`, if existing, shall refer to spatial coordinates.
 - The domain object member named `"t"`, if existing, shall refer to temporal coordinates.
 - Additional members of a domain object are determined by the type of domain.
@@ -135,10 +135,9 @@ Grid                 |[M]|[M]|[O]|[O]
 Profile              | M | M |[M]| O
 PointSeries          | M | M | O |[M]
 Point                | M | M | O | O
-PolygonProfileSeries |   |   |[M]|[M]|          |  M
-PolygonProfile       |   |   |[M]| O |          |  M
 PolygonSeries        |   |   | O |[M]|          |  M
 Polygon              |   |   | O | O |          |  M
+MultiPolygonSeries   |   |   | O |[M]|          | [M]
 MultiPolygon         |   |   | O | O |          | [M]
 Trajectory           |   |   | O |   | \[M\] (txy[z])
 Section              |   |   |[M]|   | \[M\] (txy)
@@ -308,7 +307,7 @@ Example:
 }
 ```
 
-#### 3.1.9. PolygonSeries
+#### 3.1.8. PolygonSeries
 
 - A PolygonSeries domain object must have the member `"polygon"` where the value is a Polygon.
 - A PolygonSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
@@ -327,7 +326,7 @@ Example:
 }
 ```
 
-#### 3.1.7. MultiPolygon
+#### 3.1.9. MultiPolygon
 
 - A MultiPolygon domain object must have the member `"polygon"` where the value is an array of Polygons.
 - A MultiPolygon domain object may have the members `"t"` and `"z"` where the value of each is a coordinate value.
@@ -346,7 +345,7 @@ Example:
 }
 ```
 
-#### 3.1.7. MultiPolygonSeries
+#### 3.1.10. MultiPolygonSeries
 
 - A MultiPolygonSeries domain object must have the member `"polygon"` where the value is an array of Polygons.
 - A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
