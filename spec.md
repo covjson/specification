@@ -75,20 +75,21 @@ Parameter objects represent metadata about the values of the coverage in terms o
 
 - A parameter object may have any number of members (name/value pairs).
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
-- A parameter object must have a member with the name `"id"` where the value must be a unique identifier within the scope of the CoverageJSON object. The parameter `"id"` should be short, e.g. "WIND", as it is used in clients for conveniently accessing the corresponding range object in a coverage object (see section 3.3).
-- A parameter object may have a member with the name `"description"` where the value is a, perhaps lengthy, textual description of the parameter.
-- A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string which should be short. If given, the value of `"id"` should be a common identifier. If given, the value of `"description"` must be a textual description of the property.
-- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be the symbolic notation of the unit. If given, the value of `"label"` must be a short name of the unit. If given, the value of `"id"` should be a common identifier.
+- A parameter object must have a member with the name `"id"` where the value must be a string that is a unique identifier within the scope of the CoverageJSON object. The parameter `"id"` should be short, e.g. "WIND", as it is used in clients for conveniently accessing the corresponding range object in a coverage object (see section 3.3).
+- A parameter object may have a member with the name `"description"` where the value must be a string that is a, perhaps lengthy, textual description of the parameter.
+- A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the observed property.
+- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be a name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
 
 Example:
 ```js
 {
   "type" : "Parameter",
   "id" : "TEMP",
-  "description" : "The sea water temperature in degrees celsius.",
+  "description" : "The sea water temperature in degrees celsius. more text if needed...",
   "observedProperty" : {
     "id" : "http://foo/sea_water_temperature",
-    "label" : "Sea Water Temperature"
+    "label" : "Sea Water Temperature",
+    "description" : "longer description..."
   },
   "unit" : {
     "id" : "http://qudt.org/vocab/unit#DegreeCelsius",
