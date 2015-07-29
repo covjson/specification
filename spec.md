@@ -76,7 +76,7 @@ TODO
 Parameter objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
 
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
-- A parameter object must have a member with the name `"id"` where the value must be a unique identifier within the scope of the CoverageJSON object. TODO forward ref, unclean
+- A parameter object must have a member with the name `"id"` where the value must be a unique identifier within the scope of the CoverageJSON object. The parameter `"id"` should be short, e.g. "WIND", as it is used in clients for conveniently accessing the corresponding range object in a coverage object (see section 3.3).
 - A parameter object may have a member with the name `"description"` where the value is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string which should be short. If given, the value of `"id"` should be a common identifier. If given, the value of `"description"` must be a textual description of the property.
 - A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be the symbolic notation of the unit. If given, the value of `"label"` must be a short name of the unit. If given, the value of `"id"` should be a common identifier.
@@ -440,9 +440,24 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 ## 4. Linked Data Context
 
-A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object with the recommended value `"http://.../contexts/coveragejson.jsonld"` which uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time.
+A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"http://.../covjson/basecontext.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time.
 
-All identifiers referred to in a CoverageJSON object should be URIs from established vocabularies if available.
+Example:
+```js
+{
+  "@context": [
+     "http://.../covjson/basecontext.jsonld",
+     {
+       "TMP" : "http://../mydataset/parameters/TEMPERATURE",
+       "SALTY" : "http://../mydataset/parameters/SALINITY"
+     }
+   ],
+   "type": "Coverage",
+   ...
+}
+```
+
+All identifiers referred to in a CoverageJSON object should be URIs. These URIs should be taken from established vocabularies if available, except for Parameter IDs which are typically local to specific datasets.
 
 TODO expand
 
