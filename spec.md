@@ -451,8 +451,8 @@ Example:
   "@context": [
      "http://.../covjson/basecontext.jsonld",
      {
-       "TMP" : "http://../mydataset/parameters/TEMPERATURE",
-       "SALTY" : "http://../mydataset/parameters/SALINITY"
+       "TMP" : { "@id": "http://../mydataset/parameters/TEMPERATURE", "@type": "@id"},
+       "SALTY" :  { "@id": "http://../mydataset/parameters/SALINITY", "@type": "@id"}
      }
    ],
    "type": "Coverage",
