@@ -24,6 +24,7 @@
     "Parameter": "covjson:Parameter",
     "parameters": "covjson:parameterCollection",
     "ParameterCollection": "covjson:ParameterCollection",
+    "domain": "covjson:domain",
     "Grid": "covjson:Grid",
     "Profile": "covjson:Profile",
     "PointSeries": "covjson:PointSeries",
