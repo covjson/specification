@@ -141,7 +141,6 @@ PolygonSeries        |   |   | O |[M]|          | M
 Polygon              |   |   | O | O |          | M
 Trajectory           |   |   | O |   | \[M\] (txy[z])
 Section              |   |   |[M]|   | \[M\] (txy)
-MultiPointSeries     |   |   | O |[M]| \[M\] (xy[z])
 
 
 M = Mandatory, single coordinate in coordinate space
@@ -282,51 +281,6 @@ Example:
     ["2008-01-01T04:30:00Z", 2, 22]
    ],
   "z": [10,20,30]
-}
-```
-
-#### 3.1.3. MultiPointSeries
-
-- A MultiPointSeries domain object must have the member `"sequence"` where the value is an array and each element is an array `[x,y,z]` or `[x,y]` where each of `x`, `y`, and `z` is a coordinate value.
-- A MultiPointSeries domain object may have the member `"z"` if the `"sequence"` member does not include a z-component. The value of `"z"` is a coordinate value.
-- A MultiPointSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
-- The coordinate space of a MultiPointSeries domain object is defined by `[t,sequence]` or `[t,[z],sequence]`, depending on whether `"z"` is defined.
-
-Example:
-```js
-{
-  "type": "MultiPointSeries",
-  "sequence": [
-    [1, 20, 2],
-    [2, 22, 5]
-   ],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
-}
-```
-
-Example without `z`:
-```js
-{
-  "type": "MultiPointSeries",
-  "sequence": [
-    [1, 20],
-    [2, 22]
-   ],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
-}
-```
-
-
-Example with `z` defined separately as constant value:
-```js
-{
-  "type": "MultiPointSeries",
-  "sequence": [
-    [1, 20],
-    [2, 22]
-   ],
-  "z": 5,
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
 }
 ```
 
