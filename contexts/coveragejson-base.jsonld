@@ -23,6 +23,15 @@
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
     "parameters": "covjson:parameterCollection",
-    "ParameterCollection": "covjson:ParameterCollection"
+    "ParameterCollection": "covjson:ParameterCollection",
+    "Grid": "covjson:Grid",
+    "Profile": "covjson:Profile",
+    "PointSeries": "covjson:PointSeries",
+    "Point": "covjson:Point",
+    "Trajectory": "covjson:Trajectory",
+    "Section": "covjson:Section",
+    "MultiPolygonSeries": "covjson:MultiPolygonSeries",
+    "MultiPolygon": "covjson:MultiPolygon",
+    "Polygon": "covjson:Polygon"
   }
 }
