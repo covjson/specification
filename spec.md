@@ -135,10 +135,11 @@ Grid                 |[M]|[M]|[O]|[O]
 Profile              | M | M |[M]| O
 PointSeries          | M | M | O |[M]
 Point                | M | M | O | O
-PolygonProfileSeries |   |   |[M]|[M]|          | M
-PolygonProfile       |   |   |[M]| O |          | M
-PolygonSeries        |   |   | O |[M]|          | M
-Polygon              |   |   | O | O |          | M
+PolygonProfileSeries |   |   |[M]|[M]|          |  M
+PolygonProfile       |   |   |[M]| O |          |  M
+PolygonSeries        |   |   | O |[M]|          |  M
+Polygon              |   |   | O | O |          |  M
+MultiPolygon         |   |   | O | O |          | [M]
 Trajectory           |   |   | O |   | \[M\] (txy[z])
 Section              |   |   |[M]|   | \[M\] (txy)
 
@@ -307,25 +308,6 @@ Example:
 }
 ```
 
-#### 3.1.8. PolygonProfile
-
-- A PolygonProfile domain object must have the member `"polygon"` where the value is a Polygon.
-- A PolygonProfile domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
-- A PolygonProfile domain object may have the member `"t"` where the value is a coordinate value.
-- The coordinate space of a PolygonProfile domain object is defined by `[[t],z,[polygon]]` or `[z,[polygon]]`, depending on whether `"t"` is defined.
-
-Example:
-```js
-{
-  "type": "PolygonProfile",
-  "polygon": [
-      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
-      ],
-  "z": [0,-10,-20],
-  "t": "2008-01-01T04:00:00Z"
-}
-```
-
 #### 3.1.9. PolygonSeries
 
 - A PolygonSeries domain object must have the member `"polygon"` where the value is a Polygon.
@@ -345,21 +327,42 @@ Example:
 }
 ```
 
-#### 3.1.10. PolygonProfileSeries
+#### 3.1.7. MultiPolygon
 
-- A PolygonProfileSeries domain object must have the member `"polygon"` where the value is a Polygon.
-- A PolygonProfileSeries domain object must have the members `"t"` and `"z"` where the value of each is a non-empty array of coordinate values.
-- The coordinate space of a PolygonProfileSeries domain object is defined by `[t,z,[polygon]]`.
+- A MultiPolygon domain object must have the member `"polygon"` where the value is an array of Polygons.
+- A MultiPolygon domain object may have the members `"t"` and `"z"` where the value of each is a coordinate value.
+- The coordinate space of a MultiPolygon domain object is defined by `[[t],[z],polygon]`, `[[t],polygon]`, `[[z],polygon]`, or `[polygon]`, depending on which members are defined.
 
 Example:
 ```js
 {
-  "type": "PolygonProfileSeries",
+  "type": "MultiPolygon",
   "polygon": [
-      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
-      ],
-  "z": [0,-10,-20],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
+      [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ] ],
+      [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
+    ],
+  "z": 2,
+  "t": "2008-01-01T04:00:00Z"
+}
+```
+
+#### 3.1.7. MultiPolygonSeries
+
+- A MultiPolygonSeries domain object must have the member `"polygon"` where the value is an array of Polygons.
+- A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of coordinate values.
+- A MultiPolygonSeries domain object may have the member `"z"` where the value is a coordinate value.
+- The coordinate space of a MultiPolygonSeries domain object is defined by `[t,[z],polygon]` or `[t,polygon]`, depending on whether the `"z"` member is defined.
+
+Example:
+```js
+{
+  "type": "MultiPolygonSeries",
+  "polygon": [
+      [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ] ],
+      [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
+    ],
+  "z": 2,
+  "t": ["2008-01-01T00:00:00Z", "2010-01-01T00:00:00Z"]
 }
 ```
 
