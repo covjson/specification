@@ -106,13 +106,16 @@ A CoverageJSON Profile coverage:
     }
   },
   "ranges" : {
+    "type": "RangeSet",
     "PSAL" : "http://.../datasets/1/coverages/123/range/PSAL",
     "POTM" : "http://.../datasets/1/coverages/123/range/POTM"
   },
   "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
     "qudt" : "http://qudt.org/1.1/schema/qudt#",
     "unit" : "qudt:unit",
-    "symbol" : "qudt:symbol"
+    "symbol" : "qudt:symbol",
+    "PSAL" : { "@id" : "http://.../datasets/1/params/PSAL", "@type" : "@id" },
+    "POTM" : { "@id" : "http://.../datasets/1/params/POTM", "@type" : "@id" }
   } ]
 }
 ```
@@ -153,6 +156,7 @@ Example for a continuous-data parameter:
 ```js
 {
   "type" : "Parameter",
+  "id": "http://.../mydataset/params/TMP",
   "description" : "The sea water temperature in degrees celsius. more text if needed...",
   "observedProperty" : {
     "id" : "http://foo/sea_water_temperature",
@@ -171,6 +175,7 @@ Example for a categorical-data parameter:
 ```js
 {
   "type" : "Parameter",
+  "id": "http://.../mydataset/params/LC",
   "description" : "The land cover category.",
   "observedProperty" : {
     "id" : "http://foo/land_cover",
@@ -498,7 +503,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is an object where each member has as name any of the names in a `"parameters"` object and as value either a range object or a URL. The `"parameters"` member may be  within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
 
 ### 3.4. Coverage Collection Objects
 
@@ -519,7 +524,9 @@ Example:
      {
       "qudt" : "http://qudt.org/1.1/schema/qudt#",
       "unit" : "qudt:unit",
-      "symbol" : "qudt:symbol"
+      "symbol" : "qudt:symbol",
+      "PSAL" : { "@id" : "http://.../datasets/1/params/PSAL", "@type" : "@id" },
+      "POTM" : { "@id" : "http://.../datasets/1/params/POTM", "@type" : "@id" }
      }
    ],
    "type": "Coverage",
