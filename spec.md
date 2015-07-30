@@ -43,7 +43,6 @@ WORK-IN-PROGRESS
 - for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
 - bbox, time/vertical extents, ... in domain and/or coverage
 - check qudt:quantity
-- levels of measurement, categories etc.
 - define profiles (stand-alone, with URLs)
 
 ## 1. Introduction
