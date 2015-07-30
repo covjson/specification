@@ -1,0 +1,46 @@
+{
+  "type" : "Coverage",
+  "id" : "http://.../datasets/1/coverages/123",
+  "domain" : {
+    "type" : "Grid",
+    "x" : [-10,-5,0],
+    "xBounds": [-12,-8,-8,-4,-4,4],
+    "y" : [40,50],
+    "yBounds": [35,45,45,55],
+    "z" : [ 5],
+    "zBounds": [3,7]
+    "t" : ["2010-01-01T00:12:20Z"]
+  },
+  "parameters" : {
+    "ICEC": {
+      "id" : "http://.../datasets/1/params/ICEC",
+      "type" : "Parameter",
+      "description" : "Sea Ice concentration (ice=1;no ice=0)",
+      "unit" : {
+        "symbol" : "fraction"
+      },
+      "observedProperty" : {
+        "id" : "http://foo/sea_ice_concentration",
+        "label" : "Sea Ice Concentration"
+      }
+    }
+  },
+  "ranges" : {
+    "type" : "RangeSet",
+    "ICEC" : {
+      "type" : "Range",
+      "values" : [ 0.5, 0.6, 0.4, 0.6, 0.2, null ],
+      "validMin" : 0,
+      "validMax" : 1
+    }
+  },
+  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+    "ICEC" : {
+      "@id" : "http://.../datasets/1/params/ICEC",
+      "@type" : "@id"
+    },
+    "qudt" : "http://qudt.org/1.1/schema/qudt#",
+    "unit" : "qudt:unit",
+    "symbol" : "qudt:symbol"
+  } ]
+}

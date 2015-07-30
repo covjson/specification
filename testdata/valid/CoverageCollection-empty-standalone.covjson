@@ -1,0 +1,5 @@
+{
+  "type" : "CoverageCollection",
+  "coverages": [],
+  "@context" : "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld"
+}

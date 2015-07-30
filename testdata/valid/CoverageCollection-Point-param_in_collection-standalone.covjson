@@ -1,0 +1,63 @@
+{
+  "type" : "CoverageCollection",
+  "parameters" : {
+    "WIND": {
+      "id" : "http://.../datasets/1/params/WIND",
+      "type" : "Parameter",
+      "description" : "Wind speed in km/h",
+      "unit" : {
+        "symbol" : "km/h"
+      },
+      "observedProperty" : {
+        "id" : "http://foo/wind_speed",
+        "label" : "Wind Speed"
+      }
+    }
+  },
+  "coverages": [{
+    "type" : "Coverage",
+    "id" : "http://.../datasets/1/coverages/123",
+    "domain" : {
+      "type" : "Point",
+      "x" : -10,
+      "y" : 50,
+      "z" : 5,
+      "t" : "2010-01-01T00:12:00Z"
+    },
+    "ranges" : {
+      "type" : "RangeSet",
+      "WIND" : {
+        "type" : "Range",
+        "values" : [ 20 ],
+        "validMin" : 10,
+        "validMax" : 30
+      }
+    }, {
+    "type" : "Coverage",
+    "id" : "http://.../datasets/1/coverages/123",
+    "domain" : {
+      "type" : "Point",
+      "x" : -13,
+      "y" : 57,
+      "z" : 5,
+      "t" : "2010-01-01T00:15:00Z"
+    },
+    "ranges" : {
+      "type" : "RangeSet",
+      "WIND" : {
+        "type" : "Range",
+        "values" : [ 10 ],
+        "validMin" : 10,
+        "validMax" : 30
+      }
+    }],
+  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+    "WIND" : {
+      "@id" : "http://.../datasets/1/params/WIND",
+      "@type" : "@id"
+    },
+    "qudt" : "http://qudt.org/1.1/schema/qudt#",
+    "unit" : "qudt:unit",
+    "symbol" : "qudt:symbol"
+  } ]
+}

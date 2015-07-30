@@ -1,0 +1,49 @@
+{
+  "type" : "Coverage",
+  "id" : "http://.../datasets/1/coverages/123",
+  "domain" : {
+    "type" : "Grid",
+    "x" : [-10,-5,0],
+    "y" : [40,50],
+    "z" : [ 5],
+    "t" : ["2010-01-01T00:12:20Z"]
+  },
+  "parameters" : {
+    "LC": {
+      "id" : "http://.../datasets/1/params/LC",
+      "type" : "Parameter",
+      "description" : "Land Cover according to xyz classification",
+      "categories" : [{
+        "id": "http://.../landcover1/categories/grass",
+        "value": 1,
+        "label": "Grass",
+        "description": "Very green grass."
+      }, {
+        "id": "http://.../landcover1/categories/rocks",
+        "value": 2,
+        "label": "Rock",
+        "description": "Just rocks."
+      }],
+      "observedProperty" : {
+        "id" : "http://foo/land_cover",
+        "label" : "Land Cover"
+      }
+    }
+  },
+  "ranges" : {
+    "type" : "RangeSet",
+    "LC" : {
+      "type" : "Range",
+      "values" : [ 1, 1, 1, 3, 1, 2 ]
+    }
+  },
+  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+    "LC" : {
+      "@id" : "http://.../datasets/1/params/LC",
+      "@type" : "@id"
+    },
+    "qudt" : "http://qudt.org/1.1/schema/qudt#",
+    "unit" : "qudt:unit",
+    "symbol" : "qudt:symbol"
+  } ]
+}

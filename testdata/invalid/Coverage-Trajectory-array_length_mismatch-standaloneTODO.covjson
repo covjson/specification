@@ -1,0 +1,44 @@
+{
+  "type" : "Coverage",
+  "id" : "http://.../datasets/1/coverages/123",
+  "domain" : {
+    "type" : "Trajectory",
+    "x" : [-10,-5,-3],
+    "y" : [40,50],
+    "z" : [5,4,5],
+    "t" : ["2010-01-01T00:12:20Z","2010-01-01T00:14:20Z","2010-01-01T00:16:20Z"],
+    "sequence": ["x","y","z","t"]
+  },
+  "parameters" : {
+    "ICEC": {
+      "id" : "http://.../datasets/1/params/ICEC",
+      "type" : "Parameter",
+      "description" : "??? example..",
+      "unit" : {
+        "symbol" : "fraction"
+      },
+      "observedProperty" : {
+        "id" : "http://foo/???",
+        "label" : "???"
+      }
+    }
+  },
+  "ranges" : {
+    "type" : "RangeSet",
+    "ICEC" : {
+      "type" : "Range",
+      "values" : [ 3, 5, 1 ],
+      "validMin" : 0,
+      "validMax" : 10
+    }
+  },
+  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+    "ICEC" : {
+      "@id" : "http://.../datasets/1/params/ICEC",
+      "@type" : "@id"
+    },
+    "qudt" : "http://qudt.org/1.1/schema/qudt#",
+    "unit" : "qudt:unit",
+    "symbol" : "qudt:symbol"
+  } ]
+}

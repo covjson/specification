@@ -1,0 +1,8 @@
+{
+  "type" : "Grid",
+  "x" : [-10,-5,0],
+  "y" : [40,50],
+  "z" : [ 5],
+  "t" : ["2010-01-01T00:12:20Z"],
+  "@context" : "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld"
+}
