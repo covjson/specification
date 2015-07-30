@@ -79,43 +79,37 @@ A CoverageJSON Profile coverage:
     },
     "t" : "2013-01-13T11:12:20Z"
   },
-  "parameters" : [ {
-    "id" : "PSAL",
-    "type" : "Parameter",
-    "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
-    "unit" : {
-      "symbol" : "psu"
+  "parameters" : {
+    "PSAL": {
+      "id" : "http://.../datasets/1/params/PSAL",
+      "type" : "Parameter",
+      "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
+      "unit" : {
+        "symbol" : "psu"
+      },
+      "observedProperty" : {
+        "id" : "http://foo/sea_water_salinity",
+        "label" : "Sea Water Salinity"
+      }
     },
-    "observedProperty" : {
-      "id" : "http://foo/sea_water_salinity",
-      "label" : "Sea Water Salinity"
+    "POTM": {
+      "id" : "http://.../datasets/1/params/POTM",
+      "type" : "Parameter",
+      "description" : "The potential temperature, in degrees celcius, of the sea water",
+      "unit" : {
+        "symbol" : "°C"
+      },
+      "observedProperty" : {
+        "id" : "http://foo/sea_water_potential_temperature",
+        "label" : "Sea Water Potential Temperature"
+      }
     }
-  }, {
-    "id" : "POTM",
-    "type" : "Parameter",
-    "description" : "The potential temperature, in degrees celcius, of the sea water",
-    "unit" : {
-      "symbol" : "°C"
-    },
-    "observedProperty" : {
-      "id" : "http://foo/sea_water_potential_temperature",
-      "label" : "Sea Water Potential Temperature"
-    }
-  } ],
+  },
   "ranges" : {
-    "type" : "RangeSet",
     "PSAL" : "http://.../datasets/1/coverages/123/range/PSAL",
     "POTM" : "http://.../datasets/1/coverages/123/range/POTM"
   },
   "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
-    "PSAL" : {
-      "@id" : "http://.../datasets/1/params/PSAL",
-      "@type" : "@id"
-    },
-    "POTM" : {
-      "@id" : "http://.../datasets/1/params/POTM",
-      "@type" : "@id"
-    },
     "qudt" : "http://qudt.org/1.1/schema/qudt#",
     "unit" : "qudt:unit",
     "symbol" : "qudt:symbol"
@@ -148,7 +142,7 @@ Parameter objects represent metadata about the values of the coverage in terms o
 
 - A parameter object may have any number of members (name/value pairs).
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
-- A parameter object must have a member with the name `"id"` where the value must be a string that is a unique identifier within the scope of the CoverageJSON object. The parameter `"id"` should be short, e.g. "WIND", as it is used in clients for conveniently accessing the corresponding range object in a coverage object (see section 3.3).
+- A parameter object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
 - A parameter object may have a member with the name `"description"` where the value must be a string that is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the observed property.
 - A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be a string of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
@@ -159,7 +153,6 @@ Example for a continuous-data parameter:
 ```js
 {
   "type" : "Parameter",
-  "id" : "TEMP",
   "description" : "The sea water temperature in degrees celsius. more text if needed...",
   "observedProperty" : {
     "id" : "http://foo/sea_water_temperature",
@@ -178,7 +171,6 @@ Example for a categorical-data parameter:
 ```js
 {
   "type" : "Parameter",
-  "id" : "LCCAT",
   "description" : "The land cover category.",
   "observedProperty" : {
     "id" : "http://foo/land_cover",
@@ -504,9 +496,9 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
 - If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
-- A coverage object may have a member with the name `"parameters"` where the value is an array of parameter objects.
+- A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name the value of `"id"` of a parameter object and as value either a range object or a URL. Each referenced parameter object must be contained in the `"parameters"` member within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
+- A coverage object must have a member with the name `"ranges"` where the value is an object where each member has as name any of the names in a `"parameters"` object and as value either a range object or a URL. The `"parameters"` member may be  within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
 
 ### 3.4. Coverage Collection Objects
 
@@ -525,8 +517,9 @@ Example:
   "@context": [
      "http://.../covjson/basecontext.jsonld",
      {
-       "TMP" : { "@id": "http://../mydataset/parameters/TEMPERATURE", "@type": "@id"},
-       "SALTY" :  { "@id": "http://../mydataset/parameters/SALINITY", "@type": "@id"}
+      "qudt" : "http://qudt.org/1.1/schema/qudt#",
+      "unit" : "qudt:unit",
+      "symbol" : "qudt:symbol"
      }
    ],
    "type": "Coverage",
@@ -534,7 +527,7 @@ Example:
 }
 ```
 
-All identifiers referred to in a CoverageJSON object should be URIs. These URIs should be taken from established vocabularies if available, except for Parameter IDs which are typically local to specific datasets.
+All identifiers referred to in a CoverageJSON object should be URIs. These URIs should be taken from established vocabularies if available.
 
 TODO expand
 
