@@ -215,7 +215,7 @@ A domain object is a CoverageJSON object which defines a coordinate space and th
 - A spatial CRS applies to the members `"x"`, `"y"`, and `"z"` in that axis order and defines the reference system, units, and value type. (**TODO** is this correct?)
 - A temporal CRS applies to the member `"t"` and defines the reference system, units, and value type. (**TODO** is this correct?)
 - In the context of `"x"`, `"y"`, `"z"`, `"t"`, *coordinate value* refers to a value that has the corresponding CRS value type.
-- If a member `"x"`, `"y"`, `"z"`, or `"t"` is an array of coordinate values, then the values in that array must be ordered monotonically according to their ordering relation defined by the used CRS (**FIXME**). Whenever the terms "monotonically increasing" or "monotonically decreasing" are used, the ordering relation as defined by the corresponding CRS shall be used.
+- If a member `"x"`, `"y"`, `"z"`, or `"t"` is an array of coordinate values, then, if not otherwise defined, the values in that array must be ordered monotonically according to their ordering relation defined by the used CRS (**FIXME**). Whenever the terms "monotonically increasing" or "monotonically decreasing" are used, the ordering relation as defined by the corresponding CRS shall be used.
 - If not defined, the default spatial CRS is used.
 - If not defined, the default temporal CRS is used.
 - The default spatial CRS is the geographic CRS CRS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84), with `"x"` longitude, `"y"` latitude, `"z"` altitude above the WGS84 reference ellipsoid, longitude and latitude units of decimal degrees and altitude units of metres, and all values being numbers.
@@ -324,9 +324,9 @@ Example:
 
 #### 3.1.5. Trajectory
 
-- A Trajectory domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`.
+- A Trajectory domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
 - A Trajectory domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
-- A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value.
+- A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value. If `"z"` is an array, its elements may but do not have to be ordered monotonically.
 - A Trajectory domain object must have the member `"sequence"` where the value is either `["x","y","z","t"]` if `"z"` is an array, or `["x","y","t"]` if `"z"` is a coordinate value or not defined.
 - The coordinate space of a Trajectory domain object is defined by `[zip(x,y,z,t)]` if `"z"` is an array, or `[zip(x,y,t)]` if `"z"` is not defined, or `[[z],zip(x,y,t)]` if `"z"` is a coordinate value. `zip` is a function which returns an array of arrays, where the i-th array contains the i-th element from each of the argument arrays in the given order.
 
@@ -369,7 +369,7 @@ Example with z defined as constant value:
 
 #### 3.1.6. Section
 
-- A Section domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`.
+- A Section domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
 - A Section domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
 - A Section domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
 - A Section domain object must have the member `"sequence"` where the value is `["x","y","t"]`.
