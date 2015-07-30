@@ -56,11 +56,85 @@ A CoverageJSON object may be serialized as either JSON or CBOR.
 
 ### 1.1. Examples
 
-A CoverageJSON coverage collection:
+A CoverageJSON Profile coverage:
+
+(note that `"zCRS"` is not defined exactly yet)
 
 ```js
-TODO
+{
+  "type" : "Coverage",
+  "id" : "http://.../datasets/1/coverages/123",
+  "domain" : {
+    "type" : "Profile",
+    "x" : -108.381,
+    "y" : -43.153,
+    "z" : [ 5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
+            38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
+            74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
+            110.0881, 116.0371, 121.9859 ],
+    "zCrs" : {
+      "unit" : {
+        "symbol" : "m"
+      },
+      "positiveUpwards" : false
+    },
+    "t" : "2013-01-13T11:12:20Z"
+  },
+  "parameters" : [ {
+    "id" : "PSAL",
+    "type" : "Parameter",
+    "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
+    "unit" : {
+      "symbol" : "psu"
+    },
+    "observedProperty" : {
+      "id" : "http://foo/sea_water_salinity",
+      "label" : "Sea Water Salinity"
+    }
+  }, {
+    "id" : "POTM",
+    "type" : "Parameter",
+    "description" : "The potential temperature, in degrees celcius, of the sea water",
+    "unit" : {
+      "symbol" : "°C"
+    },
+    "observedProperty" : {
+      "id" : "http://foo/sea_water_potential_temperature",
+      "label" : "Sea Water Potential Temperature"
+    }
+  } ],
+  "ranges" : {
+    "type" : "RangeSet",
+    "PSAL" : "http://.../datasets/1/coverages/123/range/PSAL",
+    "POTM" : "http://.../datasets/1/coverages/123/range/POTM"
+  },
+  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+    "PSAL" : {
+      "@id" : "http://.../datasets/1/params/PSAL",
+      "@type" : "@id"
+    },
+    "POTM" : {
+      "@id" : "http://.../datasets/1/params/POTM",
+      "@type" : "@id"
+    },
+    "qudt" : "http://qudt.org/1.1/schema/qudt#",
+    "unit" : "qudt:unit",
+    "symbol" : "qudt:symbol"
+  } ]
+}
 ```
+where `"http://.../datasets/1/coverages/123/range/PSAL"` (similarly `/POTM`) points to the following document, here shown as JSON serialization:
+```js
+{
+  "type" : "Range",
+  "values" : [ 43.9599, 43.9599, 43.9640, 43.9640, 43.9679, 43.9879, 44.0040,
+               44.0120, 44.0120, 44.0159, 44.0320, 44.0320, 44.0480, 44.0559,
+               44.0559, 44.0579, 44.0680, 44.0740, 44.0779, 44.0880, 44.0940 ],
+  "validMin" : 30,
+  "validMax" : 50
+}
+```
+Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
 
 ### 1.2. Definitions
 
