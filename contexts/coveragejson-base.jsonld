@@ -22,11 +22,9 @@
     "coverages": "covjson:coverage",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
-    "parameters": "covjson:parameterCollection",
-    "ParameterCollection": "covjson:ParameterCollection",
+    "parameters": { "@id": "covjson:parameter", "@container": "@index" },
     "domain": "covjson:domain",
-    "ranges": "covjson:rangeSet",
-    "RangeSet": "covjson:RangeSet",
+    "ranges": { "@id": "covjson:range", "@container": "@index" },
     
     "Grid": "covjson:Grid",
     "Profile": "covjson:Profile",
