@@ -4,4 +4,4 @@ work-in-progress
 
 ## Acknowledgments
 
-This project is developed within the [MELODIES project](http://www.melodiesproject.eu).
+This specification is developed within the [MELODIES project](http://www.melodiesproject.eu).
