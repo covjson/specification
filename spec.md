@@ -89,19 +89,25 @@ A CoverageJSON Profile coverage:
       },
       "observedProperty" : {
         "id" : "http://foo/sea_water_salinity",
-        "label" : "Sea Water Salinity"
+        "label" : {
+          "en": "Sea Water Salinity"
+        }
       }
     },
     "POTM": {
       "id" : "http://.../datasets/1/params/POTM",
       "type" : "Parameter",
-      "description" : "The potential temperature, in degrees celcius, of the sea water",
+      "description": {
+        "en": "The potential temperature, in degrees celcius, of the sea water"
+      },
       "unit" : {
         "symbol" : "°C"
       },
       "observedProperty" : {
         "id" : "http://foo/sea_water_potential_temperature",
-        "label" : "Sea Water Potential Temperature"
+        "label": {
+          "en": "Sea Water Potential Temperature"
+        }
       }
     }
   },
@@ -139,17 +145,30 @@ Range data can also be directly embedded into the main CoverageJSON document, ma
 - Concise Binary Object Representation (CBOR) is defined in [IETF RFC 7049](http://tools.ietf.org/rfc/rfc7049.txt).
 - The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [IETF RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
-## 2. Parameter Objects
+## 2. i18n Objects
+
+An i18n object represents a string in multiple languages where each key is a language tag as defined in [BCP 47](http://tools.ietf.org/html/bcp47), and the value the string in that language. At minimum, a translation with the tag `"en"` must be given.
+
+Example:
+
+```js
+{
+  "en": "Temperature",
+  "de": "Temperatur"
+}
+```
+
+## 3. Parameter Objects
 
 Parameter objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
 
 - A parameter object may have any number of members (name/value pairs).
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
 - A parameter object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
-- A parameter object may have a member with the name `"description"` where the value must be a string that is a, perhaps lengthy, textual description of the parameter.
-- A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be a string that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the observed property.
-- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be a string of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
-- A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have `"label"` and `"value"` members and may have `"description"` and `"id"` members. The value of `"label"` must be a name of the category and should be short. The value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be a string with a textual description of the category.
+- A parameter object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter.
+- A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property.
+- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
+- A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have `"label"` and `"value"` members and may have `"description"` and `"id"` members. The value of `"label"` must be an i18n object of the name of the category and should be short. The value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the category.
 - A parameter object must not have both `"unit"` and `"categories"` members.
 
 Example for a continuous-data parameter:
@@ -157,15 +176,23 @@ Example for a continuous-data parameter:
 {
   "type" : "Parameter",
   "id": "http://.../mydataset/params/TMP",
-  "description" : "The sea water temperature in degrees celsius. more text if needed...",
+  "description" : {
+    "en": "The sea water temperature in degrees celsius. more text if needed..."
+  },
   "observedProperty" : {
     "id" : "http://foo/sea_water_temperature",
-    "label" : "Sea Water Temperature",
-    "description" : "longer description..."
+    "label" : {
+      "en": "Sea Water Temperature"
+    },
+    "description" : {
+      "en": "longer description..."
+    }
   },
   "unit" : {
     "id" : "http://qudt.org/vocab/unit#DegreeCelsius",
-    "label" : "degrees Celsius",
+    "label" : {
+      "en": "degrees Celsius"
+    },
     "symbol" : "°C"
   }
 }
@@ -176,24 +203,34 @@ Example for a categorical-data parameter:
 {
   "type" : "Parameter",
   "id": "http://.../mydataset/params/LC",
-  "description" : "The land cover category.",
+  "description" : {
+    "en": "The land cover category."
+  },
   "observedProperty" : {
     "id" : "http://foo/land_cover",
-    "label" : "Land Cover",
-    "description" : "longer description..."
+    "label" : {
+      "en": "Land Cover"
+    },
+    "description" : {
+      "en": "longer description..."
+    }
   },
   "categories": [
     {
       "id": "http://.../landcover1/categories/grass",
       "value": 1,
-      "label": "Grass",
-      "description": "Very green grass."
+      "label": {
+        "en": "Grass"
+      },
+      "description": {
+        "en": "Very green grass."
+      }
     }, ...
   ]
 }
 ```
 
-## 3. CoverageJSON Objects
+## 4. CoverageJSON Objects
 
 CoverageJSON always consists of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
@@ -201,7 +238,7 @@ CoverageJSON always consists of a single object. This object (referred to as the
 - The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
 
-### 3.1. Domain Objects
+### 4.1. Domain Objects
 
 A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
 
@@ -247,7 +284,7 @@ O = Optional, single coordinate in coordinate space
 [O] = Optional, array of coordinates in coordinate space
 
 
-#### 3.1.1. Grid
+#### 4.1.1. Grid
 
 - A Grid domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array coordinate values.
 - A Grid domain object may have the member `"z"` where the value is a non-empty array coordinate values.
@@ -265,7 +302,7 @@ Example:
 }
 ```
 
-#### 3.1.2. Profile
+#### 4.1.2. Profile
 
 - A Profile domain object must have the members `"x"` and `"y"` where each has a coordinate value.
 - A Profile domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
@@ -283,7 +320,7 @@ Example:
 }
 ```
 
-#### 3.1.3. PointSeries
+#### 4.1.3. PointSeries
 
 - A PointSeries domain object must have the members `"x"` and `"y"` where each has a coordinate value.
 - A PointSeries domain object may have the member `"z"` where the value is a coordinate value.
@@ -301,7 +338,7 @@ Example:
 }
 ```
 
-#### 3.1.4. Point
+#### 4.1.4. Point
 
 - A Point domain object must have the members `"x"` and `"y"` where each has a coordinate value.
 - A Point domain object may have the member `"z"` where the value is a coordinate value.
@@ -319,7 +356,7 @@ Example:
 }
 ```
 
-#### 3.1.5. Trajectory
+#### 4.1.5. Trajectory
 
 - A Trajectory domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
 - A Trajectory domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
@@ -364,7 +401,7 @@ Example with z defined as constant value:
 }
 ```
 
-#### 3.1.6. Section
+#### 4.1.6. Section
 
 - A Section domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
 - A Section domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
@@ -384,7 +421,7 @@ Example:
 }
 ```
 
-#### 3.1.7. Polygon
+#### 4.1.7. Polygon
 
 Polygons are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional dimensions).
 
@@ -408,7 +445,7 @@ Example:
 }
 ```
 
-#### 3.1.8. PolygonSeries
+#### 4.1.8. PolygonSeries
 
 - A PolygonSeries domain object must have the member `"polygon"` where the value is a Polygon.
 - A PolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
@@ -427,7 +464,7 @@ Example:
 }
 ```
 
-#### 3.1.9. MultiPolygon
+#### 4.1.9. MultiPolygon
 
 - A MultiPolygon domain object must have the member `"polygon"` where the value is an array of Polygons.
 - A MultiPolygon domain object may have the member `"t"` where the value is a coordinate value.
@@ -447,7 +484,7 @@ Example:
 }
 ```
 
-#### 3.1.10. MultiPolygonSeries
+#### 4.1.10. MultiPolygonSeries
 
 - A MultiPolygonSeries domain object must have the member `"polygon"` where the value is an array of Polygons.
 - A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
@@ -467,12 +504,12 @@ Example:
 }
 ```
 
-#### 3.1.11. Coordinate Bounds
+#### 4.1.11. Coordinate Bounds
 
 - For each of the `"x"`, `"y"`, `"z"`, and `"t"` members (further called point members) of a domain object, coordinate bounds may be defined in the members `"xBounds"`, `"yBounds"`, `"zBounds"`, and `"tBounds"`, respectively, where the value of each is an array of monotonically ordered coordinate values of length `len*2` with `len` being the array length of the point member for which the bounds are given, or 1 if the point member is not an array. For a point member array, a lower and upper bounding coordinate value at positions `2*i` and `2*i+1`, respectively, are given in a bounds array for each point member coordinate value with array index `i`. For a point member which is not an array, the bounds array contains a single pair of lower and upper bounding coordinate values as first and second value, respectively. The lower and upper bounding coordinate values `l` and `u` for a given coordinate `c` must satisfy the constraint `l <= c <= u`.
 - If a domain object member `"x"`, `"y"`, `"z"`, or `"t"` has no corresponding bounds member and is an array, then its bounds may be derived with the formula `bounds(m, i) = [(m[i-1] + m[i]) / 2, (m[i] + m[i+1]) / 2]` where `m` is the value of one of `"x"`, `"y"`, `"z"`, or `"t"`, and `i` is the index within the `m` array.
 
-### 3.2. Range Objects
+### 4.2. Range Objects
 
 A CoverageJSON object with the type `"Range"` is a range object.
 
@@ -481,21 +518,21 @@ A CoverageJSON object with the type `"Range"` is a range object.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
-#### 3.2.1. Offset/Factor Encoding (CBOR-only)
+#### 4.2.1. Offset/Factor Encoding (CBOR-only)
 
 A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
 
 - A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
 - If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
 
-#### 3.2.2. Missing Value Encoding (CBOR-only)
+#### 4.2.2. Missing Value Encoding (CBOR-only)
 
 If only a small amount of values in `"values"` are missing it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
 
 - If a range object contains the `"validMin"` and `"validMax"` members it may have a member `"missing"` with value `"nonvalid"`.
 - If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
 
-### 3.3. Coverage Objects
+### 4.3. Coverage Objects
 
 A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
@@ -505,14 +542,14 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
 
-### 3.4. Coverage Collection Objects
+### 4.4. Coverage Collection Objects
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object may have a member with the name `"parameters"` where the value is a list of parameter objects.
 
-## 4. Linked Data Context
+## 5. Linked Data Context
 
 A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"http://.../covjson/basecontext.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Range objects should *not* have a context because range data is currently not suitable to be handled as linked data.
 
@@ -538,11 +575,11 @@ All identifiers referred to in a CoverageJSON object should be URIs. These URIs 
 
 TODO expand
 
-## 5. Resolving domain and range URLs
+## 6. Resolving domain and range URLs
 
 When a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and replace the URL member value with the loaded object. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
 
-## 6. Media Type, File Extensions, and Encodings
+## 7. Media Type, File Extensions, and Encodings
 
 The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR.
 
