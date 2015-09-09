@@ -116,7 +116,7 @@ A CoverageJSON Profile coverage:
     "PSAL" : "http://.../datasets/1/coverages/123/range/PSAL",
     "POTM" : "http://.../datasets/1/coverages/123/range/POTM"
   },
-  "@context" : [ "https://rawgit.com/neothemachine/coveragejson/master/contexts/coveragejson-base.jsonld", {
+  "@context" : [ "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld", {
     "qudt" : "http://qudt.org/1.1/schema/qudt#",
     "unit" : "qudt:unit",
     "symbol" : "qudt:symbol",
