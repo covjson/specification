@@ -7,9 +7,9 @@
     "oml": "http://def.seegrid.csiro.au/ontology/om/om-lite#",
     "dct": "http://purl.org/dc/terms/",
 
-    "label": "rdfs:label",
-    "title": "dct:title",
-    "description": "dct:description",
+    "label": { "@id": "rdfs:label", "@container": "@language" },
+    "title": { "@id": "dct:title", "@container": "@language" },
+    "description": { "@id": "dct:description", "@container": "@language" },
     "Instant": "w3time:Instant",
     "dateTime": { "@id": "w3time:inXSDDateTime", "@type": "xsd:dateTime" },
     "Interval": "w3time:ProperInterval",
