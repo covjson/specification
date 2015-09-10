@@ -168,8 +168,9 @@ Parameter objects represent metadata about the values of the coverage in terms o
 - A parameter object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property.
 - A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
-- A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have `"label"` and `"value"` members and may have `"description"` and `"id"` members. The value of `"label"` must be an i18n object of the name of the category and should be short. The value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the category.
+- A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have a `"value"` or `"values"` member, a `"label"` member, and may have `"description"` and `"id"` members. The value of `"label"` must be an i18n object of the name of the category and should be short. If given, the value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"values"` must be an array of `"value"` integers. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the category.
 - A parameter object must not have both `"unit"` and `"categories"` members.
+- A parameter object must not have both `"value"` and `"values"` members.
 
 Example for a continuous-data parameter:
 ```js
@@ -224,6 +225,12 @@ Example for a categorical-data parameter:
       },
       "description": {
         "en": "Very green grass."
+      }
+    }, {
+      "id": "http://.../landcover1/categories/forest",
+      "values": [2,3],
+      "label": {
+        "en": "Forest"
       }
     }, ...
   ]
