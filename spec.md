@@ -41,7 +41,7 @@ WORK-IN-PROGRESS
 
 - domain CRS
 - for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
-- bbox, time/vertical extents, ... in domain and/or coverage
+- time/vertical extents, ... in domain and/or coverage
 - check qudt:quantity
 - define profiles (stand-alone, with URLs)
 
@@ -548,6 +548,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
+- A coverage object may have a member with the name `"bbox"` where the value is an array of four numbers `[west longitude, south latitude, east longitude, north latitude]` describing the bounding box of the coverage data in degrees (WGS84).
 
 ### 4.4. Coverage Collection Objects
 
