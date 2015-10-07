@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "TrajectoryCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Trajectory",

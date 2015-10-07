@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "GridCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Grid",

@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "FiveDimensionalSpaceCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "FiveDimensionalSpace",

@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "MultiPolygonCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "MultiPolygon",
@@ -14,13 +14,17 @@
     "WIND": {
       "id" : "http://.../datasets/1/params/WIND",
       "type" : "Parameter",
-      "description" : "Wind speed in km/h",
+      "description" : {
+        "en": "Wind speed in km/h"
+      },
       "unit" : {
         "symbol" : "km/h"
       },
       "observedProperty" : {
         "id" : "http://foo/wind_speed",
-        "label" : "Wind Speed"
+        "label" : {
+          "en": "Wind Speed"
+        }
       }
     }
   },

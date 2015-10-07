@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "TrajectoryCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Trajectory",
@@ -13,13 +13,17 @@
     "ICEC": {
       "id" : "http://.../datasets/1/params/ICEC",
       "type" : "Parameter",
-      "description" : "??? example..",
+      "description" : {
+        "en": "??? example.."
+      },
       "unit" : {
         "symbol" : "fraction"
       },
       "observedProperty" : {
         "id" : "http://foo/???",
-        "label" : "???"
+        "label" : {
+          "en": "???"
+        }
       }
     }
   },

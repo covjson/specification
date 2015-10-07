@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "GridCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Grid",
@@ -12,21 +12,33 @@
     "LC": {
       "id" : "http://.../datasets/1/params/LC",
       "type" : "Parameter",
-      "description" : "Land Cover according to xyz classification",
+      "description" : {
+        "en": "Land Cover according to xyz classification"
+      },
       "categories" : [{
         "id": "http://.../landcover1/categories/grass",
         "value": 1,
-        "label": "Grass",
-        "description": "Very green grass."
+        "label": {
+          "en": "Grass"
+        },
+        "description": {
+          "en": "Very green grass."
+        }
       }, {
         "id": "http://.../landcover1/categories/rocks",
         "value": 2,
-        "label": "Rock",
-        "description": "Just rocks."
+        "label": {
+          "en": "Rock"
+        },
+        "description": {
+          "en": "Just rocks."
+        }
       }],
       "observedProperty" : {
         "id" : "http://foo/land_cover",
-        "label" : "Land Cover"
+        "label" : {
+          "en": "Land Cover"
+        }
       }
     }
   },

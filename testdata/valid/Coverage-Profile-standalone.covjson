@@ -1,5 +1,5 @@
 {
-  "type" : "Coverage",
+  "type" : "ProfileCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Profile",
@@ -15,25 +15,33 @@
     "PSAL": {
       "id" : "http://.../datasets/1/params/PSAL",
       "type" : "Parameter",
-      "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
+      "description" : {
+        "en": "The measured salinity, in practical salinity units (psu) of the sea water "
+      },
       "unit" : {
         "symbol" : "psu"
       },
       "observedProperty" : {
         "id" : "http://foo/sea_water_salinity",
-        "label" : "Sea Water Salinity"
+        "label" : {
+          "en": "Sea Water Salinity"
+        }
       }
     },
     "POTM": {
       "id" : "http://.../datasets/1/params/POTM",
       "type" : "Parameter",
-      "description" : "The potential temperature, in degrees celcius, of the sea water",
+      "description" : {
+        "en": "The potential temperature, in degrees celcius, of the sea water"
+      },
       "unit" : {
         "symbol" : "°C"
       },
       "observedProperty" : {
         "id" : "http://foo/sea_water_potential_temperature",
-        "label" : "Sea Water Potential Temperature"
+        "label" : {
+          "en": "Sea Water Potential Temperature"
+        }
       }
     }
   },
