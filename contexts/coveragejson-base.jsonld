@@ -18,7 +18,6 @@
     "phenomenonTime": "oml:phenomenonTime",
     "observedProperty": "oml:observedProperty",
 
-    "Coverage": "covjson:Coverage",
     "coverages": "covjson:coverage",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
@@ -35,6 +34,16 @@
     "Section": "covjson:Section",
     "MultiPolygonSeries": "covjson:MultiPolygonSeries",
     "MultiPolygon": "covjson:MultiPolygon",
-    "Polygon": "covjson:Polygon"
+    "Polygon": "covjson:Polygon",
+    
+    "GridCoverage": "covjson:GridCoverageCoverage",
+    "ProfileCoverage": "covjson:ProfileCoverage",
+    "PointSeriesCoverage": "covjson:PointSeriesCoverage",
+    "PointCoverage": "covjson:PointCoverage",
+    "TrajectorCoveragey": "covjson:TrajectoryCoverage",
+    "SectionCoverage": "covjson:SectionCoverage",
+    "MultiPolygonSeriesCoverage": "covjson:MultiPolygonSeriesCoverage",
+    "MultiPolygonCoverage": "covjson:MultiPolygonCoverage",
+    "PolygonCoverage": "covjson:PolygonCoverage"
   }
 }
