@@ -61,7 +61,7 @@ A CoverageJSON Profile coverage:
 
 ```js
 {
-  "type" : "Coverage",
+  "type" : "ProfileCoverage",
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Profile",
@@ -243,7 +243,7 @@ CoverageJSON always consists of a single object. This object (referred to as the
 
 - The CoverageJSON object may have any number of members (name/value pairs).
 - The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
-- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"GridCoverage"`, `"ProfileCoverage"`, `"PointSeriesCoverage"`, `"PointCoverage"`, `"TrajectoryCoverage"`, `"SectionCoverage"`, `"MultiPolygonSeriesCoverage"`, `"MultiPolygonCoverage"`, `"PolygonCoverage"`, `"Range"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
 
 ### 4.1. Domain Objects
 
@@ -541,10 +541,10 @@ If only a small amount of values in `"values"` are missing it is more space effi
 
 ### 4.3. Coverage Objects
 
-A CoverageJSON object with the type `"Coverage"` is a coverage object.
+A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage object, where `<DomainType>` is any of the domain types defined earlier.
 
 - If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
-- A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
+- A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL. The domain type must match the `<DomainType>` part of the coverage type.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categories"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"value"` member of the category objects within `"categories"` and be interpreted as the matching category.
@@ -559,13 +559,13 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 ## 5. Linked Data Context
 
-A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"http://.../covjson/basecontext.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Range objects should *not* have a context because range data is currently not suitable to be handled as linked data.
+A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Range objects should *not* have a context because range data is currently not suitable to be handled as linked data.
 
 Example:
 ```js
 {
   "@context": [
-     "http://.../covjson/basecontext.jsonld",
+     "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld",
      {
       "qudt" : "http://qudt.org/1.1/schema/qudt#",
       "unit" : "qudt:unit",
@@ -574,7 +574,7 @@ Example:
       "POTM" : { "@id" : "http://.../datasets/1/params/POTM", "@type" : "@id" }
      }
    ],
-   "type": "Coverage",
+   "type": "GridCoverage",
    ...
 }
 ```
