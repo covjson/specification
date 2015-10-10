@@ -584,7 +584,7 @@ TODO expand
 
 ## 6. Resolving domain and range URLs
 
-When a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and replace the URL member value with the loaded object. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
+When a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
 
 ## 7. Media Type, File Extensions, and Encodings
 
