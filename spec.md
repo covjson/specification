@@ -43,7 +43,6 @@ WORK-IN-PROGRESS
 - for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
 - time/vertical extents, ... in domain and/or coverage
 - check qudt:quantity
-- define profiles (stand-alone, with URLs)
 
 ## 1. Introduction
 
@@ -589,7 +588,7 @@ When a domain or range is referenced by a URL in a CoverageJSON document, then t
 
 ## 7. Media Type, File Extensions, and Encodings
 
-The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR.
+The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR. Both media types have an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
 The file extension for JSON shall be `covjson`, and for CBOR `covcbor`.
 
