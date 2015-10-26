@@ -5,9 +5,10 @@
     "covjson": "http://.../vocab#",
     "w3time": "http://www.w3.org/2006/time#",
     "ssn": "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "dct": "http://purl.org/dc/terms/",
 
-    "label": { "@id": "rdfs:label", "@container": "@language" },
+    "label": { "@id": "skos:prefLabel", "@container": "@language" },
     "title": { "@id": "dct:title", "@container": "@language" },
     "description": { "@id": "dct:description", "@container": "@language" },
     "Instant": "w3time:Instant",
