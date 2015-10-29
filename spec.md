@@ -604,6 +604,8 @@ The CoverageJSON media type shall be `application/prs.coverage+json` when encode
 
 The file extension for JSON shall be `covjson`, and for CBOR `covcbor`.
 
+A software may only claim support for reading a CoverageJSON document encoded in CBOR if it can interpret the [typed array tags of CBOR](https://tools.ietf.org/html/draft-jroatch-cbor-tags-03).
+
 ## Appendix A. Coverage Examples
 
 ## Attribution
