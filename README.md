@@ -1,6 +1,6 @@
 # CoverageJSON
 
-This repository hosts the CoverageJSON specification that is currently being developed.
+This repository hosts the experimental CoverageJSON specification that is currently being developed.
 
 **Feedback is very welcome!** Please use the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues) for any kind of discussion.
 
@@ -45,3 +45,4 @@ However, as the format is so simple, it is easy to prototype an application from
 ## Acknowledgments
 
 This specification is developed within the [MELODIES project](http://www.melodiesproject.eu).
+The format was inspired by an initial idea by Joan Masó of [CREAF](http://www.creaf.cat/ca) who also coined the name CoverageJSON.
