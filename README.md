@@ -1,6 +1,6 @@
 # CoverageJSON
 
-This repository hosts the CoverageJSON specification that is currently being developed.
+This repository hosts the experimental CoverageJSON specification that is currently being developed.
 
 **Feedback is very welcome!** Please use the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues) for any kind of discussion.
 
@@ -42,6 +42,11 @@ While the format is still in development and changing, a range of libraries are 
 
 However, as the format is so simple, it is easy to prototype an application from scratch. If you think the format is *not* simple enough, please open an issue and explain why you feel that way - it's a priority for us to make it simple!
 
+## Alignment to existing standards
+
+We consider a conceptual alignment with the [Coverage Implementation Schema](http://external.opengeospatial.org/twiki_public/CoveragesDWG/CoveragesBigPicture) (successor of "[GMLCOV](https://portal.opengeospatial.org/files/?artifact_id=48553)") important and follow its development closely. 
+
 ## Acknowledgments
 
 This specification is developed within the [MELODIES project](http://www.melodiesproject.eu).
+The format was inspired by an initial idea by Joan Masó of [CREAF](http://www.creaf.cat/ca) who also coined the name CoverageJSON.
