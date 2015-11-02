@@ -80,21 +80,19 @@ A CoverageJSON Profile coverage:
   },
   "parameters" : {
     "PSAL": {
-      "id" : "http://.../datasets/1/params/PSAL",
       "type" : "Parameter",
       "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
       "unit" : {
         "symbol" : "psu"
       },
       "observedProperty" : {
-        "id" : "http://foo/sea_water_salinity",
+        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_salinity/",
         "label" : {
           "en": "Sea Water Salinity"
         }
       }
     },
     "POTM": {
-      "id" : "http://.../datasets/1/params/POTM",
       "type" : "Parameter",
       "description": {
         "en": "The potential temperature, in degrees celcius, of the sea water"
@@ -103,7 +101,7 @@ A CoverageJSON Profile coverage:
         "symbol" : "°C"
       },
       "observedProperty" : {
-        "id" : "http://foo/sea_water_potential_temperature",
+        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_potential_temperature/",
         "label": {
           "en": "Sea Water Potential Temperature"
         }
@@ -118,9 +116,7 @@ A CoverageJSON Profile coverage:
   "@context" : [ "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld", {
     "qudt" : "http://qudt.org/1.1/schema/qudt#",
     "unit" : "qudt:unit",
-    "symbol" : "qudt:symbol",
-    "PSAL" : { "@id" : "http://.../datasets/1/params/PSAL", "@type" : "@id" },
-    "POTM" : { "@id" : "http://.../datasets/1/params/POTM", "@type" : "@id" }
+    "symbol" : "qudt:symbol"
   } ]
 }
 ```
@@ -164,28 +160,28 @@ Parameter objects represent metadata about the values of the coverage in terms o
 - A parameter object may have any number of members (name/value pairs).
 - A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
 - A parameter object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
+- A parameter object may have a member with the name `"label"` where the value must be an i18n object that is the name of the parameter and which should be short. Note that this should be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
 - A parameter object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property.
 - A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must be a string of the symbolic notation of the unit. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
 - A parameter object may have a member with the name `"categories"` where the value is a non-empty array of category objects. A category object must have a `"value"` or `"values"` member, a `"label"` member, and may have `"description"` and `"id"` members. The value of `"label"` must be an i18n object of the name of the category and should be short. If given, the value of `"value"` must be an integer unique within all category objects in `"categories"`. If given, the value of `"values"` must be an array of `"value"` integers. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the category.
 - A parameter object must not have both `"unit"` and `"categories"` members.
-- A parameter object must not have both `"value"` and `"values"` members.
+- A category object must not have both `"value"` and `"values"` members.
 
 Example for a continuous-data parameter:
 ```js
 {
   "type" : "Parameter",
-  "id": "http://.../mydataset/params/TMP",
   "description" : {
-    "en": "The sea water temperature in degrees celsius. more text if needed..."
+    "en": "The sea surface temperature in degrees celsius."
   },
   "observedProperty" : {
-    "id" : "http://foo/sea_water_temperature",
+    "id" : "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
     "label" : {
-      "en": "Sea Water Temperature"
+      "en": "Sea Surface Temperature"
     },
     "description" : {
-      "en": "longer description..."
+      "en": "The temperature of sea water near the surface (including the part under sea-ice, if any), and not the skin temperature."
     }
   },
   "unit" : {
@@ -202,7 +198,6 @@ Example for a categorical-data parameter:
 ```js
 {
   "type" : "Parameter",
-  "id": "http://.../mydataset/params/LC",
   "description" : {
     "en": "The land cover category."
   },
@@ -233,6 +228,81 @@ Example for a categorical-data parameter:
       }
     }, ...
   ]
+}
+```
+
+## 4. ParameterGroup Objects
+
+Parameter group objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
+
+- A parameter group object may have any number of members (name/value pairs).
+- A parameter group object must have a member with the name `"type"` and the value `"ParameterGroup"`.
+- A parameter group object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
+- A parameter group object may have a member with the name `"label"` where the value must be an i18n object that is the name of the parameter group and which should be short. Note that this should be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
+- A parameter group object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter group.
+- A parameter group object may have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property.
+- A parameter group object must have either or both the members `"label"` or/and `"observedProperty"`.
+
+Example of a group describing a vector quantity:
+```js
+{
+  "type": "ParameterGroup",
+  "observedProperty": {
+    "label": {
+      "en": "Wind velocity"
+    }
+  },
+  "components": ["WIND_SPEED", "WIND_DIR"]
+}
+```
+where `"WIND_SPEED"` and `"WIND_DIR"` reference existing parameters in a CoverageJSON coverage or collection object by their short identifiers.
+
+Example of a group describing uncertainty of a parameter:
+```js
+{
+  "type": "ParameterGroup",
+  "label": {
+    "en": "Sea surface temperature with uncertainty information"
+  },
+  "observedProperty": {
+    "id": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
+    "label": {
+      "en": "Sea surface temperature"
+    }
+  },
+  "components": ["SST_mean", "SST_stddev"]
+}
+```
+where `"SST_stddev"` references the following parameter:
+```js
+{
+  "type" : "Parameter",
+  "observedProperty" : {
+    "label" : {
+      "en": "Sea surface temperature standard deviation"
+    },
+    "baseProperty": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
+    "statisticalMeasure": "http://www.uncertml.org/statistics/standard-deviation"
+  },
+  "unit" : {
+    "symbol" : "°C"
+  }
+}
+```
+and `"SST_mean"`:
+```js
+{
+  "type" : "Parameter",
+  "observedProperty" : {
+    "label" : {
+      "en": "Sea surface temperature daily mean"
+    },
+    "baseProperty": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
+    "statisticalMeasure": "http://.../statistics/mean_daily"
+  },
+  "unit" : {
+    "symbol" : "°C"
+  }
 }
 ```
 
@@ -556,9 +626,11 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object may have a member with the name `"parameters"` where the value is a list of parameter objects.
 
-## 5. Linked Data Context
+## 5. Linked Data
 
-A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Range objects should *not* have a context because range data is currently not suitable to be handled as linked data.
+### 5.1. JSON-LD Context
+
+A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Domain and range objects should *not* have a context because those data, in particular the potentially big arrays, are currently not suitable to be represented as linked data.
 
 Example:
 ```js
@@ -582,15 +654,27 @@ All identifiers referred to in a CoverageJSON object should be URIs. These URIs 
 
 TODO expand
 
+### 5.2. Linked Data Platform considerations
+
+The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly separates RDF from non-RDF resources. In order to expose CoverageJSON documents, which may contain a mix of RDF and non-RDF content, in such a platform, the following guidelines may be used:
+
+- Every CoverageJSON document, including those embedded in another, should be made available as a separate resource with its own URL and referenced in parent CoverageJSON documents where appropriate (e.g. a coverage should contain the URLs for its domain and range documents, no matter if they are embedded or not).
+- Domain and range documents should be treated as non-RDF resources, and coverage and coverage collection documents as RDF resources.
+- Domain and range documents should always be returned with a CoverageJSON content type, while coverage and coverage collection documents should be made available under RDF as well as CoverageJSON content types.
+- If one of the RDF content types is requested for a coverage or coverage collection, then appropriate JSON-LD (or another RDF serialization if required) should be returned, where the domain and range objects should not be embedded and thus referenced by URL only. A coverage collection should be exposed as a LDP container.
+- If one of the CoverageJSON content types is requested for any CoverageJSON document, then any compatible form of the CoverageJSON document may be returned and be treated as a non-RDF resource. Whether to embed domain and/or range may be decided with additional URL query parameters or other means.
+
 ## 6. Resolving domain and range URLs
 
-When a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
+If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
 
 ## 7. Media Type, File Extensions, and Encodings
 
 The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR. Both media types have an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
 The file extension for JSON shall be `covjson`, and for CBOR `covcbor`.
+
+A software may only claim support for reading a CoverageJSON document encoded in CBOR if it can interpret the [typed array tags of CBOR](https://tools.ietf.org/html/draft-jroatch-cbor-tags-03).
 
 ## Appendix A. Coverage Examples
 
