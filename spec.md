@@ -182,7 +182,9 @@ Example for a continuous-data parameter:
     },
     "description" : {
       "en": "The temperature of sea water near the surface (including the part under sea-ice, if any), and not the skin temperature."
-    }
+    },
+    "property": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
+    "matrix": "http://../sea_surface"
   },
   "unit" : {
     "id" : "http://qudt.org/vocab/unit#DegreeCelsius",
@@ -208,12 +210,9 @@ Example for a categorical-data parameter:
     },
     "description" : {
       "en": "longer description..."
-    }
-  },
-  "categories": [
-    {
+    },
+    "categories": [{
       "id": "http://.../landcover1/categories/grass",
-      "value": 1,
       "label": {
         "en": "Grass"
       },
@@ -222,12 +221,18 @@ Example for a categorical-data parameter:
       }
     }, {
       "id": "http://.../landcover1/categories/forest",
-      "values": [2,3],
       "label": {
         "en": "Forest"
       }
-    }, ...
-  ]
+    }, ...]
+  },
+  "categoryMapping": [{
+    "category": "http://.../landcover1/categories/grass",
+    "value": 1
+  }, {
+    "category": "http://.../landcover1/categories/forest",
+    "values": [2,3]
+  }] 
 }
 ```
 
@@ -268,7 +273,9 @@ Example of a group describing uncertainty of a parameter:
     "id": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
     "label": {
       "en": "Sea surface temperature"
-    }
+    },
+    "property": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
+    "matrix": "http://../sea_surface"
   },
   "components": ["SST_mean", "SST_stddev"]
 }
@@ -281,8 +288,10 @@ where `"SST_stddev"` references the following parameter:
     "label" : {
       "en": "Sea surface temperature standard deviation"
     },
-    "baseProperty": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
-    "statisticalMeasure": "http://www.uncertml.org/statistics/standard-deviation"
+    "property": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
+    "matrix": "http://../sea_surface",
+    "statisticalMeasure": "http://www.uncertml.org/statistics/standard-deviation",
+    "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
     "symbol" : "°C"
@@ -297,8 +306,10 @@ and `"SST_mean"`:
     "label" : {
       "en": "Sea surface temperature daily mean"
     },
-    "baseProperty": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
-    "statisticalMeasure": "http://.../statistics/mean_daily"
+    "property": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
+    "matrix": "http://../sea_surface",
+    "statisticalMeasure": "http://.../statistics/mean_daily",
+    "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
     "symbol" : "°C"
