@@ -27,6 +27,7 @@
     "ranges": "covjson:rangeSet",
     "RangeSet": "covjson:RangeSet",
     
+    "Domain": "covjson:Domain",
     "Grid": "covjson:Grid",
     "Profile": "covjson:Profile",
     "PointSeries": "covjson:PointSeries",
@@ -37,7 +38,8 @@
     "MultiPolygon": "covjson:MultiPolygon",
     "Polygon": "covjson:Polygon",
     
-    "GridCoverage": "covjson:GridCoverageCoverage",
+    "Coverage": "covjson:Coverage",
+    "GridCoverage": "covjson:GridCoverage",
     "ProfileCoverage": "covjson:ProfileCoverage",
     "PointSeriesCoverage": "covjson:PointSeriesCoverage",
     "PointCoverage": "covjson:PointCoverage",
