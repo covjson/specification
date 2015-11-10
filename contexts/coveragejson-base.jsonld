@@ -7,6 +7,7 @@
     "ssn": "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dct": "http://purl.org/dc/terms/",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
 
     "label": { "@id": "skos:prefLabel", "@container": "@language" },
     "title": { "@id": "dct:title", "@container": "@language" },
@@ -19,7 +20,7 @@
     "phenomenonTime": "ssn:observationSamplingTime",
     "observedProperty": "ssn:observedProperty",
 
-    "coverages": "covjson:coverage",
+    "coverages": "hydra:member",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
     "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
