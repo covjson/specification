@@ -25,6 +25,7 @@
     "Parameter": "covjson:Parameter",
     "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
     "domain": "covjson:domain",
+    "domainTemplate": "covjson:domainTemplate",
     "ranges": "covjson:rangeSet",
     "RangeSet": "covjson:RangeSet",
     
