@@ -325,16 +325,25 @@ CoverageJSON documents always consist of a single object. This object (referred 
 ### 4.1. Domain Objects
 
 A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
+It's general structure is:
+```js
+{
+  "type": "<domaintype>",
+  "axes": { ... },
+  "axisOrder": [...],
+  "referencing": [...]
+}
+```
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
-- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis, `"axisOrder"`.
+- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
 - The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"coordinates"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"coordinates"`. A composite axis is said to have composite coordinates. 
-- The value of `"axisOrder"` must be a non-empty array of axis identifiers.
+- The value of `"axisOrder"` must be an array of two or more axis identifiers.
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. The following section defines common types of referencing which add further members to the object.
 
 Coordinate Space:
 - A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"coordinates"` member corresponding to the first axis identifier in the `"axisOrder"` array, or the only axis identifier in the `"axes"` object if just one axis exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"coordinates"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
 
 Requirements for all domain types defined in this specification:
 - The axis or component identifiers `"x"`, `"y"`, and `"z"` must refer to spatial coordinates.
@@ -415,6 +424,7 @@ TBD
   "axes": ["t"],
   "calendar": "gregorian"
 }
+```
 
 #### ...?
 
@@ -445,8 +455,8 @@ O = Optional, axis with single coordinate
 
 #### 4.1.1. Grid
 
-- A Grid domain object must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"`.
-- The axisOrder must be t,z,y,x.
+- A Grid domain must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"`.
+- The axis order must be t,z,y,x.
 
 TODO should the domain types in this spec really require a fixed axis order? 
 
@@ -466,19 +476,18 @@ Example:
 
 #### 4.1.2. Profile
 
-- A Profile domain object must have the members `"x"` and `"y"` where each has a coordinate value.
-- A Profile domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
-- A Profile domain object may have the member `"t"` where the value is a coordinate value.
-- The coordinate space of a Profile domain object is defined by `[[t],z,[y],[x]]` or `[z,[y],[x]]`, depending on whether `"t"` is defined.
+- A Profile domain must have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "Profile",
-  "x": 1,
-  "y": 21,
-  "z": [1,5,20],
-  "t": "2008-01-01T04:00:00Z"
+  "axes": {
+    "x": { "coordinates": [1] },
+    "y": { "coordinates": [21] },
+    "z": { "coordinates": [1,5,20] },
+    "t": { "coordinates": "2008-01-01T04:00:00Z" }
+  }
 }
 ```
 
