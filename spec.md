@@ -624,7 +624,7 @@ Polygons are defined equally to GeoJSON, except that they can only contain `[x,y
 
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first must be the exterior ring and any others must be interior rings or holes.
-- A Polygon domain must have the axis `"composite"` where the coordinates are Polygons.
+- A Polygon domain must have the axis `"composite"` which has a single Polygon coordinate.
 - The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
 - A Polygon domain may have the axes `"z"` and `"t"` which both must have a single coordinate only.
 
@@ -651,7 +651,7 @@ Example:
 
 #### 4.1.8. PolygonSeries
 
-- A PolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` must be Polygons.
+- A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon coordinate.
 - A PolygonSeries domain may have the axis `"z"` which must have a single coordinate only.
 - The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
 
@@ -676,41 +676,53 @@ Example:
 
 #### 4.1.9. MultiPolygon
 
-- A MultiPolygon domain object must have the member `"polygon"` where the value is an array of Polygons.
-- A MultiPolygon domain object may have the member `"t"` where the value is a coordinate value.
-- A MultiPolygon domain object may have the member `"z"` where the value is a coordinate value.
-- The coordinate space of a MultiPolygon domain object is defined by `[[t],[z],polygon]`, `[[t],polygon]`, `[[z],polygon]`, or `[polygon]`, depending on which members are defined.
+- A MultiPolygon domain must have the axis `"composite"` where the coordinates are Polygons.
+- The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
+- A MultiPolygon domain may have the axes `"z"` and `"t"` which both must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "MultiPolygon",
-  "polygon": [
-      [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ] ],
-      [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
-    ],
-  "z": 2,
-  "t": "2008-01-01T04:00:00Z"
+  "axes": {
+    "composite": {
+      "geometryType": "Polygon",
+      "components": ["x","y"],
+      "coordinates": [
+        [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
+        [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
+      ]
+    }
+    "z": { "coordinates": [2] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.10. MultiPolygonSeries
 
-- A MultiPolygonSeries domain object must have the member `"polygon"` where the value is an array of Polygons.
-- A MultiPolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
-- A MultiPolygonSeries domain object may have the member `"z"` where the value is a coordinate value.
-- The coordinate space of a MultiPolygonSeries domain object is defined by `[t,[z],polygon]` or `[t,polygon]`, depending on whether the `"z"` member is defined.
+- A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` are Polygons.
+- The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
+- A MultiPolygon domain may have the axis `"z"` which must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "MultiPolygonSeries",
-  "polygon": [
-      [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ] ],
-      [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
-    ],
-  "z": 2,
-  "t": ["2008-01-01T00:00:00Z", "2010-01-01T00:00:00Z"]
+  "axes": {
+    "composite": {
+      "geometryType": "Polygon",
+      "components": ["x","y"],
+      "coordinates": [
+        [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
+        [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
+      ]
+    }
+    "z": { "coordinates": [2] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z", "2010-01-01T00:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
