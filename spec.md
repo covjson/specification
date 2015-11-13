@@ -337,7 +337,7 @@ It's general structure is:
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"coordinates"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"coordinates"`. A composite axis is said to have composite coordinates. 
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"coordinates"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"coordinates"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
 - The value of `"axisOrder"` must be an array of two or more axis identifiers.
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. The following section defines common types of referencing which add further members to the object.
 
@@ -346,7 +346,8 @@ Coordinate Space:
 - The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"coordinates"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
 
 Requirements for all domain types defined in this specification:
-- The axis or component identifiers `"x"`, `"y"`, and `"z"` must refer to spatial coordinates.
+- The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates.
+- The axis or component identifier `"z"` must refer to vertical spatial coordinates.
 - The axis or component identifier `"t"` must refer to temporal coordinates.
 
 #### 4.1.x Referencing types
@@ -470,7 +471,8 @@ Example:
     "z": { "coordinates": [1] },
     "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
   },
-  "axisOrder": ["t","z","y","x"]
+  "axisOrder": ["t","z","y","x"],
+  "referencing": [...]
 }
 ```
 
@@ -487,65 +489,69 @@ Example:
     "y": { "coordinates": [21] },
     "z": { "coordinates": [1,5,20] },
     "t": { "coordinates": "2008-01-01T04:00:00Z" }
-  }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.3. PointSeries
 
-- A PointSeries domain object must have the members `"x"` and `"y"` where each has a coordinate value.
-- A PointSeries domain object may have the member `"z"` where the value is a coordinate value.
-- A PointSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
-- The coordinate space of a PointSeries domain object is defined by `[t,[z],[y],[x]]` or `[t,[y],[x]]`, depending on whether `"z"` is defined.
+- A PointSeries domain must have the axes `"x"`, `"y"`, and `"t"` where `"x"` and `"y"` must have a single coordinate only.
+- A PointSeries domain may have the axis `"z"` which must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "PointSeries",
-  "x": 1,
-  "y": 20,
-  "z": 1,
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
+  "axes": {
+    "x": { "coordinates": [1] },
+    "y": { "coordinates": [20] },
+    "z": { "coordinates": [1] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.4. Point
 
-- A Point domain object must have the members `"x"` and `"y"` where each has a coordinate value.
-- A Point domain object may have the member `"z"` where the value is a coordinate value.
-- A Point domain object may have the member `"t"` where the value is a coordinate value.
-- The coordinate space of a Point domain object is defined by `[[t],[z],[y],[x]]` or `[[t],[y],[x]]`, or `[[z],[y],[x]]` or `[[y],[x]]`, depending on which members are defined.
+- A Point domain must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t" where all must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "Point",
-  "x": 1,
-  "y": 20,
-  "z": 1,
-  "t": "2008-01-01T04:00:00Z"
+  "axes": {
+    "x": { "coordinates": [1] },
+    "y": { "coordinates": [20] },
+    "z": { "coordinates": [1] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.5. Trajectory
 
-- A Trajectory domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
-- A Trajectory domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
-- A Trajectory domain object may have the member `"z"` where the value is either a non-empty array of coordinate values of length `n`, or a coordinate value. If `"z"` is an array, its elements may but do not have to be ordered monotonically.
-- A Trajectory domain object must have the member `"sequence"` where the value is either `["x","y","z","t"]` if `"z"` is an array, or `["x","y","t"]` if `"z"` is a coordinate value or not defined.
-- The coordinate space of a Trajectory domain object is defined by `[zip(x,y,z,t)]` if `"z"` is an array, or `[zip(x,y,t)]` if `"z"` is not defined, or `[[z],zip(x,y,t)]` if `"z"` is a coordinate value. `zip` is a function which returns an array of arrays, where the i-th array contains the i-th element from each of the argument arrays in the given order.
-
-**TODO** if t is not optional here, why should it be optional for other domain types?
+- A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
+- The axis `"composite"` must have the geometry type "Point" and the components "x","y","z","t" or "x","y","t".
+- The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
 
 Example:
 ```js
 {
   "type": "Trajectory",
-  "x": [1,2],
-  "y": [20,21],
-  "z": [1,3],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
-  "sequence": ["x","y","z","t"]
+  "axes": {
+    "composite": {
+      "geometryType": "Point",
+      "components": ["x","y","z","t"],      
+      "coordinates": [
+        [1,20,1,"2008-01-01T04:00:00Z"],
+        [2,21,3,"2008-01-01T04:30:00Z"]
+      ]
+    }
+  },
+  "referencing": [...]
 }
 ```
 
@@ -553,10 +559,17 @@ Example without z:
 ```js
 {
   "type": "Trajectory",
-  "x": [1,2],
-  "y": [20,21],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
-  "sequence": ["x","y","t"]
+  "axes": {
+    "composite": {
+      "geometryType": "Point",
+      "components": ["x","y","t"],      
+      "coordinates": [
+        [1,20,"2008-01-01T04:00:00Z"],
+        [2,21,"2008-01-01T04:30:00Z"]
+      ]
+    }
+  },
+  "referencing": [...]
 }
 ```
 
@@ -564,31 +577,44 @@ Example with z defined as constant value:
 ```js
 {
   "type": "Trajectory",
-  "x": [1,2],
-  "y": [20,21],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"],
-  "sequence": ["x","y","t"],
-  "z": 5
+  "axes": {
+    "composite": {
+      "geometryType": "Point",
+      "components": ["x","y","t"],      
+      "coordinates": [
+        [1,20,"2008-01-01T04:00:00Z"],
+        [2,21,"2008-01-01T04:30:00Z"]
+      ]
+    },
+    "z": { "coordinates": [5] }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.6. Section
 
-- A Section domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array of coordinate values and both arrays must have the same length `n`. The elements of the arrays of `"x"` and `"y"` may but do not have to be ordered monotonically.
-- A Section domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values of length `n`.
-- A Section domain object must have the member `"z"` where the value is a non-empty array of coordinate values.
-- A Section domain object must have the member `"sequence"` where the value is `["x","y","t"]`.
-- The coordinate space of a Section domain object is defined by `[z,zip(x,y,t)]`.
+- A Section domain must have the axes `"composite"` and `"z"`.
+- The axis `"composite"` must have the geometry type "Point" and the components "x","y","t".
+- The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
 
 Example:
 ```js
 {
   "type": "Section",
-  "x": [1,2],
-  "y": [20,21],
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T04:30:00Z"]
-  "sequence": ["x","y","t"]
-  "z": [10,20,30]
+  "axes": {
+    "z": { "coordinates": [10,20,30] },
+    "composite": {
+      "geometryType": "Point",
+      "components": ["x","y","t"],
+      "coordinates": [
+        [1,20,"2008-01-01T04:00:00Z"],
+        [2,21,"2008-01-01T04:30:00Z"]
+      ]
+    }
+  },
+  "axisOrder": ["z","composite"],
+  "referencing": [...]
 }
 ```
 
