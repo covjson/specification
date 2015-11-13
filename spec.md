@@ -245,7 +245,7 @@ Parameter group objects represent metadata about the values of the coverage in t
 - A parameter group object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
 - A parameter group object may have a member with the name `"label"` where the value must be an i18n object that is the name of the parameter group and which should be short. Note that this should be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
 - A parameter group object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter group.
-- A parameter group object may have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"` and `"description"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property.
+- A parameter group object may have a member with the name `"observedProperty"` where the value is an object as specified for parameter objects.
 - A parameter group object must have either or both the members `"label"` or/and `"observedProperty"`.
 
 Example of a group describing a vector quantity:
