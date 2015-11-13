@@ -316,7 +316,7 @@ and `"SST_mean"`:
 
 ## 4. CoverageJSON Objects
 
-CoverageJSON always consists of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
+CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
 - The CoverageJSON object may have any number of members (name/value pairs).
 - The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
@@ -327,62 +327,140 @@ CoverageJSON always consists of a single object. This object (referred to as the
 A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
-- The domain object members named `"x"`, `"y"`, and `"z"`, if existing, shall refer to spatial coordinates.
-- The domain object member named `"t"`, if existing, shall refer to temporal coordinates.
-- Additional members of a domain object are determined by the type of domain.
-- A spatial CRS applies to the members `"x"`, `"y"`, and `"z"` in that axis order and defines the reference system, units, and value type. (**TODO** is this correct?)
-- A temporal CRS applies to the member `"t"` and defines the reference system, units, and value type. (**TODO** is this correct?)
-- In the context of `"x"`, `"y"`, `"z"`, `"t"`, *coordinate value* refers to a value that has the corresponding CRS value type.
-- If a member `"x"`, `"y"`, `"z"`, or `"t"` is an array of coordinate values, then, if not otherwise defined, the values in that array must be ordered monotonically according to their ordering relation defined by the used CRS (**FIXME**). Whenever the terms "monotonically increasing" or "monotonically decreasing" are used, the ordering relation as defined by the corresponding CRS shall be used.
-- If not defined, the default spatial CRS is used.
-- If not defined, the default temporal CRS is used.
-- The default spatial CRS is the geographic CRS CRS84 (http://www.opengis.net/def/crs/OGC/1.3/CRS84), with `"x"` longitude, `"y"` latitude, `"z"` altitude above the WGS84 reference ellipsoid, longitude and latitude units of decimal degrees and altitude units of metres, and all values being numbers.
-- The default temporal CRS is coordinated universal time (UTC) with times in `YYYY-MM-DDTHH:mm:ss[.sss]Z`, `YYYY-MM-DDTHH:mm:ss[.sss]+-HH:mm` or  `YYYY-MM-DD` string formats (subsets of ISO 8601).
-- A coordinate space is defined by an array `[C1, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * ... * |Cn|`. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, ..., |Cn|]` in row-major order.
-- Each domain type must define its coordinate space in terms of an array `[C1, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates.
+- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis, `"axisOrder"`.
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"coordinates"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"coordinates"`. A composite axis is said to have composite coordinates. 
+- The value of `"axisOrder"` must be a non-empty array of axis identifiers.
+- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. The following section defines common types of referencing which add further members to the object.
 
-TODO CRS84 is 2D only! either we have separate horizontal CRS = CRS84 and vertical CRS = ??? or we create a 3D version of CRS84, in analogy to [EPSG:4979](http://www.epsg-registry.org/report.htm?type=selection&entity=urn:ogc:def:crs:EPSG::4979&reportDetail=long&title=WGS%2084&style=urn:uuid:report-style:default-with-code&style_name=OGP%20Default%20With%20Code). Check http://www.ogcnetwork.net/node/491 on how to create such a CRS with an axes swapping conversion
+Coordinate Space:
+- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"coordinates"` member corresponding to the first axis identifier in the `"axisOrder"` array, or the only axis identifier in the `"axes"` object if just one axis exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
 
-Overview:
+Requirements for all domain types defined in this specification:
+- The axis or component identifiers `"x"`, `"y"`, and `"z"` must refer to spatial coordinates.
+- The axis or component identifier `"t"` must refer to temporal coordinates.
 
-Domain               | x | y | z | t | sequence | polygon (xy)
----------------------|---|---|---|---|----------|-------------
+#### 4.1.x Referencing types
+
+##### Coordinate reference systems
+
+Example for spatial CRS:
+
+Minimal:
+```js
+{
+  "axes": ["x","y"],
+  "crs": {
+    "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+    "type":  "GeodeticCRS"
+  }
+}
+```
+
+Full (details TBD, currently literal WKT translation):
+```js
+{
+  "axes": ["x","y"],
+  "crs": {
+    "name": "Foobar",
+    "type": "GeodeticCRS",
+    "id": "http://...",
+    "datum": {
+      "type": "Ellipsoid",
+      "name": "GRS 1980",
+      "semimajor": 6378137,
+      "inverseflattening": 298.257222101,
+      "unit": {
+        "name": "metre",
+        "conversionfactor": 1.0
+      }
+    },
+    "cs": {
+      "type": "EllipsoidalCS",
+      "dimension": 2,
+      "axes": [{
+        "name": "Longitude",
+        "abbrev": "lon",
+        "direction": "east",
+        "unit": {
+          "type": "Angle",
+          "name": "degree",
+          "conversionfactor": 0.0174532925199433
+        }
+      }, {
+        "name": "Latitude",
+        "abbrev": "lat",
+        "direction": "north",
+        "unit": {
+          "type": "Angle",
+          "name": "degree",
+          "conversionfactor": 0.0174532925199433
+        }
+      }]
+    }
+  }
+}
+```
+
+Example for temporal CRS:
+
+TBD
+
+#### Calendar systems
+
+TBD
+
+```js
+{
+  "axes": ["t"],
+  "calendar": "gregorian"
+}
+
+#### ...?
+
+#### 4.1.x Overview of domain types
+
+Domain               | x | y | z | t | composite
+---------------------|---|---|---|---|----------
 Grid                 |[M]|[M]|[O]|[O] 
 Profile              | M | M |[M]| O
 PointSeries          | M | M | O |[M]
 Point                | M | M | O | O
-PolygonSeries        |   |   | O |[M]|          |  M
-Polygon              |   |   | O | O |          |  M
-MultiPolygonSeries   |   |   | O |[M]|          | [M]
-MultiPolygon         |   |   | O | O |          | [M]
-Trajectory           |   |   | O |   | \[M\] (txy[z])
-Section              |   |   |[M]|   | \[M\] (txy)
+PolygonSeries        |   |   | O |[M]| M
+Polygon              |   |   | O | O | M
+MultiPolygonSeries   |   |   | O |[M]| [M]
+MultiPolygon         |   |   | O | O | [M]
+Trajectory           |   |   | O |   | [M]
+Section              |   |   |[M]|   | [M]
 
 
-M = Mandatory, single coordinate in coordinate space
+M = Mandatory, axis with single coordinate
 
-O = Optional, single coordinate in coordinate space
+O = Optional, axis with single coordinate
 
-[M] = Mandatory, array of coordinates in coordinate space
+[M] = Mandatory, axis with multiple coordinates
 
-[O] = Optional, array of coordinates in coordinate space
+[O] = Optional, axis with multiple coordinates
 
 
 #### 4.1.1. Grid
 
-- A Grid domain object must have the members `"x"` and `"y"` where the value of each is a non-empty array coordinate values.
-- A Grid domain object may have the member `"z"` where the value is a non-empty array coordinate values.
-- A Grid domain object may have the member `"t"` where the value is a non-empty array coordinate values.
-- The coordinate space of a Grid domain object is defined by `[t,z,y,x]`, or `[t,y,x]`, or `[z,y,x]`, or `[y,x]`, depending on which members are defined.
+- A Grid domain object must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"`.
+- The axisOrder must be t,z,y,x.
+
+TODO should the domain types in this spec really require a fixed axis order? 
 
 Example:
 ```js
 {
   "type": "Grid",
-  "x": [1,2,3],
-  "y": [20,21],
-  "z": [1],
-  "t": ["2008-01-01T04:00:00Z"]
+  "axes": {
+    "x": { "coordinates": [1,2,3] },
+    "y": { "coordinates": [20,21] },
+    "z": { "coordinates": [1] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+  },
+  "axisOrder": ["t","z","y","x"]
 }
 ```
 
