@@ -24,6 +24,7 @@
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
     "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
+    "categoryEncoding": "covjson:categoryEncoding",
     "ParameterGroup": "covjson:ParameterGroup",
     "components": { "@id": "covjson:component", "@type": "@vocab" },
     "domain": "covjson:domain",
