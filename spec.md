@@ -624,40 +624,53 @@ Polygons are defined equally to GeoJSON, except that they can only contain `[x,y
 
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first must be the exterior ring and any others must be interior rings or holes.
-- A Polygon domain object must have the member `"polygon"` where the value is a Polygon.
-- A Polygon domain object may have the member `"t"` where the value is a coordinate value.
-- A Polygon domain object may have the member `"z"` where the value is a coordinate value.
-- The coordinate space of a Polygon domain object is defined by `[[t],[z],[polygon]]`, `[[t],[polygon]]`, `[[z],[polygon]]`, or `[[polygon]]`, depending on which members are defined.
-- Note that the polygon represents a single coordinate within the coordinate space.
+- A Polygon domain must have the axis `"composite"` where the coordinates are Polygons.
+- The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
+- A Polygon domain may have the axes `"z"` and `"t"` which both must have a single coordinate only.
+
+Note that each polygon represents a single coordinate within the coordinate space.
 
 Example:
 ```js
 {
   "type": "Polygon",
-  "polygon": [
-      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
-      ],
-  "z": 2,
-  "t": "2008-01-01T04:00:00Z"
+  "axes": {
+    "composite": {
+      "geometryType": "Polygon",
+      "components": ["x","y"],
+      "coordinates": [
+        [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
+      ]
+    }
+    "z": { "coordinates": [2] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
 #### 4.1.8. PolygonSeries
 
-- A PolygonSeries domain object must have the member `"polygon"` where the value is a Polygon.
-- A PolygonSeries domain object must have the member `"t"` where the value is a non-empty array of monotonically increasing coordinate values.
-- A PolygonSeries domain object may have the member `"z"` where the value is a coordinate value.
-- The coordinate space of a PolygonSeries domain object is defined by `[t,[z],[polygon]]` or `[t,[polygon]]` depending on whether `"z"` is defined.
+- A PolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` must be Polygons.
+- A PolygonSeries domain may have the axis `"z"` which must have a single coordinate only.
+- The axis `"composite"` must have the geometry type "Polygon" and the components "x","y".
 
 Example:
 ```js
 {
   "type": "PolygonSeries",
-  "polygon": [
-      [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
-      ],
-  "z": 2,
-  "t": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"]
+  "axes": {
+    "composite": {
+      "geometryType": "Polygon",
+      "components": ["x","y"],
+      "coordinates": [
+        [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
+      ]
+    }
+    "z": { "coordinates": [2] },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
+  },
+  "referencing": [...]
 }
 ```
 
