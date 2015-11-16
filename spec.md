@@ -64,19 +64,60 @@ A CoverageJSON Profile coverage:
   "id" : "http://.../datasets/1/coverages/123",
   "domain" : {
     "type" : "Profile",
-    "x" : -128.381,
-    "y" : -40.153,
-    "z" : [ 5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
-            38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
-            74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
-            110.0881, 116.0371, 121.9859 ],
-    "zCrs" : {
-      "unit" : {
-        "symbol" : "m"
-      },
-      "positiveUpwards" : false
+    "axes": {
+      "x": { "coordinates": [-128.381] },
+      "y": { "coordinates": [-40.153] },
+      "z": { "coordinates": [
+              5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
+              38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
+              74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
+              110.0881, 116.0371, 121.9859] },
+      "t": { "coordinates": ["2013-01-13T11:12:20Z"] }
     },
-    "t" : "2013-01-13T11:12:20Z"
+    "referencing": [{
+      "identifiers": ["x","y"],
+      "crs": {
+        "type": "GeodeticCRS",
+        "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
+      }
+    }, {
+      "identifiers": ["z"],
+      "crs": {
+        "type": "VerticalCRS",
+        "datum": {
+          "TBD": "TBD"
+        },
+        "cs": {
+          "type": "VerticalCS",
+          "axes": [{
+            "label": {
+              "en": "Depth in meters"
+            },
+            "direction": {
+              "id": "http://www.opengis.net/def/axisDirection/OGC/1.0/down",
+              "label": {
+                "en": "down"
+              }
+            },
+            "unit": {
+              "id": "http://www.opengis.net/def/uom/OGC/1.0/metre",
+              "symbol": "m"
+            }
+          }]
+        }
+      }
+    }, {
+      "identifiers": ["t"],
+      "time": {
+        "id": "http://www.w3.org/2001/XMLSchema-datatypes#dateTime",
+        "timeScale": {
+          "id": "http://www.opengis.net/def/trs/BIPM/0/UTC"
+        },
+        "calendar": {
+          "id": "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
+        }
+      }
+    }]
   },
   "parameters" : {
     "PSAL": {
@@ -359,7 +400,7 @@ Example for spatial CRS:
 Minimal:
 ```js
 {
-  "axes": ["x","y"],
+  "identifiers": ["x","y"],
   "crs": {
     "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
     "type":  "GeodeticCRS"
@@ -370,7 +411,7 @@ Minimal:
 Full (details TBD, currently literal WKT translation):
 ```js
 {
-  "axes": ["x","y"],
+  "identifiers": ["x","y"],
   "crs": {
     "name": "Foobar",
     "type": "GeodeticCRS",
@@ -422,7 +463,7 @@ TBD
 
 ```js
 {
-  "axes": ["t"],
+  "identifiers": ["t"],
   "calendar": "gregorian"
 }
 ```
@@ -728,8 +769,30 @@ Example:
 
 #### 4.1.11. Coordinate Bounds
 
-- For each of the `"x"`, `"y"`, `"z"`, and `"t"` members (further called point members) of a domain object, coordinate bounds may be defined in the members `"xBounds"`, `"yBounds"`, `"zBounds"`, and `"tBounds"`, respectively, where the value of each is an array of monotonically ordered coordinate values of length `len*2` with `len` being the array length of the point member for which the bounds are given, or 1 if the point member is not an array. For a point member array, a lower and upper bounding coordinate value at positions `2*i` and `2*i+1`, respectively, are given in a bounds array for each point member coordinate value with array index `i`. For a point member which is not an array, the bounds array contains a single pair of lower and upper bounding coordinate values as first and second value, respectively. The lower and upper bounding coordinate values `l` and `u` for a given coordinate `c` must satisfy the constraint `l <= c <= u`.
-- If a domain object member `"x"`, `"y"`, `"z"`, or `"t"` has no corresponding bounds member and is an array, then its bounds may be derived with the formula `bounds(m, i) = [(m[i-1] + m[i]) / 2, (m[i] + m[i+1]) / 2]` where `m` is the value of one of `"x"`, `"y"`, `"z"`, or `"t"`, and `i` is the index within the `m` array.
+- A domain axis object may have coordinate bounds defined in the member `"bounds"` where the value is an array of coordinates of length `len*2` with `len` being the length of the `"coordinates"` array. For each coordinate at array index `i` in the `"coordinates"` array, a lower and upper bounding coordinate at positions `2*i` and `2*i+1`, respectively, are given in a bounds array.
+- If a domain axis object has no `"bounds"` member and the coordinates are numbers and there is more than one coordinate, then its bounds may be derived with the formula `bounds(i) = [(c[i-1] + c[i]) / 2, (c[i] + c[i+1]) / 2]` where `c` is the `"coordinates"` array, and `i` is the index within the `"bounds"` array.
+
+Example:
+```js
+{
+  "type": "Grid",
+  "axes": {
+    "x": { "coordinates": [1,2,3] },
+    "y": {
+      "coordinates": [20,21],
+      "bounds": [19.5,20.5,
+                 20.5,21.5]
+    },
+    "z": {
+      "coordinates": [50],
+      "bounds": [0,100]
+    },
+    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+  },
+  "axisOrder": ["t","z","y","x"],
+  "referencing": [...]
+}
+```
 
 ### 4.2. Range Objects
 
