@@ -65,14 +65,14 @@ A CoverageJSON Profile coverage:
   "domain" : {
     "type" : "Profile",
     "axes": {
-      "x": { "coordinates": [-128.381] },
-      "y": { "coordinates": [-40.153] },
-      "z": { "coordinates": [
+      "x": { "values": [-128.381] },
+      "y": { "values": [-40.153] },
+      "z": { "values": [
               5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
               38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
               74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
               110.0881, 116.0371, 121.9859] },
-      "t": { "coordinates": ["2013-01-13T11:12:20Z"] }
+      "t": { "values": ["2013-01-13T11:12:20Z"] }
     },
     "referencing": [{
       "identifiers": ["x","y"],
@@ -378,13 +378,13 @@ It's general structure is:
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"coordinates"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"coordinates"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
 - The value of `"axisOrder"` must be an array of two or more axis identifiers.
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. The following section defines common types of referencing which add further members to the object.
 
 Coordinate Space:
 - A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"coordinates"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
 
 Requirements for all domain types defined in this specification:
 - The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates.
@@ -507,10 +507,10 @@ Example:
 {
   "type": "Grid",
   "axes": {
-    "x": { "coordinates": [1,2,3] },
-    "y": { "coordinates": [20,21] },
-    "z": { "coordinates": [1] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "x": { "values": [1,2,3] },
+    "y": { "values": [20,21] },
+    "z": { "values": [1] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "axisOrder": ["t","z","y","x"],
   "referencing": [...]
@@ -526,10 +526,10 @@ Example:
 {
   "type": "Profile",
   "axes": {
-    "x": { "coordinates": [1] },
-    "y": { "coordinates": [21] },
-    "z": { "coordinates": [1,5,20] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "x": { "values": [1] },
+    "y": { "values": [21] },
+    "z": { "values": [1,5,20] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -545,10 +545,10 @@ Example:
 {
   "type": "PointSeries",
   "axes": {
-    "x": { "coordinates": [1] },
-    "y": { "coordinates": [20] },
-    "z": { "coordinates": [1] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
+    "x": { "values": [1] },
+    "y": { "values": [20] },
+    "z": { "values": [1] },
+    "t": { "values": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -563,10 +563,10 @@ Example:
 {
   "type": "Point",
   "axes": {
-    "x": { "coordinates": [1] },
-    "y": { "coordinates": [20] },
-    "z": { "coordinates": [1] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "x": { "values": [1] },
+    "y": { "values": [20] },
+    "z": { "values": [1] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -586,7 +586,7 @@ Example:
     "composite": {
       "geometryType": "Point",
       "components": ["x","y","z","t"],      
-      "coordinates": [
+      "values": [
         [1,20,1,"2008-01-01T04:00:00Z"],
         [2,21,3,"2008-01-01T04:30:00Z"]
       ]
@@ -604,7 +604,7 @@ Example without z:
     "composite": {
       "geometryType": "Point",
       "components": ["x","y","t"],      
-      "coordinates": [
+      "values": [
         [1,20,"2008-01-01T04:00:00Z"],
         [2,21,"2008-01-01T04:30:00Z"]
       ]
@@ -622,12 +622,12 @@ Example with z defined as constant value:
     "composite": {
       "geometryType": "Point",
       "components": ["x","y","t"],      
-      "coordinates": [
+      "values": [
         [1,20,"2008-01-01T04:00:00Z"],
         [2,21,"2008-01-01T04:30:00Z"]
       ]
     },
-    "z": { "coordinates": [5] }
+    "z": { "values": [5] }
   },
   "referencing": [...]
 }
@@ -644,11 +644,11 @@ Example:
 {
   "type": "Section",
   "axes": {
-    "z": { "coordinates": [10,20,30] },
+    "z": { "values": [10,20,30] },
     "composite": {
       "geometryType": "Point",
       "components": ["x","y","t"],
-      "coordinates": [
+      "values": [
         [1,20,"2008-01-01T04:00:00Z"],
         [2,21,"2008-01-01T04:30:00Z"]
       ]
@@ -679,12 +679,12 @@ Example:
     "composite": {
       "geometryType": "Polygon",
       "components": ["x","y"],
-      "coordinates": [
+      "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
       ]
     }
-    "z": { "coordinates": [2] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "z": { "values": [2] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -704,12 +704,12 @@ Example:
     "composite": {
       "geometryType": "Polygon",
       "components": ["x","y"],
-      "coordinates": [
+      "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
       ]
     }
-    "z": { "coordinates": [2] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
+    "z": { "values": [2] },
+    "t": { "values": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -729,13 +729,13 @@ Example:
     "composite": {
       "geometryType": "Polygon",
       "components": ["x","y"],
-      "coordinates": [
+      "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
         [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
       ]
     }
-    "z": { "coordinates": [2] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "z": { "values": [2] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "referencing": [...]
 }
@@ -755,39 +755,39 @@ Example:
     "composite": {
       "geometryType": "Polygon",
       "components": ["x","y"],
-      "coordinates": [
+      "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
         [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
       ]
     }
-    "z": { "coordinates": [2] },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z", "2010-01-01T00:00:00Z"] }
+    "z": { "values": [2] },
+    "t": { "values": ["2008-01-01T04:00:00Z", "2010-01-01T00:00:00Z"] }
   },
   "referencing": [...]
 }
 ```
 
-#### 4.1.11. Coordinate Bounds
+#### 4.1.11. Axis Value Bounds
 
-- A domain axis object may have coordinate bounds defined in the member `"bounds"` where the value is an array of coordinates of length `len*2` with `len` being the length of the `"coordinates"` array. For each coordinate at array index `i` in the `"coordinates"` array, a lower and upper bounding coordinate at positions `2*i` and `2*i+1`, respectively, are given in a bounds array.
-- If a domain axis object has no `"bounds"` member and the coordinates are numbers and there is more than one coordinate, then its bounds may be derived with the formula `bounds(i) = [(c[i-1] + c[i]) / 2, (c[i] + c[i+1]) / 2]` where `c` is the `"coordinates"` array, and `i` is the index within the `"bounds"` array.
+- A domain axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
+- If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
 
 Example:
 ```js
 {
   "type": "Grid",
   "axes": {
-    "x": { "coordinates": [1,2,3] },
+    "x": { "values": [1,2,3] },
     "y": {
-      "coordinates": [20,21],
+      "values": [20,21],
       "bounds": [19.5,20.5,
                  20.5,21.5]
     },
     "z": {
-      "coordinates": [50],
+      "values": [50],
       "bounds": [0,100]
     },
-    "t": { "coordinates": ["2008-01-01T04:00:00Z"] }
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "axisOrder": ["t","z","y","x"],
   "referencing": [...]
