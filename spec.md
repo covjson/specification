@@ -523,9 +523,8 @@ O = Optional, axis with single coordinate
 #### 6.1.1. Grid
 
 - A Grid domain must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"`.
-- The axis order must be t,z,y,x.
-
-TODO should the domain types in this spec really require a fixed axis order? 
+- The axis order must be either `"t","z","y","x"`, `"z","y","x"`, `"t","y","x"`, or `"y","x"`,
+depending on which axes are defined.
 
 Example:
 ```js
@@ -663,6 +662,7 @@ Example with z defined as constant value:
 - A Section domain must have the axes `"composite"` and `"z"`.
 - The axis `"composite"` must have the geometry type "Point" and the components `"x","y","t"`.
 - The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
+- The axis order must be `"z","composite"`.
 
 Example:
 ```js
@@ -771,6 +771,7 @@ Example:
 - A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` are Polygons.
 - The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
 - A MultiPolygon domain may have the axis `"z"` which must have a single coordinate only.
+- The axis order must be either `"t","z","composite"` or `"t","composite"`, depending on which axes are defined.
 
 Example:
 ```js
@@ -788,6 +789,7 @@ Example:
     "z": { "values": [2] },
     "t": { "values": ["2008-01-01T04:00:00Z", "2010-01-01T00:00:00Z"] }
   },
+  "axisOrder": ["t","z","composite"],
   "referencing": [...]
 }
 ```
