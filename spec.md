@@ -76,13 +76,13 @@ A CoverageJSON Profile coverage:
     },
     "referencing": [{
       "identifiers": ["x","y"],
-      "crs": {
+      "srs": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
       }
     }, {
       "identifiers": ["z"],
-      "crs": {
+      "srs": {
         "type": "VerticalCRS",
         "datum": {
           "TBD": "TBD"
@@ -108,14 +108,9 @@ A CoverageJSON Profile coverage:
       }
     }, {
       "identifiers": ["t"],
-      "time": {
-        "id": "http://www.w3.org/2001/XMLSchema-datatypes#dateTime",
-        "timeScale": {
-          "id": "http://www.opengis.net/def/trs/BIPM/0/UTC"
-        },
-        "calendar": {
-          "id": "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"
-        }
+      "trs": {
+        "type": "TemporalRS",
+        "calendar": "Gregorian"
       }
     }]
   },
@@ -380,7 +375,7 @@ It's general structure is:
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
 - The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
 - The value of `"axisOrder"` must be an array of two or more axis identifiers.
-- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. The following section defines common types of referencing which add further members to the object.
+- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. The following section defines common types of referencing system objects.
 
 Coordinate Space:
 - A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
@@ -391,84 +386,105 @@ Requirements for all domain types defined in this specification:
 - The axis or component identifier `"z"` must refer to vertical spatial coordinates.
 - The axis or component identifier `"t"` must refer to temporal coordinates.
 
-#### 4.1.x Referencing types
+#### 4.1.x Referencing system objects
 
-##### Coordinate reference systems
+Referencing values in some system is achieved with reference systems, which are typically spatial or temporal.
+The following defines common spatial and temporal reference systems.
 
-Example for spatial CRS:
+##### Spatial Reference Systems
+
+Example for a spatial CRS:
 
 Minimal:
 ```js
 {
-  "identifiers": ["x","y"],
-  "crs": {
-    "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
-    "type":  "GeodeticCRS"
-  }
+  "type": "GeodeticCRS",
+  "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
 }
 ```
 
 Full (details TBD, currently literal WKT translation):
 ```js
 {
-  "identifiers": ["x","y"],
-  "crs": {
-    "name": "Foobar",
-    "type": "GeodeticCRS",
-    "id": "http://...",
-    "datum": {
-      "type": "Ellipsoid",
-      "name": "GRS 1980",
-      "semimajor": 6378137,
-      "inverseflattening": 298.257222101,
-      "unit": {
-        "name": "metre",
-        "conversionfactor": 1.0
-      }
-    },
-    "cs": {
-      "type": "EllipsoidalCS",
-      "dimension": 2,
-      "axes": [{
-        "name": "Longitude",
-        "abbrev": "lon",
-        "direction": "east",
-        "unit": {
-          "type": "Angle",
-          "name": "degree",
-          "conversionfactor": 0.0174532925199433
-        }
-      }, {
-        "name": "Latitude",
-        "abbrev": "lat",
-        "direction": "north",
-        "unit": {
-          "type": "Angle",
-          "name": "degree",
-          "conversionfactor": 0.0174532925199433
-        }
-      }]
+  "type": "GeodeticCRS",
+  "title": "Foobar",
+  "id": "http://...",
+  "datum": {
+    "type": "Ellipsoid",
+    "name": "GRS 1980",
+    "semimajor": 6378137,
+    "inverseflattening": 298.257222101,
+    "unit": {
+      "name": "metre",
+      "conversionfactor": 1.0
     }
+  },
+  "cs": {
+    "type": "EllipsoidalCS",
+    "dimension": 2,
+    "axes": [{
+      "name": "Longitude",
+      "abbrev": "lon",
+      "direction": "east",
+      "unit": {
+        "type": "Angle",
+        "name": "degree",
+        "conversionfactor": 0.0174532925199433
+      }
+    }, {
+      "name": "Latitude",
+      "abbrev": "lat",
+      "direction": "north",
+      "unit": {
+        "type": "Angle",
+        "name": "degree",
+        "conversionfactor": 0.0174532925199433
+      }
+    }]
   }
 }
 ```
 
-Example for temporal CRS:
+#### Temporal Reference Systems
 
-TBD
+Time is referenced by a temporal reference system (temporal RS), which is either based on a string notation
+or a coordinate reference system (CRS).
 
-#### Calendar systems
+- A temporal RS object must have a member `"type"` with value `"TemporalRS"` if the referenced values
+are in string notation, or `"TemporalCRS"` if the values are coordinates in a temporal coordinate system.
+- A temporal RS object must have a member `"calendar"` with value `"Gregorian"` or a URI.
+- If the Gregorian calender is used, then `"calendar"` must have the value `"Gregorian"` and cannot be a URI.
+- If the temporal RS object has the type `"TemporalCRS"` then it must have the members `"origin"` and `"unit"`.
+- If `"origin"` is defined, then its value must be a string with the syntax of an RFC3339 date-time string 
+(YYYY-MM-DDTHH:MM:SS[.F]Z where Z is either "Z" or an offset +|-HH:MM). The syntax shall be applicable for
+calendars other than the Gregorian calendar if they use a compatible scheme (years, months, days, etc.).
+- If `"unit"` is defined, then its value must be an object with a member `"symbol"` that has a value of one of
+`"ms"` (milliseconds), `"s"` (seconds), `"min"` (minutes), `"h"` (hours), or `"d"` (days).
+A minute is defined as 60 seconds, an hour as 60 minutes, and a day as 24 hours.
+- If the temporal RS object has the type `"TemporalRS"` then the referenced values must be strings
+conforming to the syntax of XXX
+- If the temporal RS object has the type `"TemporalCRS"` then the referenced values must be numbers.
 
-TBD
-
+Example of a String-based temporal referencing system:
 ```js
 {
-  "identifiers": ["t"],
-  "calendar": "gregorian"
+  "type": "TemporalRS",
+  "calendar": "Gregorian"
 }
 ```
 
-#### ...?
+Example of a temporal CRS:
+```js
+{
+  "type": "TemporalCRS",
+  "calendar": "Gregorian",
+  "origin": "1980-01-01T00:00:00Z",
+  "unit": {
+    "symbol": "s"
+  }
+}
+```
+
 
 #### 4.1.x Overview of domain types
 

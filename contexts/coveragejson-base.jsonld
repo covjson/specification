@@ -52,6 +52,30 @@
     "SectionCoverage": "covjson:SectionCoverage",
     "MultiPolygonSeriesCoverage": "covjson:MultiPolygonSeriesCoverage",
     "MultiPolygonCoverage": "covjson:MultiPolygonCoverage",
-    "PolygonCoverage": "covjson:PolygonCoverage"
+    "PolygonCoverage": "covjson:PolygonCoverage",
+    
+    "referencing": "covjson:referencing",
+    "rs": "covjson:referenceSystem",
+    "RS": "covjson:ReferenceSystem",
+    "srs": "covjson:spatialReferenceSystem",
+    "trs": "covjson:temporalReferenceSystem",
+    
+    "CRS": "covjson:CoordinateReferenceSystem",
+    "cs": "covjson:coordinateSystem",
+    "CS": "covjson:CoordinateSystem",
+    
+    "TemporalRS": "covjson:TemporalReferenceSystem",
+    "TemporalCRS": "covjson:TemporalCRS",
+    "calendar": { "@id": "covjson:calendar", "@type": "@vocab" },
+    "Gregorian": "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
+    "origin": "covjson:origin",
+    
+    "SpatialRS": "covjson:SpatialReferenceSystem",
+    "SpatialCRS": "covjson:SpatialCRS",
+    "GeodeticCRS": "covjson:GeodeticCRS",
+    "ProjectedCRS": "covjson:ProjectedCRS",
+    "datum": "covjson:datum",
+    "Ellipsoid": "covjson:Ellipsoid",
+    "EllipsoidalCS": "covjson:EllipsoidalCS"
   }
 }
