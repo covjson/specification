@@ -357,7 +357,7 @@ The following defines common spatial and temporal reference systems.
 
 ### 5.1. Spatial Reference Systems
 
-Example for a spatial CRS:
+Example of a geodetic CRS:
 
 Minimal:
 ```js
@@ -408,6 +408,62 @@ Full (details TBD, currently literal WKT translation):
   }
 }
 ```
+
+Example of a projected CRS with a common projection:
+```js
+{
+TBD
+}
+```
+
+Example of referencing a curvilinear grid:
+```js
+{
+  "type": "ProjectedCRS",
+  "cs": {
+    "type": "CartesianCS",
+    "dimension": 2
+  },
+  "baseCRS": {
+    "type": "GeodeticCRS",
+    "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+  },
+  "conversionToBaseCRS": [{
+    "type": "DiscreteConversion",
+    "sourceAxes": [{
+      "start": 0, "stop": 100, "step": 1
+    }, {
+      "start": 0, "stop": 50, "step": 1
+    }],
+    "targetCoordinates": [{
+      "values": [50.3,50.2,50.3,...] 
+    }, {
+      "values": [-10.1,-10.1,-10.2,...] 
+    }]
+  }, {
+    "type": "DiscreteConversion",
+    "sourceAxes": [{
+      "start": -0.5, "stop": 100.5, "step": 1
+    }, {
+      "start": -0.5, "stop": 50.5, "step": 1
+    }],
+    "targetCoordinates": [{
+      "values": [50.1,50.2,50.2,...] 
+    }, {
+      "values": [-10.0,-10.1,-10.2,...] 
+    }]
+  }]
+}
+```
+Note that there are two conversions given above. This is useful when the domain includes
+bounds as well. One of the conversions would be for the axis coordinates, and the other
+for the bounds coordinates.
+The `"values"` in `"targetCoordinates"` are multi-dimensional arrays encoded as a flat
+array similar to the range values of a coverage. The dimension is equal to that of the
+projected CRS. The order of the objects in `"targetCoordinates"` corresponds to the
+order of the axes in the base/target CRS, which in the example above would be longitude,
+then latitude.
+
 
 ### 5.2. Temporal Reference Systems
 
