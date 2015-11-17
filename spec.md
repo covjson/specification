@@ -350,48 +350,12 @@ and `"SST_mean"`:
 }
 ```
 
-## 4. CoverageJSON Objects
-
-CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
-
-- The CoverageJSON object may have any number of members (name/value pairs).
-- The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
-- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"GridCoverage"`, `"ProfileCoverage"`, `"PointSeriesCoverage"`, `"PointCoverage"`, `"TrajectoryCoverage"`, `"SectionCoverage"`, `"MultiPolygonSeriesCoverage"`, `"MultiPolygonCoverage"`, `"PolygonCoverage"`, `"Range"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
-
-### 4.1. Domain Objects
-
-A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
-It's general structure is:
-```js
-{
-  "type": "<domaintype>",
-  "axes": { ... },
-  "axisOrder": [...],
-  "referencing": [...]
-}
-```
-
-- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
-- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
-- The value of `"axisOrder"` must be an array of two or more axis identifiers.
-- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. The following section defines common types of referencing system objects.
-
-Coordinate Space:
-- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
-
-Requirements for all domain types defined in this specification:
-- The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates.
-- The axis or component identifier `"z"` must refer to vertical spatial coordinates.
-- The axis or component identifier `"t"` must refer to temporal coordinates.
-
-#### 4.1.x Referencing system objects
+## 5. Referencing system objects
 
 Referencing values in some system is achieved with reference systems, which are typically spatial or temporal.
 The following defines common spatial and temporal reference systems.
 
-##### Spatial Reference Systems
+### 5.1. Spatial Reference Systems
 
 Example for a spatial CRS:
 
@@ -445,7 +409,7 @@ Full (details TBD, currently literal WKT translation):
 }
 ```
 
-#### Temporal Reference Systems
+### 5.2. Temporal Reference Systems
 
 Time is referenced by a temporal reference system (temporal RS), which is either based on a string notation
 or a coordinate reference system (CRS).
@@ -485,8 +449,44 @@ Example of a temporal CRS:
 }
 ```
 
+## 6. CoverageJSON Objects
 
-#### 4.1.x Overview of domain types
+CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
+
+- The CoverageJSON object may have any number of members (name/value pairs).
+- The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
+- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, `"Polygon"`, `"GridCoverage"`, `"ProfileCoverage"`, `"PointSeriesCoverage"`, `"PointCoverage"`, `"TrajectoryCoverage"`, `"SectionCoverage"`, `"MultiPolygonSeriesCoverage"`, `"MultiPolygonCoverage"`, `"PolygonCoverage"`, `"Range"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+
+### 6.1. Domain Objects
+
+A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
+It's general structure is:
+```js
+{
+  "type": "<domaintype>",
+  "axes": { ... },
+  "axisOrder": [...],
+  "referencing": [...]
+}
+```
+
+- The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
+- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
+- The value of `"axisOrder"` must be an array of two or more axis identifiers.
+- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. The following section defines common types of referencing system objects.
+
+Coordinate Space:
+- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
+
+Requirements for all domain types defined in this specification:
+- The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates.
+- The axis or component identifier `"z"` must refer to vertical spatial coordinates.
+- The axis or component identifier `"t"` must refer to temporal coordinates.
+
+
+#### 6.1.x Overview of domain types
 
 Domain               | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
@@ -511,7 +511,7 @@ O = Optional, axis with single coordinate
 [O] = Optional, axis with multiple coordinates
 
 
-#### 4.1.1. Grid
+#### 6.1.1. Grid
 
 - A Grid domain must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"`.
 - The axis order must be t,z,y,x.
@@ -533,7 +533,7 @@ Example:
 }
 ```
 
-#### 4.1.2. Profile
+#### 6.1.2. Profile
 
 - A Profile domain must have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` must have a single coordinate only.
 
@@ -551,7 +551,7 @@ Example:
 }
 ```
 
-#### 4.1.3. PointSeries
+#### 6.1.3. PointSeries
 
 - A PointSeries domain must have the axes `"x"`, `"y"`, and `"t"` where `"x"` and `"y"` must have a single coordinate only.
 - A PointSeries domain may have the axis `"z"` which must have a single coordinate only.
@@ -570,7 +570,7 @@ Example:
 }
 ```
 
-#### 4.1.4. Point
+#### 6.1.4. Point
 
 - A Point domain must have the axes `"x"` and `"y"` and may have the axes `"z"` and `"t"` where all must have a single coordinate only.
 
@@ -588,7 +588,7 @@ Example:
 }
 ```
 
-#### 4.1.5. Trajectory
+#### 6.1.5. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
 - The axis `"composite"` must have the geometry type `"Point"` and the components `"x","y","z","t"` or `"x","y","t"`.
@@ -649,7 +649,7 @@ Example with z defined as constant value:
 }
 ```
 
-#### 4.1.6. Section
+#### 6.1.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
 - The axis `"composite"` must have the geometry type "Point" and the components `"x","y","t"`.
@@ -675,7 +675,7 @@ Example:
 }
 ```
 
-#### 4.1.7. Polygon
+#### 6.1.7. Polygon
 
 Polygons are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional dimensions).
 
@@ -706,7 +706,7 @@ Example:
 }
 ```
 
-#### 4.1.8. PolygonSeries
+#### 6.1.8. PolygonSeries
 
 - A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon coordinate.
 - A PolygonSeries domain may have the axis `"z"` which must have a single coordinate only.
@@ -731,7 +731,7 @@ Example:
 }
 ```
 
-#### 4.1.9. MultiPolygon
+#### 6.1.9. MultiPolygon
 
 - A MultiPolygon domain must have the axis `"composite"` where the coordinates are Polygons.
 - The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
@@ -757,7 +757,7 @@ Example:
 }
 ```
 
-#### 4.1.10. MultiPolygonSeries
+#### 6.1.10. MultiPolygonSeries
 
 - A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` are Polygons.
 - The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
@@ -783,7 +783,7 @@ Example:
 }
 ```
 
-#### 4.1.11. Axis Value Bounds
+#### 6.1.11. Axis Value Bounds
 
 - A domain axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
 - If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
@@ -810,7 +810,7 @@ Example:
 }
 ```
 
-### 4.2. Range Objects
+### 6.2. Range Objects
 
 A CoverageJSON object with the type `"Range"` is a range object.
 
@@ -819,21 +819,21 @@ A CoverageJSON object with the type `"Range"` is a range object.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
-#### 4.2.1. Offset/Factor Encoding (CBOR-only)
+#### 6.2.1. Offset/Factor Encoding (CBOR-only)
 
 A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
 
 - A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
 - If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
 
-#### 4.2.2. Missing Value Encoding (CBOR-only)
+#### 6.2.2. Missing Value Encoding (CBOR-only)
 
 If only a small amount of values in `"values"` are missing it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
 
 - If a range object contains the `"validMin"` and `"validMax"` members it may have a member `"missing"` with value `"nonvalid"`.
 - If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
 
-### 4.3. Coverage Objects
+### 6.3. Coverage Objects
 
 A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage object, where `<DomainType>` is any of the domain types defined earlier.
 
@@ -844,16 +844,16 @@ A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage objec
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 - A coverage object may have a member with the name `"bbox"` where the value is an array of four numbers `[west longitude, south latitude, east longitude, north latitude]` describing the bounding box of the coverage data in degrees (WGS84).
 
-### 4.4. Coverage Collection Objects
+### 6.4. Coverage Collection Objects
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object may have a member with the name `"parameters"` where the value is a list of parameter objects.
 
-## 5. Linked Data
+## 7. Linked Data
 
-### 5.1. JSON-LD Context
+### 7.1. JSON-LD Context
 
 A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Domain and range objects should *not* have a context because those data, in particular the potentially big arrays, are currently not suitable to be represented as linked data.
 
@@ -879,7 +879,7 @@ All identifiers referred to in a CoverageJSON object should be URIs. These URIs 
 
 TODO expand
 
-### 5.2. Linked Data Platform considerations
+### 7.2. Linked Data Platform considerations
 
 The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly separates RDF from non-RDF resources. In order to expose CoverageJSON documents, which may contain a mix of RDF and non-RDF content, in such a platform, the following guidelines may be used:
 
@@ -889,11 +889,11 @@ The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly sepa
 - If one of the RDF content types is requested for a coverage or coverage collection, then appropriate JSON-LD (or another RDF serialization if required) should be returned, where the domain and range objects should not be embedded and thus referenced by URL only. A coverage collection should be exposed as a LDP container.
 - If one of the CoverageJSON content types is requested for any CoverageJSON document, then any compatible form of the CoverageJSON document may be returned and be treated as a non-RDF resource. Whether to embed domain and/or range may be decided with additional URL query parameters or other means.
 
-## 6. Resolving domain and range URLs
+## 8. Resolving domain and range URLs
 
 If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
 
-## 7. Media Type, File Extensions, and Encodings
+## 9. Media Type, File Extensions, and Encodings
 
 The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR. Both media types have an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
