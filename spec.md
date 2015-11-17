@@ -54,57 +54,24 @@ A CoverageJSON object may be serialized as either JSON or CBOR.
 
 ### 1.1. Examples
 
-A CoverageJSON Profile coverage:
-
-(note that `"zCRS"` is not defined exactly yet)
+A CoverageJSON Grid coverage of global air temperature:
 
 ```js
 {
-  "type" : "ProfileCoverage",
-  "id" : "http://.../datasets/1/coverages/123",
+  "type" : "GridCoverage",
   "domain" : {
-    "type" : "Profile",
+    "type" : "Grid",
     "axes": {
-      "x": { "values": [-128.381] },
-      "y": { "values": [-40.153] },
-      "z": { "values": [
-              5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
-              38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
-              74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
-              110.0881, 116.0371, 121.9859] },
-      "t": { "values": ["2013-01-13T11:12:20Z"] }
+      "x": { "start": -179.5, "stop": 179.5, "num": 360 },
+      "y": { "start": -89.5, "stop": 89.5, "num": 180 },
+      "t": { "values": ["2013-01-13T00:00:00Z"] }
     },
+    "rangeAxisOrder": ["t","y","x"],
     "referencing": [{
       "identifiers": ["x","y"],
       "srs": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
-      }
-    }, {
-      "identifiers": ["z"],
-      "srs": {
-        "type": "VerticalCRS",
-        "datum": {
-          "TBD": "TBD"
-        },
-        "cs": {
-          "type": "VerticalCS",
-          "axes": [{
-            "label": {
-              "en": "Depth in meters"
-            },
-            "direction": {
-              "id": "http://www.opengis.net/def/axisDirection/OGC/1.0/down",
-              "label": {
-                "en": "down"
-              }
-            },
-            "unit": {
-              "id": "http://www.opengis.net/def/uom/OGC/1.0/metre",
-              "symbol": "m"
-            }
-          }]
-        }
       }
     }, {
       "identifiers": ["t"],
@@ -115,56 +82,34 @@ A CoverageJSON Profile coverage:
     }]
   },
   "parameters" : {
-    "PSAL": {
+    "TEMP": {
       "type" : "Parameter",
-      "description" : "The measured salinity, in practical salinity units (psu) of the sea water ",
-      "unit" : {
-        "symbol" : "psu"
-      },
-      "observedProperty" : {
-        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_salinity/",
-        "label" : {
-          "en": "Sea Water Salinity"
-        }
-      }
-    },
-    "POTM": {
-      "type" : "Parameter",
-      "description": {
-        "en": "The potential temperature, in degrees celcius, of the sea water"
+      "description" : {
+        "en": "Global air temperature in degrees Celsius"
       },
       "unit" : {
         "symbol" : "°C"
       },
       "observedProperty" : {
-        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_potential_temperature/",
-        "label": {
-          "en": "Sea Water Potential Temperature"
+        "id" : "http://vocab.nerc.ac.uk/standard_name/air_temperature/",
+        "label" : {
+          "en": "Air temperature",
+          "de": "Lufttemperatur"
         }
       }
     }
   },
   "ranges" : {
     "type": "RangeSet",
-    "PSAL" : "http://.../datasets/1/coverages/123/range/PSAL",
-    "POTM" : "http://.../datasets/1/coverages/123/range/POTM"
-  },
-  "@context" : [ "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld", {
-    "qudt" : "http://qudt.org/1.1/schema/qudt#",
-    "unit" : "qudt:unit",
-    "symbol" : "qudt:symbol"
-  } ]
+    "TEMP" : "http://.../coverages/123/ranges/TEMP"
+  }
 }
 ```
-where `"http://.../datasets/1/coverages/123/range/PSAL"` (similarly `/POTM`) points to the following document, here shown as JSON serialization:
+where `"http://.../coverages/123/ranges/TEMP"` points to the following document, here shown as JSON serialization:
 ```js
 {
   "type" : "Range",
-  "values" : [ 43.9599, 43.9599, 43.9640, 43.9640, 43.9679, 43.9879, 44.0040,
-               44.0120, 44.0120, 44.0159, 44.0320, 44.0320, 44.0480, 44.0559,
-               44.0559, 44.0579, 44.0680, 44.0740, 44.0779, 44.0880, 44.0940 ],
-  "validMin" : 30,
-  "validMax" : 50
+  "values" : [ 27.1, 24.1, null, 25.1, ... ] // 360*180 values
 }
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
@@ -219,8 +164,16 @@ Example for a continuous-data parameter:
     "description" : {
       "en": "The temperature of sea water near the surface (including the part under sea-ice, if any), and not the skin temperature."
     },
-    "property": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
-    "matrix": "http://../sea_surface"
+    "property": {
+      "id": "http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#Temperature",
+      "label": {
+        "en": "Temperature"
+      }
+    },
+    "matrix": {
+      "id": "http://../sea_surface",
+      "label": "Sea surface"
+    }
   },
   "unit" : {
     "id" : "http://qudt.org/vocab/unit#DegreeCelsius",
@@ -431,9 +384,9 @@ Example of referencing a curvilinear grid:
   "conversionToBaseCRS": [{
     "type": "DiscreteConversion",
     "sourceAxes": [{
-      "start": 0, "stop": 100, "step": 1
+      "start": 0, "stop": 99, "num": 100
     }, {
-      "start": 0, "stop": 50, "step": 1
+      "start": 0, "stop": 49, "num": 50
     }],
     "targetCoordinates": [{
       "values": [50.3,50.2,50.3,...] 
@@ -443,9 +396,9 @@ Example of referencing a curvilinear grid:
   }, {
     "type": "DiscreteConversion",
     "sourceAxes": [{
-      "start": -0.5, "stop": 100.5, "step": 1
+      "start": -0.5, "stop": 100.5, "num": 101
     }, {
-      "start": -0.5, "stop": 50.5, "step": 1
+      "start": -0.5, "stop": 50.5, "num": 51
     }],
     "targetCoordinates": [{
       "values": [50.1,50.2,50.2,...] 
