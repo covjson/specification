@@ -39,9 +39,7 @@ WORK-IN-PROGRESS
 
 ## TODO
 
-- domain CRS
-- for non-default CRS's it would be good to be able to provide WGS84 `"lon"`/`"lat"` coordinates
-- time/vertical extents, ... in domain and/or coverage
+- time/vertical extents needed? (in domain and/or coverage)
 - check qudt:quantity
 
 ## 1. Introduction
@@ -474,20 +472,20 @@ It's general structure is:
 {
   "type": "<domaintype>",
   "axes": { ... },
-  "axisOrder": [...],
+  "rangeAxisOrder": [...],
   "referencing": [...]
 }
 ```
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
-- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"axisOrder"`.
+- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"rangeAxisOrder"`.
 - The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
-- The value of `"axisOrder"` must be an array of two or more axis identifiers.
+- The value of `"rangeAxisOrder"` must be an array of two or more axis identifiers.
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. The following section defines common types of referencing system objects.
 
 Coordinate Space:
 - A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"axisOrder"` array, or any member if no `"axisOrder"` exists. `C2` corresponds to the second axis identifier in `"axisOrder"`, continuing until the last axis identifier `Cn`.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"rangeAxisOrder"` array, or any member if no `"rangeAxisOrder"` exists. `C2` corresponds to the second axis identifier in `"rangeAxisOrder"`, continuing until the last axis identifier `Cn`.
 
 Requirements for all domain types defined in this specification:
 - The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates.
@@ -536,7 +534,7 @@ Example:
     "z": { "values": [1] },
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
-  "axisOrder": ["t","z","y","x"],
+  "rangeAxisOrder": ["t","z","y","x"],
   "referencing": [...]
 }
 ```
@@ -679,7 +677,7 @@ Example:
       ]
     }
   },
-  "axisOrder": ["z","composite"],
+  "rangeAxisOrder": ["z","composite"],
   "referencing": [...]
 }
 ```
@@ -789,7 +787,7 @@ Example:
     "z": { "values": [2] },
     "t": { "values": ["2008-01-01T04:00:00Z", "2010-01-01T00:00:00Z"] }
   },
-  "axisOrder": ["t","z","composite"],
+  "rangeAxisOrder": ["t","z","composite"],
   "referencing": [...]
 }
 ```
@@ -816,7 +814,7 @@ Example:
     },
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
-  "axisOrder": ["t","z","y","x"],
+  "rangeAxisOrder": ["t","z","y","x"],
   "referencing": [...]
 }
 ```
