@@ -37,11 +37,6 @@ WORK-IN-PROGRESS
   </tr>
 </table>
 
-## TODO
-
-- time/vertical extents needed? (in domain and/or coverage)
-- check qudt:quantity
-
 ## 1. Introduction
 
 CoverageJSON is a format for encoding a variety of coverages like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. CoverageJSON currently supports the following domain types: Grid, Profile, PointSeries, Point, Trajectory, Section, Polygon, MultiPolygon, and MultiPolygonSeries. A range in CoverageJSON  represents coverage values and supports the common offset/factor encoding. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
