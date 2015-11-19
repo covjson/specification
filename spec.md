@@ -859,9 +859,9 @@ Example (JSON notation used for convenience only):
 
 #### 6.2.2. Missing Value Encoding (CBOR-only)
 
-If only a small amount of values in `"values"` are missing it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
+If only a small amount of values in `"values"` are missing and the value type is numeric, then it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
 
-- If a range object contains the `"validMin"` and `"validMax"` members it may have a member `"missing"` with value `"nonvalid"`.
+- If a range object contains the `"validMin"` and `"validMax"` members and the value of `"valueType"` is `"integer"` or `"float"`, then the range object may have a member `"missing"` with value `"nonvalid"`.
 - If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
 
 Example (JSON notation used for convenience only):
