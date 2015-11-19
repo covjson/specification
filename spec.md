@@ -217,7 +217,7 @@ Example for a categorical-data parameter:
 
 ## 4. ParameterGroup Objects
 
-Parameter group objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
+Parameter group objects represent logical groups of parameters, for example vector quantities.
 
 - A parameter group object may have any number of members (name/value pairs).
 - A parameter group object must have a member with the name `"type"` and the value `"ParameterGroup"`.
@@ -474,7 +474,7 @@ It's general structure is:
 
 - The value of the type member must be one of: `"Grid"`, `"Profile"`, `"PointSeries"`, `"Point"`, `"Trajectory"`, `"Section"`, `"MultiPolygonSeries"`, `"MultiPolygon"`, and `"Polygon"`.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one coordinate, `"rangeAxisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"geometryType"`. The value of `"geometryType"` is either `"Point"` or `"Polygon"`. For `"Point"`, each axis coordinate must be an array of primitive values. For `"Polygon"`, each axis coordinate must be a GeoJSON-like Polygon coordinate array. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) coordinates inside `"values"`. A composite axis is said to have composite coordinates. An axis identifier must not be used as a component identifier and vice versa. 
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis coordinates. The values in that array must be ordered monotonically according to their ordering relation defined by the used CRS. If the axis is composite, then the axis object must have the members `"components"` and `"valueType"`. The value of `"valueType"` is either `"SimpleComposite"` or `"Polygon"`. For `"SimpleComposite"`, each axis value must be an array of primitive values. For `"Polygon"`, each axis value must be a GeoJSON-like Polygon coordinate array (TBD details). The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the inner (TBD) components inside an axis value. An axis identifier must not be used as a component identifier and vice versa. 
 - The value of `"rangeAxisOrder"` must be an array of two or more axis identifiers.
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of referencing system objects.
 
@@ -601,7 +601,7 @@ Example:
   "type": "Trajectory",
   "axes": {
     "composite": {
-      "geometryType": "Point",
+      "valueType": "SimpleComposite",
       "components": ["x","y","z","t"],      
       "values": [
         [1,20,1,"2008-01-01T04:00:00Z"],
@@ -619,7 +619,7 @@ Example without z:
   "type": "Trajectory",
   "axes": {
     "composite": {
-      "geometryType": "Point",
+      "valueType": "SimpleComposite",
       "components": ["x","y","t"],      
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -637,7 +637,7 @@ Example with z defined as constant value:
   "type": "Trajectory",
   "axes": {
     "composite": {
-      "geometryType": "Point",
+      "valueType": "SimpleComposite",
       "components": ["x","y","t"],      
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -664,7 +664,7 @@ Example:
   "axes": {
     "z": { "values": [10,20,30] },
     "composite": {
-      "geometryType": "Point",
+      "valueType": "SimpleComposite",
       "components": ["x","y","t"],
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -695,7 +695,7 @@ Example:
   "type": "Polygon",
   "axes": {
     "composite": {
-      "geometryType": "Polygon",
+      "valueType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -720,7 +720,7 @@ Example:
   "type": "PolygonSeries",
   "axes": {
     "composite": {
-      "geometryType": "Polygon",
+      "valueType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -745,7 +745,7 @@ Example:
   "type": "MultiPolygon",
   "axes": {
     "composite": {
-      "geometryType": "Polygon",
+      "valueType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
@@ -772,7 +772,7 @@ Example:
   "type": "MultiPolygonSeries",
   "axes": {
     "composite": {
-      "geometryType": "Polygon",
+      "valueType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
