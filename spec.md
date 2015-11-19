@@ -820,7 +820,7 @@ Example:
 A CoverageJSON object with the type `"Range"` is a range object.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
-- A range object must have a member with the name `"valueType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array.
+- A range object must have a member with the name `"valueType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. Note: When the offset/factor encoding (see section below) is used, then this type corresponds to the desired value type *after* applying the transformation, which currently can only be `"float"` in that case. 
 - A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
@@ -831,6 +831,7 @@ A simple compression scheme typically used for storing low-resolution floating p
 
 - A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
 - If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
+- If both `"offset"` and `"factor"` are present in a range object, then `"validMin"` and `"validMax"`, if existing, must be integers and be converted equally to the numbers in `"values"` when accessing them.
 
 #### 6.2.2. Missing Value Encoding (CBOR-only)
 
