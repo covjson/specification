@@ -102,7 +102,8 @@ where `"http://.../coverages/123/ranges/TEMP"` points to the following document,
 ```js
 {
   "type" : "Range",
-  "values" : [ 27.1, 24.1, null, 25.1, ... ] // 360*180 values
+  "values" : [ 27.1, 24.1, null, 25.1, ... ], // 360*180 values,
+  "valueType": "float"
 }
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
@@ -818,7 +819,8 @@ Example:
 
 A CoverageJSON object with the type `"Range"` is a range object.
 
-- A range object must have a member with the name `"values"` where the value is an array of numbers and nulls where nulls represent missing data.
+- A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
+- A range object must have a member with the name `"valueType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array.
 - A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
