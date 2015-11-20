@@ -478,18 +478,29 @@ It's general structure is:
 - The value of the type member must be `"Domain"`.
 - For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used referencing system. If the axis values are not primitive values (number or string), then the axis object must have the members `"valueType"` and `"components"`. The value of `"valueType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"valueType"` must be either `"SimpleComposite"`, `"Polygon"`, or a full custom URI (although custom value types are not recommended for interoperability reasons). For `"SimpleComposite"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used referencing system. If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`. The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Simple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Simple"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
 - The value of `"rangeAxisOrder"` must be an array of all axis identifiers of the domain object. It determines in which order range values must be stored (see "Coordinate Space" below).
 - The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
+
+Example (`"Grid"` profile is defined in the ["Common CoverageJSON Profiles Specification"](profiles.md)):
+```js
+{
+  "type": "Domain",
+  "profile": "Grid",
+  "axes": {
+    "x": { "values": [1,2,3] },
+    "y": { "values": [20,21] },
+    "z": { "values": [1] },
+    "t": { "values": ["2008-01-01T04:00:00Z"] }
+  },
+  "rangeAxisOrder": ["t","z","y","x"],
+  "referencing": [...]
+}
+```
 
 Coordinate Space:
 - A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
 - The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"rangeAxisOrder"` array, or any member if no `"rangeAxisOrder"` exists. `C2` corresponds to the second axis identifier in `"rangeAxisOrder"`, continuing until the last axis identifier `Cn`.
-
-Requirements for all domain types defined in this specification:
-- The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
-`"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial referencing system.
-- The axis or component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal referencing system.
 
 
 #### 6.1.1. Axis Value Bounds

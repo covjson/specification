@@ -41,6 +41,11 @@ WORK-IN-PROGRESS
 
 ## 2. Domain profiles
 
+Requirements for all domain profiles defined in this specification:
+- The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
+`"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial referencing system.
+- The axis or component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal referencing system.
+
 
 ### Overview of domain profiles
 
@@ -160,7 +165,7 @@ Example:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "valueType": "SimpleComposite",
+      "compositeType": "Simple",
       "components": ["x","y","z","t"],      
       "values": [
         [1,20,1,"2008-01-01T04:00:00Z"],
@@ -179,7 +184,7 @@ Example without z:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "valueType": "SimpleComposite",
+      "compositeType": "Simple",
       "components": ["x","y","t"],      
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -198,7 +203,7 @@ Example with z defined as constant value:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "valueType": "SimpleComposite",
+      "compositeType": "Simple",
       "components": ["x","y","t"],      
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -226,7 +231,7 @@ Example:
   "axes": {
     "z": { "values": [10,20,30] },
     "composite": {
-      "valueType": "SimpleComposite",
+      "compositeType": "Simple",
       "components": ["x","y","t"],
       "values": [
         [1,20,"2008-01-01T04:00:00Z"],
@@ -258,7 +263,7 @@ Example:
   "profile": "Polygon",
   "axes": {
     "composite": {
-      "valueType": "Polygon",
+      "compositeType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -284,7 +289,7 @@ Example:
   "profile": "PolygonSeries",
   "axes": {
     "composite": {
-      "valueType": "Polygon",
+      "compositeType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -310,7 +315,7 @@ Example:
   "profile": "MultiPolygon",
   "axes": {
     "composite": {
-      "valueType": "Polygon",
+      "compositeType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
@@ -338,7 +343,7 @@ Example:
   "profile": "MultiPolygonSeries",
   "axes": {
     "composite": {
-      "valueType": "Polygon",
+      "compositeType": "Polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
