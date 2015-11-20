@@ -51,9 +51,11 @@ A CoverageJSON Grid coverage of global air temperature:
 
 ```js
 {
-  "type" : "GridCoverage",
+  "type" : "Coverage",
+  "profile": "GridCoverage",
   "domain" : {
-    "type" : "Grid",
+    "type": "Domain",
+    "profile": "Grid",
     "axes": {
       "x": { "start": -179.5, "stop": 179.5, "num": 360 },
       "y": { "start": -89.5, "stop": 89.5, "num": 180 },
@@ -103,7 +105,7 @@ where `"http://.../coverages/123/ranges/TEMP"` points to the following document,
 {
   "type" : "Range",
   "values" : [ 27.1, 24.1, null, 25.1, ... ], // 360*180 values,
-  "valueType": "float"
+  "dataType": "float"
 }
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
@@ -457,8 +459,7 @@ Example of a temporal CRS:
 CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
 - The CoverageJSON object may have any number of members (name/value pairs).
-- The CoverageJSON object must have a member with the name `"type"`. This member's value is a string that determines the type of the CoverageJSON object.
-- The value of the type member must be one of: `"Domain"`, `"Coverage"`, `"Range"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+- The CoverageJSON object must have a member with the name `"type"` which has as value one of: `"Domain"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
 
 ### 6.1. Domain Objects
 
@@ -523,7 +524,7 @@ Example:
 A CoverageJSON object with the type `"Range"` is a range object.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
-- A range object must have a member with the name `"valueType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. Note: When the offset/factor encoding (see section below) is used, then this type corresponds to the desired value type *after* applying the transformation, which currently can only be `"float"` in that case. 
+- A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. Note: When the offset/factor encoding (see section below) is used, then this type corresponds to the desired value type *after* applying the transformation, which currently can only be `"float"` in that case. 
 - A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null. `"validMin"` and `"validMax"` may be used by clients as an initial legend extent and should therefore not be too much smaller or greater than the actual extent of all values.
 - If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
@@ -534,7 +535,8 @@ Example:
   "type": "Range",
   "values": [12.3, 12.5, 11.5, 23.1, null, null, 10.1],
   "validMin": 0.0,
-  "validMax": 50.0
+  "validMax": 50.0,
+  "dataType": "float"
 }
 ```
 
@@ -555,7 +557,8 @@ Example (JSON notation used for convenience only):
   "factor": 100,
   "offset": 0,
   "validMin": 0,
-  "validMax": 5000
+  "validMax": 5000,
+  "dataType": "float"
 }
 
 ```
@@ -574,7 +577,8 @@ Example (JSON notation used for convenience only):
   "values": [12.3, 12.5, 11.5, 23.1, 555.0, 555.0, 10.1],
   "validMin": 0.0,
   "validMax": 50.0,
-  "missing": "nonvalid"
+  "missing": "nonvalid",
+  "dataType": "float"
 }
 ```
 
@@ -587,7 +591,8 @@ Example combining it with offset/factor encoding:
   "offset": 0,
   "validMin": 0,
   "validMax": 5000,
-  "missing": "nonvalid"
+  "missing": "nonvalid",
+  "dataType": "float"
 }
 ```
 In this case, the values array can be stored as a compact uint16 typed array in CBOR. 
