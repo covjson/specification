@@ -52,7 +52,7 @@ Requirements for all domain profiles defined in this specification:
 Profile              | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
 Grid                 |[M]|[M]|[O]|[O] 
-Profile              | M | M |[M]| O
+VerticalProfile      | M | M |[M]| O
 PointSeries          | M | M | O |[M]
 Point                | M | M | O | O
 PolygonSeries        |   |   | O |[M]| M
@@ -94,15 +94,15 @@ Example:
 }
 ```
 
-### 2.2. Profile
+### 2.2. VerticalProfile
 
-- A Profile domain must have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` must have a single coordinate only.
+- A VerticalProfile domain must have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` must have a single coordinate only.
 
 Example:
 ```js
 {
   "type": "Domain",
-  "profile": "Profile",
+  "profile": "VerticalProfile",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [21] },
@@ -219,7 +219,7 @@ Example with z defined as constant value:
 ### 2.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
-- The axis `"composite"` must have the geometry type "Point" and the components `"x","y","t"`.
+- The axis `"composite"` must have the composite type `"Simple"` and the components `"x","y","t"`.
 - The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
 - The axis order must be `"z","composite"`.
 
