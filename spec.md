@@ -438,7 +438,8 @@ Example of a String-based temporal referencing system:
 ```js
 {
   "type": "TemporalRS",
-  "calendar": "Gregorian"
+  "calendar": "Gregorian",
+  "notation": "iso8601"
 }
 ```
 
@@ -556,7 +557,7 @@ Example:
 A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
 
 - A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
-- If both `"offset"` and `"factor"` are present in a range object, then `"valueType"` must be `"float"`.
+- If both `"offset"` and `"factor"` are present in a range object, then `"dataType"` must be `"float"`.
 - If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
 - If both `"offset"` and `"factor"` are present in a range object, then `"validMin"` and `"validMax"`, if existing, must be integers and be converted equally to the numbers in `"values"` when accessing them.
 
@@ -578,7 +579,7 @@ Example (JSON notation used for convenience only):
 
 If only a small amount of values in `"values"` are missing and the value type is numeric, then it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
 
-- If a range object contains the `"validMin"` and `"validMax"` members and the value of `"valueType"` is `"integer"` or `"float"`, then the range object may have a member `"missing"` with value `"nonvalid"`.
+- If a range object contains the `"validMin"` and `"validMax"` members and the value of `"dataType"` is `"integer"` or `"float"`, then the range object may have a member `"missing"` with value `"nonvalid"`.
 - If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
 
 Example (JSON notation used for convenience only):
@@ -613,7 +614,8 @@ In this case, the values array can be stored as a compact uint16 typed array in 
 A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage object, where `<DomainType>` is any of the domain types defined earlier.
 
 - If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
-- A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL. The domain type must match the `<DomainType>` part of the coverage type.
+- A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
+- If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
