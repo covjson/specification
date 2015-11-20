@@ -20,6 +20,8 @@
     "phenomenonTime": "ssn:observationSamplingTime",
     "observedProperty": "ssn:observedProperty",
 
+    "profile": "covjson:profile",
+
     "coverages": "hydra:member",
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
