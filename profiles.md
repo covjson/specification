@@ -76,7 +76,8 @@ depending on which axes are defined.
 Example:
 ```js
 {
-  "type": "Grid",
+  "type": "Domain",
+  "profile": "Grid",
   "axes": {
     "x": { "values": [1,2,3] },
     "y": { "values": [20,21] },
@@ -95,7 +96,8 @@ Example:
 Example:
 ```js
 {
-  "type": "Profile",
+  "type": "Domain",
+  "profile": "Profile",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [21] },
@@ -114,7 +116,8 @@ Example:
 Example:
 ```js
 {
-  "type": "PointSeries",
+  "type": "Domain",
+  "profile": "PointSeries",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [20] },
@@ -132,7 +135,8 @@ Example:
 Example:
 ```js
 {
-  "type": "Point",
+  "type": "Domain",
+  "profile": "Point",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [20] },
@@ -152,7 +156,8 @@ Example:
 Example:
 ```js
 {
-  "type": "Trajectory",
+  "type": "Domain",
+  "profile": "Trajectory",
   "axes": {
     "composite": {
       "valueType": "SimpleComposite",
@@ -170,7 +175,8 @@ Example:
 Example without z:
 ```js
 {
-  "type": "Trajectory",
+  "type": "Domain",
+  "profile": "Trajectory",
   "axes": {
     "composite": {
       "valueType": "SimpleComposite",
@@ -188,7 +194,8 @@ Example without z:
 Example with z defined as constant value:
 ```js
 {
-  "type": "Trajectory",
+  "type": "Domain",
+  "profile": "Trajectory",
   "axes": {
     "composite": {
       "valueType": "SimpleComposite",
@@ -214,7 +221,8 @@ Example with z defined as constant value:
 Example:
 ```js
 {
-  "type": "Section",
+  "type": "Domain",
+  "profile": "Section",
   "axes": {
     "z": { "values": [10,20,30] },
     "composite": {
@@ -246,7 +254,8 @@ Note that each polygon represents a single coordinate within the coordinate spac
 Example:
 ```js
 {
-  "type": "Polygon",
+  "type": "Domain",
+  "profile": "Polygon",
   "axes": {
     "composite": {
       "valueType": "Polygon",
@@ -271,7 +280,8 @@ Example:
 Example:
 ```js
 {
-  "type": "PolygonSeries",
+  "type": "Domain",
+  "profile": "PolygonSeries",
   "axes": {
     "composite": {
       "valueType": "Polygon",
@@ -296,7 +306,8 @@ Example:
 Example:
 ```js
 {
-  "type": "MultiPolygon",
+  "type": "Domain",
+  "profile": "MultiPolygon",
   "axes": {
     "composite": {
       "valueType": "Polygon",
@@ -323,7 +334,8 @@ Example:
 Example:
 ```js
 {
-  "type": "MultiPolygonSeries",
+  "type": "Domain",
+  "profile": "MultiPolygonSeries",
   "axes": {
     "composite": {
       "valueType": "Polygon",
