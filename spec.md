@@ -512,7 +512,8 @@ Coordinate Space:
 Example:
 ```js
 {
-  "type": "Grid",
+  "type": "Domain",
+  "profile": "Grid",
   "axes": {
     "x": { "values": [1,2,3] },
     "y": {
