@@ -449,7 +449,7 @@ CoverageJSON documents always consist of a single object. This object (referred 
 ### 6.1. Domain Objects
 
 A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
-It's general structure is:
+Its general structure is:
 ```js
 {
   "type": "Domain",
@@ -479,6 +479,25 @@ Example (`"Grid"` profile is defined in the ["Common CoverageJSON Profiles Speci
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "rangeAxisOrder": ["t","z","y","x"],
+  "referencing": [...]
+}
+```
+
+Example (`"Trajectory"` profile is defined in the ["Common CoverageJSON Profiles Specification"](profiles.md)):
+```js
+{
+  "type": "Domain",
+  "profile": "Trajectory",
+  "axes": {
+    "composite": {
+      "compositeType": "Simple",
+      "components": ["t","x","y"],      
+      "values": [
+        ["2008-01-01T04:00:00Z",1,20],
+        ["2008-01-01T04:30:00Z",2,21]
+      ]
+    }
+  },
   "referencing": [...]
 }
 ```
