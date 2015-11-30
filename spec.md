@@ -463,11 +463,53 @@ Its general structure is:
 - The value of the type member must be `"Domain"`.
 - For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object. An axis object must have a `"values"` member which has as value a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used referencing system. If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`. The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Simple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Simple"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear. The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
+- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object as defined below. 
+- The value of `"referencing"` in a domain object is an array of referencing objects as defined below.
 - The value of `"rangeAxisOrder"` must be an array of all axis identifiers of the domain object. It determines in which order range values must be stored (see "Coordinate Space" below).
-- The value of `"referencing"` is an array of referencing objects. A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems. A referencing object must also have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
 
-Example (`"Grid"` profile is defined in the ["Common CoverageJSON Profiles Specification"](profiles.md)):
+#### 6.1.1. Axis Objects
+
+- An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
+- The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used referencing system.
+- The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"´ is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the member `"values"` may be reconstructed with the formula `start + i * step` where `i` is in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
+- If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`.
+- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Simple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Simple"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
+- The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
+- An axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
+- If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
+
+Example of an axis object with bounds:
+```js
+{
+  "values": [20,21],
+  "bounds": [19.5,20.5,
+             20.5,21.5]
+}
+```
+
+Example of an axis object with regular axis encoding:
+```js
+{
+  "start": 0,
+  "stop": 5,
+  "num": 6
+  // equal to: "values": [0,1,2,3,4,5]
+}
+```
+
+#### 6.1.2. Referencing Objects
+
+- A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
+- A referencing object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
+
+#### 6.1.3. Coordinate Space
+
+- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
+- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"rangeAxisOrder"` array, or any member if no `"rangeAxisOrder"` exists. `C2` corresponds to the second axis identifier in `"rangeAxisOrder"`, continuing until the last axis identifier `Cn`.
+
+#### 6.1.4. Examples
+
+Example of a domain object with [`"Grid"`](profiles.md) profile:
 ```js
 {
   "type": "Domain",
@@ -483,7 +525,7 @@ Example (`"Grid"` profile is defined in the ["Common CoverageJSON Profiles Speci
 }
 ```
 
-Example (`"Trajectory"` profile is defined in the ["Common CoverageJSON Profiles Specification"](profiles.md)):
+Example of a domain object with [`"Trajectory"`](profiles.md) profile:
 ```js
 {
   "type": "Domain",
@@ -502,38 +544,6 @@ Example (`"Trajectory"` profile is defined in the ["Common CoverageJSON Profiles
 }
 ```
 
-Coordinate Space:
-- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"rangeAxisOrder"` array, or any member if no `"rangeAxisOrder"` exists. `C2` corresponds to the second axis identifier in `"rangeAxisOrder"`, continuing until the last axis identifier `Cn`.
-
-
-#### 6.1.1. Axis Value Bounds
-
-- A domain axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
-- If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
-
-Example:
-```js
-{
-  "type": "Domain",
-  "profile": "Grid",
-  "axes": {
-    "x": { "values": [1,2,3] },
-    "y": {
-      "values": [20,21],
-      "bounds": [19.5,20.5,
-                 20.5,21.5]
-    },
-    "z": {
-      "values": [50],
-      "bounds": [0,100]
-    },
-    "t": { "values": ["2008-01-01T04:00:00Z"] }
-  },
-  "rangeAxisOrder": ["t","z","y","x"],
-  "referencing": [...]
-}
-```
 
 ### 6.2. Range Objects
 
