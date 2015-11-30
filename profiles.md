@@ -155,7 +155,7 @@ Example:
 ### 2.5. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
-- The axis `"composite"` must have the geometry type `"Point"` and the components `"x","y","z","t"` or `"x","y","t"`.
+- The axis `"composite"` must have the geometry type `"Point"` and the components `"t","x","y","z"` or `"t","x","y"`.
 - The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
 
 Example:
@@ -166,10 +166,10 @@ Example:
   "axes": {
     "composite": {
       "compositeType": "Simple",
-      "components": ["x","y","z","t"],      
+      "components": ["t","x","y","z"],      
       "values": [
-        [1,20,1,"2008-01-01T04:00:00Z"],
-        [2,21,3,"2008-01-01T04:30:00Z"]
+        ["2008-01-01T04:00:00Z",1,20,1],
+        ["2008-01-01T04:30:00Z",2,21,3]
       ]
     }
   },
@@ -185,10 +185,10 @@ Example without z:
   "axes": {
     "composite": {
       "compositeType": "Simple",
-      "components": ["x","y","t"],      
+      "components": ["t","x","y"],      
       "values": [
-        [1,20,"2008-01-01T04:00:00Z"],
-        [2,21,"2008-01-01T04:30:00Z"]
+        ["2008-01-01T04:00:00Z",1,20],
+        ["2008-01-01T04:30:00Z",2,21]
       ]
     }
   },
@@ -204,10 +204,10 @@ Example with z defined as constant value:
   "axes": {
     "composite": {
       "compositeType": "Simple",
-      "components": ["x","y","t"],      
+      "components": ["t","x","y"],      
       "values": [
-        [1,20,"2008-01-01T04:00:00Z"],
-        [2,21,"2008-01-01T04:30:00Z"]
+        ["2008-01-01T04:00:00Z",1,20],
+        ["2008-01-01T04:30:00Z",2,21]
       ]
     },
     "z": { "values": [5] }
@@ -219,7 +219,7 @@ Example with z defined as constant value:
 ### 2.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
-- The axis `"composite"` must have the composite type `"Simple"` and the components `"x","y","t"`.
+- The axis `"composite"` must have the composite type `"Simple"` and the components `"t","x","y"`.
 - The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
 - The axis order must be `"z","composite"`.
 
@@ -232,10 +232,10 @@ Example:
     "z": { "values": [10,20,30] },
     "composite": {
       "compositeType": "Simple",
-      "components": ["x","y","t"],
+      "components": ["t","x","y"],
       "values": [
-        [1,20,"2008-01-01T04:00:00Z"],
-        [2,21,"2008-01-01T04:30:00Z"]
+        ["2008-01-01T04:00:00Z",1,20],
+        ["2008-01-01T04:30:00Z",2,21]
       ]
     }
   },
