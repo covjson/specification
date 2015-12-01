@@ -642,8 +642,9 @@ In this case, the values array can be stored as a compact uint16 typed array in 
 
 ### 6.3. Coverage Objects
 
-A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage object, where `<DomainType>` is any of the domain types defined earlier.
+A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
+- A coverage object may have the member `"profile"` with a string value to indicate that the coverage follows a certain structure (e.g. has a certain domain profile or restrictions on parameters). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
 - A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
 - If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
@@ -656,6 +657,7 @@ A CoverageJSON object with the type `"<DomainType>Coverage"` is a coverage objec
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
+- A coverage collection object may have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object may have a member with the name `"parameters"` where the value is a list of parameter objects.
 

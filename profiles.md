@@ -363,3 +363,7 @@ Example:
 ## 3. Coverage profiles
 
 `<DomainProfile>Coverage`
+
+## 4. Coverage collection profiles
+
+`<DomainProfile>CoverageCollection`
