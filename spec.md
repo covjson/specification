@@ -421,7 +421,7 @@ Its general structure is:
 - For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
 - The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object as defined below. 
-- The value of `"referencing"` in a domain object is an array of referencing objects as defined below.
+- The value of `"referencing"` in a domain object is an array of reference system connection objects as defined below.
 - The value of `"rangeAxisOrder"` must be an array of all axis identifiers of the domain object. It determines in which order range values must be stored (see "Coordinate Space" below).
 
 #### 6.1.1. Axis Objects
@@ -477,10 +477,23 @@ Example of an axis object with Polygon composite values:
 }
 ```
 
-#### 6.1.2. Referencing Objects
+#### 6.1.2. Reference System Connection Objects
 
-- A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
-- A referencing object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
+A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
+
+- A reference system connection object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
+- A reference system connection object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
+
+Example of a reference system connection object:
+```js
+{
+  "identifiers": ["y","x","z"],
+  "srs": {
+    "type": "GeodeticCRS",
+    "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+  }
+}
+```
 
 #### 6.1.3. Coordinate Space
 
