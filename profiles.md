@@ -43,8 +43,9 @@ WORK-IN-PROGRESS
 
 Requirements for all domain profiles defined in this specification:
 - The axis or component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
-`"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial referencing system.
-- The axis or component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal referencing system.
+`"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial coordinate reference system.
+- The axis or component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal reference system.
+- If a spatial CRS is used that has the axes longitude and latitude, or easting and northing, then the axis or component identifier `"x"` must refer to longitude / easting, and `"y"` to latitude / northing.
 
 
 ### Overview of domain profiles
