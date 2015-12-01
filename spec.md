@@ -454,6 +454,29 @@ Example of an axis object with regular axis encoding:
 }
 ```
 
+Example of an axis object with simple composite values:
+```js
+{
+  "compositeType": "Simple",
+  "components": ["t","x","y"],  
+  "values": [
+    ["2008-01-01T04:00:00Z",1,20],
+    ["2008-01-01T04:30:00Z",2,21]
+  ]
+}
+```
+
+Example of an axis object with Polygon composite values:
+```js
+{
+  "compositeType": "Polygon",
+  "components": ["x","y"],
+  "values": [
+    [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
+  ]
+}
+```
+
 #### 6.1.2. Referencing Objects
 
 - A referencing object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
@@ -478,7 +501,19 @@ Example of a domain object with [`"Grid"`](profiles.md) profile:
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "rangeAxisOrder": ["t","z","y","x"],
-  "referencing": [...]
+  "referencing": [{
+    "identifiers": ["t"],
+    "trs": {
+      "type": "TemporalRS",
+      "calendar": "Gregorian"
+    }
+  }, {
+    "identifiers": ["y","x","z"],
+    "srs": {
+      "type": "GeodeticCRS",
+      "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+    }
+  }]
 }
 ```
 
@@ -497,7 +532,19 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
       ]
     }
   },
-  "referencing": [...]
+  "referencing": [{
+    "identifiers": ["t"],
+    "trs": {
+      "type": "TemporalRS",
+      "calendar": "Gregorian"
+    }
+  }, {
+    "identifiers": ["x","y"],
+    "srs": {
+      "type": "GeodeticCRS",
+      "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+    }
+  }]
 }
 ```
 
