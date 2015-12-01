@@ -291,8 +291,6 @@ The following defines common spatial and temporal reference systems.
 ### 5.1. Spatial Reference Systems
 
 Example of a geodetic CRS:
-
-Minimal:
 ```js
 {
   "type": "GeodeticCRS",
@@ -300,56 +298,15 @@ Minimal:
 }
 ```
 
-Full (details TBD, currently literal WKT translation):
+Example of a projected CRS (here [British National Grid](http://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/)):
 ```js
 {
-  "type": "GeodeticCRS",
-  "title": "Foobar",
-  "id": "http://...",
-  "datum": {
-    "type": "Ellipsoid",
-    "name": "GRS 1980",
-    "semimajor": 6378137,
-    "inverseflattening": 298.257222101,
-    "unit": {
-      "name": "metre",
-      "conversionfactor": 1.0
-    }
-  },
-  "cs": {
-    "type": "EllipsoidalCS",
-    "dimension": 2,
-    "axes": [{
-      "name": "Longitude",
-      "abbrev": "lon",
-      "direction": "east",
-      "unit": {
-        "type": "Angle",
-        "name": "degree",
-        "conversionfactor": 0.0174532925199433
-      }
-    }, {
-      "name": "Latitude",
-      "abbrev": "lat",
-      "direction": "north",
-      "unit": {
-        "type": "Angle",
-        "name": "degree",
-        "conversionfactor": 0.0174532925199433
-      }
-    }]
-  }
+  "type": "ProjectedCRS",
+  "id": "http://www.opengis.net/def/crs/EPSG/0/27700"
 }
 ```
 
-Example of a projected CRS with a common projection:
-```js
-{
-TBD
-}
-```
-
-Example of referencing a curvilinear grid:
+Example of referencing a curvilinear grid with uncommon/unknown projection:
 ```js
 {
   "type": "ProjectedCRS",
