@@ -2,12 +2,14 @@
   "@context": {
     "id": "@id",
     "type": "@type",
+    "value": "@value",
     "covjson": "http://.../vocab#",
     "w3time": "http://www.w3.org/2006/time#",
     "ssn": "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dct": "http://purl.org/dc/terms/",
     "hydra": "http://www.w3.org/ns/hydra/core#",
+    "qudt": "http://qudt.org/schema/qudt#",
 
     "label": { "@id": "skos:prefLabel", "@container": "@language" },
     "title": { "@id": "dct:title", "@container": "@language" },
@@ -26,6 +28,8 @@
     "CoverageCollection": "covjson:CoverageCollection",
     "Parameter": "covjson:Parameter",
     "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
+    "unit": "qudt:unit",
+    "symbol": "qudt:symbol",
     "categoryEncoding": "covjson:categoryEncoding",
     "ParameterGroup": "covjson:ParameterGroup",
     "components": { "@id": "covjson:component", "@type": "@vocab" },
