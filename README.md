@@ -31,14 +31,14 @@ For all these reasons, the CoverageJSON format was developed which tries to fill
 
 ## How can JSON be efficient?
 
-Contrarily to its name, CoverageJSON has two serialization forms: JSON and [CBOR](http://cbor.io), each with its own file extension and content type. The latter is a binary format based on the JSON data model. Within CoverageJSON, CBOR provides improved space and parsing efficiency for bigger coverages. Supporting the JSON format as well allows for easy prototyping, debugging, and understanding of the format.
+Contrarily to its name, CoverageJSON has two serialization forms: JSON and [CBOR](http://cbor.io), each with its own file extension and content type. The latter is a binary format based on the JSON data model (and allowing some extensions like packed arrays). Within CoverageJSON, CBOR provides improved space and parsing efficiency for bigger coverages. Supporting the JSON format as well allows for easy prototyping, debugging, and understanding of the format.
 
 ## How can I use CoverageJSON?
 
 While the format is still in development and changing, a range of libraries are developed for reading and visualizing CoverageJSON documents:
 - [JavaScript API for Coverage objects](https://github.com/Reading-eScience-Centre/coverage-jsapi) - an abstraction over CoverageJSON for dealing with arbitrary coverages in JavaScript
 - [covjson-reader](https://github.com/Reading-eScience-Centre/covjson-reader) - JavaScript library that reads CoverageJSON from objects or URLs, exposing the data as Coverage objects (see above)
-- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing Coverage objects, currently with support for CoverageJSON types only
+- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing Coverage objects, currently with support for [Common CoverageJSON Profiles](https://github.com/Reading-eScience-Centre/coveragejson/blob/master/profiles.md) only
 
 However, as the format is so simple, it is easy to prototype an application from scratch. If you think the format is *not* simple enough, please open an issue and explain why you feel that way - it's a priority for us to make it simple!
 
