@@ -95,7 +95,6 @@ A CoverageJSON Grid coverage of global air temperature:
     }
   },
   "ranges" : {
-    "type": "RangeSet",
     "TEMP" : "http://.../coverages/123/ranges/TEMP"
   }
 }
@@ -650,7 +649,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. A range set object must have a member with the name `"type"` and the value `"RangeSet"`. Any member of a range set object except `"type"` has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 - A coverage object may have a member with the name `"bbox"` where the value is an object with members `"box"` and `"srs"` where `"box"` is an array of four numbers `[minx,miny,maxx,maxy]` describing the horizontal bounding box of the coverage data and `"srs"` is a URI of the spatial reference system used for the `"box"` coordinates.
 
 ### 6.4. Coverage Collection Objects
