@@ -218,6 +218,7 @@ Parameter group objects represent logical groups of parameters, for example vect
 - A parameter group object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter group.
 - A parameter group object may have a member with the name `"observedProperty"` where the value is an object as specified for parameter objects.
 - A parameter group object must have either or both the members `"label"` or/and `"observedProperty"`.
+- A parameter group object must have a member with the name `"members"` where the value is a non-empty array of parameter identifiers (see 6.3 Coverage objects).
 
 Example of a group describing a vector quantity:
 ```js
@@ -228,7 +229,7 @@ Example of a group describing a vector quantity:
       "en": "Wind velocity"
     }
   },
-  "components": ["WIND_SPEED", "WIND_DIR"]
+  "members": ["WIND_SPEED", "WIND_DIR"]
 }
 ```
 where `"WIND_SPEED"` and `"WIND_DIR"` reference existing parameters in a CoverageJSON coverage or collection object by their short identifiers.
@@ -246,7 +247,7 @@ Example of a group describing uncertainty of a parameter:
       "en": "Sea surface temperature"
     }
   },
-  "components": ["SST_mean", "SST_stddev"]
+  "members": ["SST_mean", "SST_stddev"]
 }
 ```
 where `"SST_stddev"` references the following parameter:
