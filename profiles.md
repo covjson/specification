@@ -156,8 +156,8 @@ Example:
 ### 2.5. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
-- The axis `"composite"` must have the geometry type `"Point"` and the components `"t","x","y","z"` or `"t","x","y"`.
-- The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
+- The axis `"composite"` must have the composite type `"Vector"` and the components `"t","x","y","z"` or `"t","x","y"`.
+- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Example:
 ```js
@@ -166,7 +166,7 @@ Example:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Simple",
+      "compositeType": "Vector",
       "components": ["t","x","y","z"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20,1],
@@ -185,7 +185,7 @@ Example without z:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Simple",
+      "compositeType": "Vector",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
@@ -204,7 +204,7 @@ Example with z defined as constant value:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Simple",
+      "compositeType": "Vector",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
@@ -220,8 +220,8 @@ Example with z defined as constant value:
 ### 2.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
-- The axis `"composite"` must have the composite type `"Simple"` and the components `"t","x","y"`.
-- The coordinate ordering of the axis `"composite"` must follow the ordering of its `"t"` component.
+- The axis `"composite"` must have the composite type `"Vector"` and the components `"t","x","y"`.
+- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 - The axis order must be `"z","composite"`.
 
 Example:
@@ -251,9 +251,9 @@ Polygons are defined equally to GeoJSON, except that they can only contain `[x,y
 
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first must be the exterior ring and any others must be interior rings or holes.
-- A Polygon domain must have the axis `"composite"` which has a single Polygon coordinate.
-- The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
-- A Polygon domain may have the axes `"z"` and `"t"` which both must have a single coordinate only.
+- A Polygon domain must have the axis `"composite"` which has a single Polygon value.
+- The axis `"composite"` must have the composite type `"Polygon"` and the components `"x","y"`.
+- A Polygon domain may have the axes `"z"` and `"t"` which both must have a single value only.
 
 Note that each polygon represents a single coordinate within the coordinate space.
 
@@ -279,9 +279,9 @@ Example:
 
 ### 2.8. PolygonSeries
 
-- A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon coordinate.
-- A PolygonSeries domain may have the axis `"z"` which must have a single coordinate only.
-- The axis `"composite"` must have the geometry type "Polygon" and the components `"x","y"`.
+- A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon value.
+- A PolygonSeries domain may have the axis `"z"` which must have a single value only.
+- The axis `"composite"` must have the composite type `"Polygon"` and the components `"x","y"`.
 
 Example:
 ```js
@@ -305,9 +305,9 @@ Example:
 
 ### 2.9. MultiPolygon
 
-- A MultiPolygon domain must have the axis `"composite"` where the coordinates are Polygons.
-- The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
-- A MultiPolygon domain may have the axes `"z"` and `"t"` which both must have a single coordinate only.
+- A MultiPolygon domain must have the axis `"composite"` where the values are Polygons.
+- The axis `"composite"` must have the composite type `"Polygon"` and the components `"x","y"`.
+- A MultiPolygon domain may have the axes `"z"` and `"t"` which both must have a single value only.
 
 Example:
 ```js
@@ -332,9 +332,9 @@ Example:
 
 ### 2.10. MultiPolygonSeries
 
-- A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the coordinates of `"composite"` are Polygons.
-- The axis `"composite"` must have the geometry type `"Polygon"` and the components `"x","y"`.
-- A MultiPolygon domain may have the axis `"z"` which must have a single coordinate only.
+- A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons.
+- The axis `"composite"` must have the composite type `"Polygon"` and the components `"x","y"`.
+- A MultiPolygon domain may have the axis `"z"` which must have a single value only.
 - The axis order must be either `"t","z","composite"` or `"t","composite"`, depending on which axes are defined.
 
 Example:
