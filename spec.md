@@ -63,13 +63,13 @@ A CoverageJSON Grid coverage of global air temperature:
     },
     "rangeAxisOrder": ["t","y","x"],
     "referencing": [{
-      "identifiers": ["x","y"],
+      "components": ["x","y"],
       "srs": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
       }
     }, {
-      "identifiers": ["t"],
+      "components": ["t"],
       "trs": {
         "type": "TemporalRS",
         "calendar": "Gregorian"
