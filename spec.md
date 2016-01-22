@@ -428,9 +428,11 @@ Its general structure is:
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used reference system.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
-- If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`.
-- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Vector"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Vector"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
-- The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
+- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Primitive"`, `"Vector"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Primitive"`, each axis value must be a number or string and all values represent a single component. For `"Vector"`, each axis value must be an array of primitive values in a defined order, where each of the vector dimensions is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
+- If missing, the member `"compositeType"` defaults to `"Primitive"` and must not be included for that default case.
+- The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value.
+- If missing, the member `"components"` defaults to a one-element array of the axis identifier and must not be included for that default case.
+- A component identifier shall not be defined more than once in all axis objects of a domain object.
 - An axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
 - If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
 
@@ -480,13 +482,13 @@ Example of an axis object with Polygon composite values:
 
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
-- A reference system connection object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
+- A reference system connection object must have a member `"components"` which has as value an array of component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
 - A reference system connection object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial reference system object, `"trs"` a temporal reference system object, and `"rs"` a reference system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal reference system objects.
 
 Example of a reference system connection object:
 ```js
 {
-  "identifiers": ["y","x","z"],
+  "components": ["y","x","z"],
   "srs": {
     "type": "GeodeticCRS",
     "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
@@ -514,13 +516,13 @@ Example of a domain object with [`"Grid"`](profiles.md) profile:
   },
   "rangeAxisOrder": ["t","z","y","x"],
   "referencing": [{
-    "identifiers": ["t"],
+    "components": ["t"],
     "trs": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "identifiers": ["y","x","z"],
+    "components": ["y","x","z"],
     "srs": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
@@ -545,13 +547,13 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
     }
   },
   "referencing": [{
-    "identifiers": ["t"],
+    "components": ["t"],
     "trs": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "identifiers": ["x","y"],
+    "components": ["x","y"],
     "srs": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
