@@ -282,7 +282,7 @@ and `"SST_mean"`:
 }
 ```
 
-## 5. Referencing system objects
+## 5. Reference system objects
 
 Referencing values in some system is achieved with reference systems, which are typically spatial or temporal.
 The following defines common spatial and temporal reference systems.
@@ -374,7 +374,7 @@ A minute is defined as 60 seconds, an hour as 60 minutes, and a day as 24 hours.
 conforming to the syntax of XXX
 - If the temporal RS object has the type `"TemporalCRS"` then the referenced values must be numbers.
 
-Example of a String-based temporal referencing system:
+Example of a String-based temporal reference system:
 ```js
 {
   "type": "TemporalRS",
@@ -426,7 +426,7 @@ Its general structure is:
 #### 6.1.1. Axis Objects
 
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
-- The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used referencing system.
+- The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used reference system.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
 - If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`.
 - The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Simple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Simple"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
@@ -481,7 +481,7 @@ Example of an axis object with Polygon composite values:
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
 - A reference system connection object must have a member `"identifiers"` which has as value an array of axis and/or component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
-- A reference system connection object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial referencing system object, `"trs"` a temporal referencing system object, and `"rs"` a referencing system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal referencing system objects.
+- A reference system connection object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial reference system object, `"trs"` a temporal reference system object, and `"rs"` a reference system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal reference system objects.
 
 Example of a reference system connection object:
 ```js
