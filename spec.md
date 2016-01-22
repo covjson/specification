@@ -429,7 +429,7 @@ Its general structure is:
 - The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used reference system.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
 - If the axis values are not primitive values (number or string), then the axis object must have the members `"compositeType"` and `"components"`.
-- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Simple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Simple"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
+- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Vector"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Vector"`, each axis value must be an array of primitive values in a defined order, where each of those values is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
 - The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value. An axis identifier must not be used as a component identifier and vice versa.
 - An axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
 - If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
@@ -453,10 +453,10 @@ Example of an axis object with regular axis encoding:
 }
 ```
 
-Example of an axis object with simple composite values:
+Example of an axis object with vector values:
 ```js
 {
-  "compositeType": "Simple",
+  "compositeType": "Vector",
   "components": ["t","x","y"],  
   "values": [
     ["2008-01-01T04:00:00Z",1,20],
@@ -536,7 +536,7 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Simple",
+      "compositeType": "Vector",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
