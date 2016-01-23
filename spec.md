@@ -456,7 +456,7 @@ Example of an axis object with regular axis encoding:
 }
 ```
 
-Example of an axis object with vector values:
+Example of an axis object with tuple values:
 ```js
 {
   "compositeType": "Tuple",
