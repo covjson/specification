@@ -156,7 +156,7 @@ Example:
 ### 2.5. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
-- The axis `"composite"` must have the composite type `"Vector"` and the components `"t","x","y","z"` or `"t","x","y"`.
+- The axis `"composite"` must have the composite type `"Tuple"` and the components `"t","x","y","z"` or `"t","x","y"`.
 - The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Example:
@@ -166,7 +166,7 @@ Example:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Vector",
+      "compositeType": "Tuple",
       "components": ["t","x","y","z"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20,1],
@@ -185,7 +185,7 @@ Example without z:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Vector",
+      "compositeType": "Tuple",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
@@ -204,7 +204,7 @@ Example with z defined as constant value:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Vector",
+      "compositeType": "Tuple",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
@@ -220,7 +220,7 @@ Example with z defined as constant value:
 ### 2.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
-- The axis `"composite"` must have the composite type `"Vector"` and the components `"t","x","y"`.
+- The axis `"composite"` must have the composite type `"Tuple"` and the components `"t","x","y"`.
 - The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 - The axis order must be `"z","composite"`.
 

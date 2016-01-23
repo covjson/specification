@@ -429,7 +429,7 @@ Its general structure is:
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used reference system.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
-- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Primitive"`, `"Vector"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Primitive"`, each axis value must be a number or string and all values represent a single component. For `"Vector"`, each axis value must be an array of primitive values in a defined order, where each of the vector dimensions is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
+- The value of `"compositeType"` determines the structure of an axis value and its elemental components that are made available for referencing. The value of `"compositeType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom composite types are not recommended for interoperability reasons). For `"Primitive"`, each axis value must be a number or string and all values represent a single component. For `"Tuple"`, each axis value must be an array of primitive values in a defined order, where each of the tuple dimensions is a component. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. all x coordinates of all points) form a component in the order they appear.
 - If missing, the member `"compositeType"` defaults to `"Primitive"` and must not be included for that default case.
 - The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components inside an axis value.
 - If missing, the member `"components"` defaults to a one-element array of the axis identifier and must not be included for that default case.
@@ -459,7 +459,7 @@ Example of an axis object with regular axis encoding:
 Example of an axis object with vector values:
 ```js
 {
-  "compositeType": "Vector",
+  "compositeType": "Tuple",
   "components": ["t","x","y"],  
   "values": [
     ["2008-01-01T04:00:00Z",1,20],
@@ -539,7 +539,7 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
   "profile": "Trajectory",
   "axes": {
     "composite": {
-      "compositeType": "Vector",
+      "compositeType": "Tuple",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z",1,20],
