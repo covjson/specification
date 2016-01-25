@@ -306,53 +306,7 @@ Example of a projected CRS (here [British National Grid](http://spatialreference
 }
 ```
 
-Example of referencing a curvilinear grid with uncommon/unknown projection:
-```js
-{
-  "type": "ProjectedCRS",
-  "cs": {
-    "type": "CartesianCS",
-    "dimension": 2
-  },
-  "baseCRS": {
-    "type": "GeodeticCRS",
-    "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
-  },
-  "conversionToBaseCRS": [{
-    "type": "DiscreteConversion",
-    "sourceAxes": [{
-      "start": 0, "stop": 99, "num": 100
-    }, {
-      "start": 0, "stop": 49, "num": 50
-    }],
-    "targetCoordinates": [{
-      "values": [50.3,50.2,50.3,...] 
-    }, {
-      "values": [-10.1,-10.1,-10.2,...] 
-    }]
-  }, {
-    "type": "DiscreteConversion",
-    "sourceAxes": [{
-      "start": -0.5, "stop": 100.5, "num": 101
-    }, {
-      "start": -0.5, "stop": 50.5, "num": 51
-    }],
-    "targetCoordinates": [{
-      "values": [50.1,50.2,50.2,...] 
-    }, {
-      "values": [-10.0,-10.1,-10.2,...] 
-    }]
-  }]
-}
-```
-Note that there are two conversions given above. This is useful when the domain includes
-bounds as well. One of the conversions would be for the axis coordinates, and the other
-for the bounds coordinates.
-The `"values"` in `"targetCoordinates"` are multi-dimensional arrays encoded as a flat
-array similar to the range values of a coverage. The dimension is equal to that of the
-projected CRS. The order of the objects in `"targetCoordinates"` corresponds to the
-order of the axes in the base/target CRS, which in the example above would be longitude,
-then latitude.
+
 
 
 ### 5.2. Temporal Reference Systems
