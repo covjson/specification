@@ -342,8 +342,9 @@ In this specification, only a string-based notation for time values is defined.
 - A temporal RS object must have a member `"type"`. The only currently defined value of it is `"TemporalRS"`.
 - A temporal RS object must have a member `"calendar"` with value `"Gregorian"` or a URI.
 - If the Gregorian calender is used, then `"calendar"` must have the value `"Gregorian"` and cannot be a URI.
-- A temporal RS object may have a member `"timeScale"` with a URI as value if the time scale is not UTC. 
+- A temporal RS object may have a member `"timeScale"` with a URI as value. 
   If omitted, the time scale defaults to UTC (`"http://www.opengis.net/def/trs/BIPM/0/UTC"`).
+  If the time scale is UTC, the `"timeScale"` member must be omitted.
 - If the calendar is based on years, months, days, then the referenced values should use one of the following
   ISO8601-based lexical representations:
   - YYYY
