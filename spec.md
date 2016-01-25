@@ -419,10 +419,11 @@ Its general structure is:
 
 - The value of the type member must be `"Domain"`.
 - For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
-- A domain object must have the members `"axes"`, `"referencing"`, and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
+- A domain object must have the members `"axes"` and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
 - The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object as defined below. 
-- The value of `"referencing"` in a domain object is an array of reference system connection objects as defined below.
 - The value of `"rangeAxisOrder"` must be an array of all axis identifiers of the domain object. It determines in which order range values must be stored (see "Coordinate Space" below).
+- A domain object may have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
+- A domain object must have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
 
 #### 6.1.1. Axis Objects
 
@@ -661,7 +662,8 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 - A coverage collection object may have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
-- A coverage collection object may have a member with the name `"parameters"` where the value is a list of parameter objects.
+- A coverage collection object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
+- A coverage collection object may have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
 ## 7. Linked Data
 
