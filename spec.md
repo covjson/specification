@@ -306,7 +306,32 @@ Example of a projected CRS (here [British National Grid](http://spatialreference
 }
 ```
 
-
+Example of a vertical CRS with embedded detail information:
+```js
+{
+  "type": "VerticalCRS",
+  "id": "http://www.opengis.net/def/crs/EPSG/0/5703"
+  "datum": {
+    "id": "http://www.opengis.net/def/datum/EPSG/0/5103",
+    "label": {
+      "en": "North American Vertical Datum 1988"
+    }
+  },
+  "cs": {
+    "id": "http://www.opengis.net/def/cs/EPSG/0/6499",
+    "axes": [{
+      "id": "http://www.opengis.net/def/axis/EPSG/0/114",
+      "name": {
+        "en": "Gravity-related height"
+      },
+      "direction": "up",
+      "unit": {
+        "symbol": "m"
+      }
+    }]
+  }
+}
+```
 
 
 ### 5.2. Temporal Reference Systems
