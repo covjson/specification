@@ -336,42 +336,29 @@ Example of a vertical CRS with embedded detail information:
 
 ### 5.2. Temporal Reference Systems
 
-Time is referenced by a temporal reference system (temporal RS), which is either based on a string notation
-or a coordinate reference system (CRS).
+Time is referenced by a temporal reference system (temporal RS).
+In this specification, only a string-based notation for time values is defined.
 
-- A temporal RS object must have a member `"type"` with value `"TemporalRS"` if the referenced values
-are in string notation, or `"TemporalCRS"` if the values are coordinates in a temporal coordinate system.
+- A temporal RS object must have a member `"type"`. The only currently defined value of it is `"TemporalRS"`.
 - A temporal RS object must have a member `"calendar"` with value `"Gregorian"` or a URI.
 - If the Gregorian calender is used, then `"calendar"` must have the value `"Gregorian"` and cannot be a URI.
-- If the temporal RS object has the type `"TemporalCRS"` then it must have the members `"origin"` and `"unit"`.
-- If `"origin"` is defined, then its value must be a string with the syntax of an RFC3339 date-time string 
-(YYYY-MM-DDTHH:MM:SS[.F]Z where Z is either "Z" or an offset +|-HH:MM). The syntax shall be applicable for
-calendars other than the Gregorian calendar if they use a compatible scheme (years, months, days, etc.).
-- If `"unit"` is defined, then its value must be an object with a member `"symbol"` that has a value of one of
-`"ms"` (milliseconds), `"s"` (seconds), `"min"` (minutes), `"h"` (hours), or `"d"` (days).
-A minute is defined as 60 seconds, an hour as 60 minutes, and a day as 24 hours.
-- If the temporal RS object has the type `"TemporalRS"` then the referenced values must be strings
-conforming to the syntax of XXX
-- If the temporal RS object has the type `"TemporalCRS"` then the referenced values must be numbers.
+- A temporal RS object may have a member `"timeScale"` with a URI as value if the time scale is not UTC. 
+  If omitted, the time scale defaults to UTC (`"http://www.opengis.net/def/trs/BIPM/0/UTC"`).
+- If the calendar is based on years, months, days, then the referenced values should use one of the following
+  ISO8601-based lexical representations:
+  - YYYY
+  - ±XYYYY (where X stands for extra year digits)
+  - YYYY-MM
+  - YYYY-MM-DD
+  - YYYY-MM-DDTHH:MM:SS[.F]Z where Z is either "Z" or a time scale offset +|-HH:MM
+- If calendar dates with reduced precision are used in a lexical representation (e.g. `"2016"`), then
+  a client should interpret those dates in that reduced precision.
 
-Example of a String-based temporal reference system:
+Example:
 ```js
 {
   "type": "TemporalRS",
-  "calendar": "Gregorian",
-  "notation": "iso8601"
-}
-```
-
-Example of a temporal CRS:
-```js
-{
-  "type": "TemporalCRS",
-  "calendar": "Gregorian",
-  "origin": "1980-01-01T00:00:00Z",
-  "unit": {
-    "symbol": "s"
-  }
+  "calendar": "Gregorian"
 }
 ```
 
