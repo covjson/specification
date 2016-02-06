@@ -161,7 +161,6 @@ Example for a continuous-data parameter:
     }
   },
   "unit" : {
-    "id" : "http://qudt.org/vocab/unit#DegreeCelsius",
     "label" : {
       "en": "degrees Celsius"
     },
