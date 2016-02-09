@@ -71,3 +71,10 @@ In this case, the values array can be stored as a compact uint16 typed array in 
 `application/prs.coverage+cbor`
 
 A software may only claim support for reading a CoverageJSON document encoded in CBOR if it can interpret the [typed array tags of CBOR](https://tools.ietf.org/html/draft-jroatch-cbor-tags-03).
+
+
+## README..
+
+## How can JSON be efficient?
+
+Contrarily to its name, CoverageJSON has two serialization forms: JSON and [CBOR](http://cbor.io), each with its own file extension and content type. The latter is a binary format based on the JSON data model (and allowing some extensions like packed arrays). Within CoverageJSON, CBOR provides improved space and parsing efficiency for bigger coverages. Supporting the JSON format as well allows for easy prototyping, debugging, and understanding of the format.

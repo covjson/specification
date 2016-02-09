@@ -29,10 +29,6 @@ With the advent of linked data, some measurement data is directly represented as
 
 For all these reasons, the CoverageJSON format was developed which tries to fill these gaps, while being linked-data friendly, space-efficient, and easy to produce and consume.
 
-## How can JSON be efficient?
-
-Contrarily to its name, CoverageJSON has two serialization forms: JSON and [CBOR](http://cbor.io), each with its own file extension and content type. The latter is a binary format based on the JSON data model (and allowing some extensions like packed arrays). Within CoverageJSON, CBOR provides improved space and parsing efficiency for bigger coverages. Supporting the JSON format as well allows for easy prototyping, debugging, and understanding of the format.
-
 ## How can I use CoverageJSON?
 
 While the format is still in development and changing, a range of libraries are developed for reading and visualizing CoverageJSON documents:
