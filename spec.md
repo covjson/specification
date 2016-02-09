@@ -611,13 +611,15 @@ The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly sepa
 
 If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the CoverageJSON media type.
 
-## 9. Media Type, File Extensions, and Encodings
+## 9. Media Type and File Extension
 
 The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
 The file extension for JSON shall be `covjson`.
 
 ## Appendix A. Coverage Examples
+
+TODO, see http://reading-escience-centre.github.io/leaflet-coverage-demo/
 
 ## Attribution
 
