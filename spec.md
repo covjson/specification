@@ -24,7 +24,7 @@ WORK-IN-PROGRESS
     <th>Abstract</th>
     <td>
       CoverageJSON is a geospatial coverage interchange format based on JavaScript
-      Object Notation (JSON) and Concise Binary Object Representation (CBOR).
+      Object Notation (JSON).
     </td>
   </tr>
   <tr>
@@ -39,11 +39,9 @@ WORK-IN-PROGRESS
 
 ## 1. Introduction
 
-CoverageJSON is a format for encoding a variety of coverages like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. CoverageJSON currently supports the following domain types: Grid, Profile, PointSeries, Point, Trajectory, Section, Polygon, MultiPolygon, and MultiPolygonSeries. A range in CoverageJSON  represents coverage values and supports the common offset/factor encoding. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
+CoverageJSON is a format for encoding coverage data like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. A range in CoverageJSON  represents coverage values. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
 
 A complete CoverageJSON data structure is always an object (in JSON terms). In CoverageJSON, an object consists of a collection of name/value pairs -- also called members. For each member, the name is always a string. Member values are either a string, number, object, array or one of the literals: true, false, and null. An array consists of elements where each element is a value as described above.
-
-A CoverageJSON object may be serialized as either JSON or CBOR.
 
 ### 1.1. Examples
 
@@ -99,7 +97,7 @@ A CoverageJSON Grid coverage of global air temperature:
   }
 }
 ```
-where `"http://.../coverages/123/ranges/TEMP"` points to the following document, here shown as JSON serialization:
+where `"http://.../coverages/123/ranges/TEMP"` points to the following document:
 ```js
 {
   "type" : "Range",
@@ -113,7 +111,6 @@ Range data can also be directly embedded into the main CoverageJSON document, ma
 
 - JavaScript Object Notation (JSON), and the terms object, name, value, array, string, number, and null, are defined in [IETF RFC 4627](http://www.ietf.org/rfc/rfc4627.txt).
 - JSON-LD is defined in [http://www.w3.org/TR/json-ld/](http://www.w3.org/TR/json-ld/).
-- Concise Binary Object Representation (CBOR) is defined in [IETF RFC 7049](http://tools.ietf.org/rfc/rfc7049.txt).
 - The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [IETF RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
 ## 2. i18n Objects
@@ -536,9 +533,8 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
 A CoverageJSON object with the type `"Range"` is a range object.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
-- A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. Note: When the offset/factor encoding (see section below) is used, then this type corresponds to the desired value type *after* applying the transformation, which currently can only be `"float"` in that case. 
+- A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. 
 - A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null.
-- If the `"values"` array of a range object does not contain nulls, then for CBOR serializations typed arrays (as in RDFxxxx) should be used for increased space and parsing efficiency.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
@@ -551,63 +547,6 @@ Example:
   "dataType": "float"
 }
 ```
-
-#### 6.2.1. Offset/Factor Encoding (CBOR-only)
-
-A simple compression scheme typically used for storing low-resolution floating point data as small integers in binary formats is the offset/factor encoding. When using CBOR as serialization format, this encoding scheme may be used for the `"values"` array as described below.
-
-- A range object may have both or none of the `"offset"` and `"factor"` members where the value of each is a number.
-- If both `"offset"` and `"factor"` are present in a range object, then `"dataType"` must be `"float"`.
-- If both `"offset"` and `"factor"` are present in a range object, each non-null value `v` in `"values"` must be converted to `v * factor + offset` when accessing it and all values in the `"values"` array must be integers or nulls. The converted value is always a floating point number and therefore this mechanism shall not be used for values that shall result in integers.
-- If both `"offset"` and `"factor"` are present in a range object, then `"validMin"` and `"validMax"`, if existing, must be integers and be converted equally to the numbers in `"values"` when accessing them.
-
-Example (JSON notation used for convenience only):
-```js
-{
-  "type": "Range",
-  "values": [1230, 1250, 1150, 2310, null, null, 1010],
-  "factor": 100,
-  "offset": 0,
-  "validMin": 0,
-  "validMax": 5000,
-  "dataType": "float"
-}
-
-```
-
-#### 6.2.2. Missing Value Encoding (CBOR-only)
-
-If only a small amount of values in `"values"` are missing and the value type is numeric, then it is more space efficient to encode these missing values using a number outside the valid value extent (instead of null) so that CBOR's typed array representation for `"values"` can be applied.
-
-- If a range object contains the `"validMin"` and `"validMax"` members and the value of `"dataType"` is `"integer"` or `"float"`, then the range object may have a member `"missing"` with value `"nonvalid"`.
-- If a range object has the member `"missing"` with value `"nonvalid"`, then all missing values in `"values"` must be encoded as a number outside the `"validMin"`/`"validMax"` extent and interpreted as missing values.
-
-Example (JSON notation used for convenience only):
-```js
-{
-  "type": "Range",
-  "values": [12.3, 12.5, 11.5, 23.1, 555.0, 555.0, 10.1],
-  "validMin": 0.0,
-  "validMax": 50.0,
-  "missing": "nonvalid",
-  "dataType": "float"
-}
-```
-
-Example combining it with offset/factor encoding:
-```js
-{
-  "type": "Range",
-  "values": [1230, 1250, 1150, 2310, 55555, 55555, 1010],
-  "factor": 100,
-  "offset": 0,
-  "validMin": 0,
-  "validMax": 5000,
-  "missing": "nonvalid",
-  "dataType": "float"
-}
-```
-In this case, the values array can be stored as a compact uint16 typed array in CBOR. 
 
 ### 6.3. Coverage Objects
 
@@ -658,6 +597,8 @@ TODO expand
 
 ### 7.2. Linked Data Platform considerations
 
+TODO rethink this
+
 The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly separates RDF from non-RDF resources. In order to expose CoverageJSON documents, which may contain a mix of RDF and non-RDF content, in such a platform, the following guidelines may be used:
 
 - Every CoverageJSON document, including those embedded in another, should be made available as a separate resource with its own URL and referenced in parent CoverageJSON documents where appropriate (e.g. a coverage should contain the URLs for its domain and range documents, no matter if they are embedded or not).
@@ -668,15 +609,13 @@ The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly sepa
 
 ## 8. Resolving domain and range URLs
 
-If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the supported CoverageJSON media types.
+If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the CoverageJSON media type.
 
 ## 9. Media Type, File Extensions, and Encodings
 
-The CoverageJSON media type shall be `application/prs.coverage+json` when encoded in JSON, and `application/prs.coverage+cbor` when encoded in CBOR. Both media types have an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
+The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
-The file extension for JSON shall be `covjson`, and for CBOR `covcbor`.
-
-A software may only claim support for reading a CoverageJSON document encoded in CBOR if it can interpret the [typed array tags of CBOR](https://tools.ietf.org/html/draft-jroatch-cbor-tags-03).
+The file extension for JSON shall be `covjson`.
 
 ## Appendix A. Coverage Examples
 
