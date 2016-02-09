@@ -615,7 +615,7 @@ If a domain or range is referenced by a URL in a CoverageJSON document, then the
 
 The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
 
-The file extension for JSON shall be `covjson`.
+The file extension shall be `covjson`.
 
 ## Appendix A. Coverage Examples
 
