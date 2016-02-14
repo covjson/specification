@@ -78,10 +78,16 @@ A CoverageJSON Grid coverage of global air temperature:
     "TEMP": {
       "type" : "Parameter",
       "description" : {
-        "en": "Global air temperature in degrees Celsius"
+        "en": "The air temperature measured in degrees Celsius."
       },
       "unit" : {
-        "symbol" : "°C"
+        "label": {
+          "en": "Degree Celsius"
+        },
+        "symbol": {
+          "value": "Cel"
+          "type": "http://www.opengis.net/def/uom/UCUM/"
+        }
       },
       "observedProperty" : {
         "id" : "http://vocab.nerc.ac.uk/standard_name/air_temperature/",
@@ -115,7 +121,7 @@ Range data can also be directly embedded into the main CoverageJSON document, ma
 
 ## 2. i18n Objects
 
-An i18n object represents a string in multiple languages where each key is a language tag as defined in [BCP 47](http://tools.ietf.org/html/bcp47), and the value the string in that language. At minimum, a translation with the tag `"en"` must be given.
+An i18n object represents a string in multiple languages where each key is a language tag as defined in [BCP 47](http://tools.ietf.org/html/bcp47), and the value is the string in that language.
 
 Example:
 
@@ -137,7 +143,8 @@ Parameter objects represent metadata about the values of the coverage in terms o
 - A parameter object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter.
 - A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"`, `"description"`, and `"categories"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property. If given, the value of `"categories"` must be a non-empty array of category objects. A category object must an `"id"` and a `"label"` member,  and may have a `"description"` member. The value of `"id"` must be a string and should be a common identifier. The value of `"label"` must be an i18n object of the name of the category and should be short. If given, the value of `"description"` must be an i18n object with a textual description of the category.
 - A parameter object may have a member with the name `"categoryEncoding"` where the value is an object where each key is equal to an `"id"` value of the `"categories"` array within the `"observedProperty"` member of the parameter object. There must be no duplicate keys. The value is either an integer or an array of integers where each integer must be unique within the object.
-- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must either be a string of the symbolic notation of the unit, or an object with the members `"value"` and `"type"` where `"value"` is the symbolic unit notation and `"type"` is a URL which references the unit serialization scheme that is used. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier.
+- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must either be a string of the symbolic notation of the unit, or an object with the members `"value"` and `"type"` where `"value"` is the symbolic unit notation and `"type"` is a URI which references the unit serialization scheme that is used. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier. It is strongly recommended to reference a unit serialization scheme to allow automatic unit conversion.
+- If [UCUM](http://unitsofmeasure.org) is used as unit serialization scheme, then the `"type"` value of `"symbol"` shall be `"http://www.opengis.net/def/uom/UCUM/"`.
 - A parameter object must not have a `"unit"` member if the `"observedProperty"` member has a `"categories"` member.
 
 
@@ -146,7 +153,7 @@ Example for a continuous-data parameter:
 {
   "type" : "Parameter",
   "description" : {
-    "en": "The sea surface temperature in degrees celsius."
+    "en": "The sea surface temperature in degrees Celsius."
   },
   "observedProperty" : {
     "id" : "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
@@ -159,9 +166,12 @@ Example for a continuous-data parameter:
   },
   "unit" : {
     "label" : {
-      "en": "degrees Celsius"
+      "en": "Degree Celsius"
     },
-    "symbol" : "°C"
+    "symbol": {
+      "value": "Cel"
+      "type": "http://www.opengis.net/def/uom/UCUM/"
+    }
   }
 }
 ```
@@ -258,7 +268,13 @@ where `"SST_stddev"` references the following parameter:
     "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
-    "symbol" : "°C"
+    "label": {
+      "en": "Kelvin"
+    },
+    "symbol": {
+      "value": "K"
+      "type": "http://www.opengis.net/def/uom/UCUM/"
+    }
   }
 }
 ```
@@ -274,7 +290,13 @@ and `"SST_mean"`:
     "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
-    "symbol" : "°C"
+    "label": {
+      "en": "Kelvin"
+    },
+    "symbol": {
+      "value": "K"
+      "type": "http://www.opengis.net/def/uom/UCUM/"
+    }
   }
 }
 ```
