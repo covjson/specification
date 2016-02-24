@@ -8,8 +8,7 @@ WORK-IN-PROGRESS
     <th>Authors</th>
     <td>
       Maik Riechert (<a href="http://www.reading.ac.uk">University of Reading</a>),
-      Jon Blower (<a href="http://www.reading.ac.uk">University of Reading</a>),
-      Joan Masó (<a href="http://www.creaf.cat">CREAF, Universitat Autònoma de Barcelona</a>)
+      Jon Blower (<a href="http://www.reading.ac.uk">University of Reading</a>)
     </td>
   </tr>
   <tr>
@@ -37,15 +36,25 @@ WORK-IN-PROGRESS
   </tr>
 </table>
 
+## TODO
+
+The following items are (major) outstanding issues to be resolved for the first version: 
+- [#10](https://github.com/Reading-eScience-Centre/coveragejson/issues/10)
+  Enforcing CRS constraints (e.g. longitudes across date line)
+- [#44](https://github.com/Reading-eScience-Centre/coveragejson/issues/44)
+  Support (or no support) for non-JSON range encoding formats
+- [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
+  Representation of multiple time axes
+
 ## 1. Introduction
 
 CoverageJSON is a format for encoding coverage data like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. A range in CoverageJSON  represents coverage values. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
 
 A complete CoverageJSON data structure is always an object (in JSON terms). In CoverageJSON, an object consists of a collection of name/value pairs -- also called members. For each member, the name is always a string. Member values are either a string, number, object, array or one of the literals: true, false, and null. An array consists of elements where each element is a value as described above.
 
-### 1.1. Examples
+### 1.1. Example
 
-A CoverageJSON Grid coverage of global air temperature:
+A CoverageJSON grid coverage of global air temperature:
 
 ```js
 {
@@ -113,7 +122,19 @@ where `"http://.../coverages/123/ranges/TEMP"` points to the following document:
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
 
-### 1.2. Definitions
+### 1.2. Differences to OGC Coverage Implementation Schema (CIS)
+
+The candidate OGC standard [Coverage Implementation Schema 1.1](http://www.opengeospatial.org/pressroom/pressreleases/2345) (short CIS)
+defines a coverage model targeted towards OGC service types like Web Coverage Service (WCS)
+and is the successor of the
+["GML 3.2.1 Application Schema – Coverages" version 1.0](https://portal.opengeospatial.org/files/?artifact_id=48553) (short GMLCOV).
+The following lists some areas where the model used by CoverageJSON departs from CIS in favour of simplicity/usability:
+- CIS enforces one CRS per coverage, CoverageJSON allows CRSs to be associated with a given combination of dimensions.
+- CIS has separate domain concepts for grids vs other types, CoverageJSON always uses grids for organizing domains.
+- CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
+- CIS has no notion of semantically grouping parameters (e.g. velocity = speed + direction), CoverageJSON allows that.
+
+### 1.3. Definitions
 
 - JavaScript Object Notation (JSON), and the terms object, name, value, array, string, number, and null, are defined in [IETF RFC 4627](http://www.ietf.org/rfc/rfc4627.txt).
 - JSON-LD is defined in [http://www.w3.org/TR/json-ld/](http://www.w3.org/TR/json-ld/).
