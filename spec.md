@@ -128,7 +128,10 @@ The candidate OGC standard [Coverage Implementation Schema 1.1](http://www.openg
 defines a coverage model targeted towards OGC service types like Web Coverage Service (WCS)
 and is the successor of the
 ["GML 3.2.1 Application Schema – Coverages" version 1.0](https://portal.opengeospatial.org/files/?artifact_id=48553) (short GMLCOV).
-The following lists some areas where the model used by CoverageJSON departs from CIS in favour of simplicity/usability:
+
+The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF). 
+
+The following lists some areas where the model used by CoverageJSON departs from CIS:
 - CIS enforces one CRS per coverage, CoverageJSON allows CRSs to be associated with a given combination of dimensions.
 - CIS has separate domain concepts for grids vs other types, CoverageJSON always uses grids for organizing domains.
 - CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
