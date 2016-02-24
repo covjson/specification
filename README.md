@@ -4,7 +4,7 @@
 
 This repository hosts the experimental CoverageJSON specification that is currently being developed.
 
-**Feedback is very welcome!** Please use the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues) for any kind of discussion.
+**Feedback is very welcome!** Please use either the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues), [join the gitter chat](https://gitter.im/Reading-eScience-Centre/coveragejson), or [send us an email](mailto:m.riechert@reading.ac.uk,j.d.blower@reading.ac.uk?Subject=CoverageJSON%20feedback).
 
 ## What is CoverageJSON?
 
