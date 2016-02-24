@@ -1,5 +1,7 @@
 # CoverageJSON
 
+[![Join the chat at https://gitter.im/Reading-eScience-Centre/coveragejson](https://badges.gitter.im/Reading-eScience-Centre/coveragejson.svg)](https://gitter.im/Reading-eScience-Centre/coveragejson?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This repository hosts the experimental CoverageJSON specification that is currently being developed.
 
 **Feedback is very welcome!** Please use the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues) for any kind of discussion.
