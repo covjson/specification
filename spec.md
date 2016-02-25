@@ -617,11 +617,9 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
 - A coverage collection object may have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
-## 7. Linked Data
+## 7. JSON-LD
 
-### 7.1. JSON-LD Context
-
-A linked data context in terms of JSON-LD should be established by including a `"@context"` element in the root of a CoverageJSON object which refers to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary local contexts. The base CoverageJSON context uses common vocabularies like RDF Schema, DCMI Metadata Terms, and W3C Time. Domain and range objects should *not* have a context because those data, in particular the potentially big arrays, are currently not suitable to be represented as linked data.
+A JSON-LD context may be established by including a `"@context"` element in the root of a CoverageJSON object which should refer to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary contexts. Domain axis values and range values should *not* be exposed as linked data since they are currently not suitable for such representation.
 
 Example:
 ```js
@@ -629,8 +627,7 @@ Example:
   "@context": [
      "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld",
      {
-      "PSAL" : { "@id" : "http://.../datasets/1/params/PSAL", "@type" : "@id" },
-      "POTM" : { "@id" : "http://.../datasets/1/params/POTM", "@type" : "@id" }
+      ...
      }
    ],
    "type": "Coverage",
@@ -641,18 +638,6 @@ Example:
 All identifiers referred to in a CoverageJSON object should be URIs. These URIs should be taken from established vocabularies if available.
 
 TODO expand
-
-### 7.2. Linked Data Platform considerations
-
-TODO rethink this
-
-The [Linked Data Platform (LDP) recommendation](www.w3.org/TR/ldp/) cleanly separates RDF from non-RDF resources. In order to expose CoverageJSON documents, which may contain a mix of RDF and non-RDF content, in such a platform, the following guidelines may be used:
-
-- Every CoverageJSON document, including those embedded in another, should be made available as a separate resource with its own URL and referenced in parent CoverageJSON documents where appropriate (e.g. a coverage should contain the URLs for its domain and range documents, no matter if they are embedded or not).
-- Domain and range documents should be treated as non-RDF resources, and coverage and coverage collection documents as RDF resources.
-- Domain and range documents should always be returned with a CoverageJSON content type, while coverage and coverage collection documents should be made available under RDF as well as CoverageJSON content types.
-- If one of the RDF content types is requested for a coverage or coverage collection, then appropriate JSON-LD (or another RDF serialization if required) should be returned, where the domain and range objects should not be embedded and thus referenced by URL only. A coverage collection should be exposed as a LDP container.
-- If one of the CoverageJSON content types is requested for any CoverageJSON document, then any compatible form of the CoverageJSON document may be returned and be treated as a non-RDF resource. Whether to embed domain and/or range may be decided with additional URL query parameters or other means.
 
 ## 8. Resolving domain and range URLs
 
