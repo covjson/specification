@@ -269,7 +269,7 @@ Example of a group describing uncertainty of a parameter:
 {
   "type": "ParameterGroup",
   "label": {
-    "en": "Sea surface temperature with uncertainty information"
+    "en": "Daily sea surface temperature with uncertainty information"
   },
   "observedProperty": {
     "id": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/",
@@ -280,15 +280,16 @@ Example of a group describing uncertainty of a parameter:
   "members": ["SST_mean", "SST_stddev"]
 }
 ```
-where `"SST_stddev"` references the following parameter:
+where `"SST_mean"` references the following parameter:
 ```js
 {
   "type" : "Parameter",
   "observedProperty" : {
     "label" : {
-      "en": "Sea surface temperature standard deviation"
+      "en": "Sea surface temperature daily mean"
     },
-    "statisticalMeasure": "http://www.uncertml.org/statistics/standard-deviation",
+    "statisticalMeasure": "http://www.uncertml.org/statistics/mean",
+    "statisticalPeriod": "P1D",
     "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
@@ -302,15 +303,15 @@ where `"SST_stddev"` references the following parameter:
   }
 }
 ```
-and `"SST_mean"`:
+and `"SST_stddev"`:
 ```js
 {
   "type" : "Parameter",
   "observedProperty" : {
     "label" : {
-      "en": "Sea surface temperature daily mean"
+      "en": "Sea surface temperature standard deviation of daily mean"
     },
-    "statisticalMeasure": "http://.../statistics/mean_daily",
+    "statisticalMeasure": "http://www.uncertml.org/statistics/standard-deviation",
     "broader": "http://vocab.nerc.ac.uk/standard_name/sea_surface_temperature/"
   },
   "unit" : {
