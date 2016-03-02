@@ -8,7 +8,7 @@ WORK-IN-PROGRESS
     <th>Authors</th>
     <td>
       Maik Riechert (<a href="http://www.reading.ac.uk">University of Reading</a>),
-      Jon Blower (<a href="http://www.reading.ac.uk">University of Reading</a>)
+      <a href="http://www.met.reading.ac.uk/users/users/1659">Jon Blower</a> (<a href="http://www.reading.ac.uk">University of Reading</a>)
     </td>
   </tr>
   <tr>
@@ -17,7 +17,7 @@ WORK-IN-PROGRESS
   </tr>
   <tr>
     <th>Date</th>
-    <td>xx xxxx 2015</td>
+    <td>02 March 2016</td>
   </tr>
   <tr>
     <th>Abstract</th>
@@ -42,7 +42,7 @@ The following items are (major) outstanding issues to be resolved for the first 
 - [#10](https://github.com/Reading-eScience-Centre/coveragejson/issues/10)
   Enforcing CRS constraints (e.g. longitudes across date line)
 - [#44](https://github.com/Reading-eScience-Centre/coveragejson/issues/44)
-  Support (or no support) for non-JSON range encoding formats
+  Decide whether to support non-JSON range encoding formats
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
 
@@ -132,8 +132,8 @@ and is the successor of the
 The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF). 
 
 The following lists some areas where the model used by CoverageJSON departs from CIS:
-- CIS enforces one CRS per coverage, CoverageJSON allows CRSs to be associated with a given combination of dimensions.
-- CIS has separate domain concepts for grids vs other types, CoverageJSON always uses grids for organizing domains.
+- CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of dimensions.
+- CIS has separate domain concepts for grids vs other types, CoverageJSON always uses collections of orthogonal axes for organizing domains, whether gridded or not.
 - CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
 - CIS has no notion of semantically grouping parameters (e.g. velocity = speed + direction), CoverageJSON allows that.
 
@@ -656,3 +656,7 @@ TODO, see http://reading-escience-centre.github.io/leaflet-coverage-demo/
 ## Attribution
 
 This specification uses ideas and sentence structures from the [GeoJSON specification](http://geojson.org/geojson-spec.html) which is licensed under a [Creative Commons Attribution 3.0 United States License](http://creativecommons.org/licenses/by/3.0/us/).
+
+## Acknowledgements
+
+This work was inspired by a demonstration of the concept by Joan Masó of CREAF.
