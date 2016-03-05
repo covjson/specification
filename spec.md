@@ -581,7 +581,6 @@ A CoverageJSON object with the type `"Range"` is a range object.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
 - A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. 
-- A range object may have both or none of the `"validMin"` and `"validMax"` members where the value of each is a number. The value of `"validMin"` must be equal to or smaller than the minimum value in the `"values"` array, ignoring null. The value of `"validMax"` must be equal to or greater than the maximum value in the `"values"` array, ignoring null.
 - Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
@@ -589,8 +588,6 @@ Example:
 {
   "type": "Range",
   "values": [12.3, 12.5, 11.5, 23.1, null, null, 10.1],
-  "validMin": 0.0,
-  "validMax": 50.0,
   "dataType": "float"
 }
 ```
