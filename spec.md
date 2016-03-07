@@ -438,10 +438,11 @@ Its general structure is:
 #### 6.1.1. Axis Objects
 
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
-- The value of `"values"` is a non-empty array of axis values. The values in that array must be ordered monotonically according to their ordering relation defined by the used reference system.
+- The value of `"values"` is a non-empty array of axis values.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
 - The value of `"dataType"` determines the structure of an axis value and its dimensions that are made available for referencing. The value of `"dataType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single dimension and each axis value must be a number or string. For `"Tuple"`, each axis value must be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of dimensions. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. the x coordinates) form a dimension in the order they appear.
 - If missing, the member `"dataType"` defaults to `"Primitive"` and must not be included for that default case.
+- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values must be ordered monotonically, that is, increasing or decreasing.
 - The value of `"dimensions"` is a non-empty array of dimension identifiers corresponding to the order of the dimensions defined by `"dataType"`.
 - If missing, the member `"dimensions"` defaults to a one-element array of the axis identifier and must not be included for that default case.
 - A dimension identifier shall not be defined more than once in all axis objects of a domain object.
