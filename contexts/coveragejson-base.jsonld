@@ -31,7 +31,7 @@
     "symbol": "qudt:symbol",
     "categoryEncoding": "covjson:categoryEncoding",
     "ParameterGroup": "covjson:ParameterGroup",
-    "components": { "@id": "covjson:component", "@type": "@vocab" },
+    "members": { "@id": "covjson:member", "@type": "@vocab" },
     "domain": "covjson:domain",
     "domainTemplate": "covjson:domainTemplate",
     "ranges": "covjson:rangeSet",
@@ -71,10 +71,8 @@
     "PolygonCoverageCollection": "covjson:PolygonCoverageCollection",
     
     "referencing": "covjson:referencing",
-    "rs": "covjson:referenceSystem",
+    "system": "covjson:referenceSystem",
     "RS": "covjson:ReferenceSystem",
-    "srs": "covjson:spatialReferenceSystem",
-    "trs": "covjson:temporalReferenceSystem",
     
     "CRS": "covjson:CoordinateReferenceSystem",
     "cs": "covjson:coordinateSystem",

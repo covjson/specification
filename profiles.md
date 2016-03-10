@@ -42,10 +42,10 @@ WORK-IN-PROGRESS
 ## 2. Domain profiles
 
 Requirements for all domain profiles defined in this specification:
-- The axis and dimension identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
+- The axis and component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
 `"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial coordinate reference system.
-- The axis and dimension identifier `"t"` must refer to temporal coordinates and be referenced by a temporal reference system.
-- If a spatial CRS is used that has the axes longitude and latitude, or easting and northing, then the axis and dimension identifier `"x"` must refer to longitude / easting, and `"y"` to latitude / northing.
+- The axis and component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal reference system.
+- If a spatial CRS is used that has the axes longitude and latitude, or easting and northing, then the axis and component identifier `"x"` must refer to longitude / easting, and `"y"` to latitude / northing.
 
 
 ### Overview of domain profiles
@@ -156,8 +156,8 @@ Example:
 ### 2.5. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
-- The axis `"composite"` must have the data type `"Tuple"` and the dimension identifiers `"t","x","y","z"` or `"t","x","y"`.
-- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` dimension as defined in the corresponding reference system.
+- The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"t","x","y","z"` or `"t","x","y"`.
+- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Example:
 ```js
@@ -167,7 +167,7 @@ Example:
   "axes": {
     "composite": {
       "dataType": "Tuple",
-      "dimensions": ["t","x","y","z"],      
+      "components": ["t","x","y","z"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20, 1],
         ["2008-01-01T04:30:00Z", 2, 21, 3]
@@ -186,7 +186,7 @@ Example without z:
   "axes": {
     "composite": {
       "dataType": "Tuple",
-      "dimensions": ["t","x","y"],      
+      "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
         ["2008-01-01T04:30:00Z", 2, 21]
@@ -205,7 +205,7 @@ Example with z defined as constant value:
   "axes": {
     "composite": {
       "dataType": "Tuple",
-      "dimensions": ["t","x","y"],      
+      "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
         ["2008-01-01T04:30:00Z", 2, 21]
@@ -220,8 +220,8 @@ Example with z defined as constant value:
 ### 2.6. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
-- The axis `"composite"` must have the data type `"Tuple"` and the dimension identifiers `"t","x","y"`.
-- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` dimension as defined in the corresponding reference system.
+- The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"t","x","y"`.
+- The value ordering of the axis `"composite"` must follow the ordering of its `"t"` component as defined in the corresponding reference system.
 - The axis order must be `"z","composite"`.
 
 Example:
@@ -233,7 +233,7 @@ Example:
     "z": { "values": [10,20,30] },
     "composite": {
       "dataType": "Tuple",
-      "dimensions": ["t","x","y"],
+      "components": ["t","x","y"],
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
         ["2008-01-01T04:30:00Z", 2, 21]
@@ -247,12 +247,12 @@ Example:
 
 ### 2.7. Polygon
 
-Polygons are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional dimensions).
+Polygons are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional components).
 
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first must be the exterior ring and any others must be interior rings or holes.
 - A Polygon domain must have the axis `"composite"` which has a single Polygon value.
-- The axis `"composite"` must have the data type `"Polygon"` and the dimension identifiers `"x","y"`.
+- The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A Polygon domain may have the axes `"z"` and `"t"` which both must have a single value only.
 
 Note that each polygon represents a single coordinate within the coordinate space.
@@ -265,7 +265,7 @@ Example:
   "axes": {
     "composite": {
       "dataType": "Polygon",
-      "dimensions": ["x","y"],
+      "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
       ]
@@ -281,7 +281,7 @@ Example:
 
 - A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon value.
 - A PolygonSeries domain may have the axis `"z"` which must have a single value only.
-- The axis `"composite"` must have the data type `"Polygon"` and the dimension identifiers `"x","y"`.
+- The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
 
 Example:
 ```js
@@ -291,7 +291,7 @@ Example:
   "axes": {
     "composite": {
       "dataType": "Polygon",
-      "dimensions": ["x","y"],
+      "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
       ]
@@ -306,7 +306,7 @@ Example:
 ### 2.9. MultiPolygon
 
 - A MultiPolygon domain must have the axis `"composite"` where the values are Polygons.
-- The axis `"composite"` must have the data type `"Polygon"` and the dimension identifiers `"x","y"`.
+- The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain may have the axes `"z"` and `"t"` which both must have a single value only.
 
 Example:
@@ -317,7 +317,7 @@ Example:
   "axes": {
     "composite": {
       "dataType": "Polygon",
-      "dimensions": ["x","y"],
+      "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
         [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]
@@ -333,7 +333,7 @@ Example:
 ### 2.10. MultiPolygonSeries
 
 - A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons.
-- The axis `"composite"` must have the data type `"Polygon"` and the dimension identifiers `"x","y"`.
+- The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain may have the axis `"z"` which must have a single value only.
 - The axis order must be either `"t","z","composite"` or `"t","composite"`, depending on which axes are defined.
 
@@ -345,7 +345,7 @@ Example:
   "axes": {
     "composite": {
       "dataType": "Polygon",
-      "dimensions": ["x","y"],
+      "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
         [ [ [200.0, 10.0], [201.0, 10.0], [201.0, 11.0], [200.0, 11.0], [200.0, 10.0] ] ]

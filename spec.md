@@ -70,14 +70,14 @@ A CoverageJSON grid coverage of global air temperature:
     },
     "rangeAxisOrder": ["t","y","x"],
     "referencing": [{
-      "dimensions": ["x","y"],
-      "srs": {
+      "components": ["x","y"],
+      "system": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
       }
     }, {
-      "dimensions": ["t"],
-      "trs": {
+      "components": ["t"],
+      "system": {
         "type": "TemporalRS",
         "calendar": "Gregorian"
       }
@@ -132,7 +132,7 @@ and is the successor of the
 The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF). 
 
 The following lists some areas where the model used by CoverageJSON departs from CIS:
-- CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of dimensions.
+- CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of components (TODO introduce components before).
 - CIS has separate domain concepts for grids vs other types, CoverageJSON always uses collections of orthogonal axes for organizing domains, whether gridded or not.
 - CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
 - CIS has no notion of semantically grouping parameters (e.g. velocity = speed + direction), CoverageJSON allows that.
@@ -440,12 +440,12 @@ Its general structure is:
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values.
 - The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
-- The value of `"dataType"` determines the structure of an axis value and its dimensions that are made available for referencing. The value of `"dataType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single dimension and each axis value must be a number or string. For `"Tuple"`, each axis value must be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of dimensions. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate dimensions (e.g. the x coordinates) form a dimension in the order they appear.
+- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single component and each axis value must be a number or string. For `"Tuple"`, each axis value must be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
 - If missing, the member `"dataType"` defaults to `"Primitive"` and must not be included for that default case.
 - If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values must be ordered monotonically, that is, increasing or decreasing.
-- The value of `"dimensions"` is a non-empty array of dimension identifiers corresponding to the order of the dimensions defined by `"dataType"`.
-- If missing, the member `"dimensions"` defaults to a one-element array of the axis identifier and must not be included for that default case.
-- A dimension identifier shall not be defined more than once in all axis objects of a domain object.
+- The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components defined by `"dataType"`.
+- If missing, the member `"components"` defaults to a one-element array of the axis identifier and must not be included for that default case.
+- A component identifier shall not be defined more than once in all axis objects of a domain object.
 - An axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
 - If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
 
@@ -472,7 +472,7 @@ Example of an axis object with tuple values:
 ```js
 {
   "dataType": "Tuple",
-  "dimensions": ["t","x","y"],  
+  "components": ["t","x","y"],  
   "values": [
     ["2008-01-01T04:00:00Z",1,20],
     ["2008-01-01T04:30:00Z",2,21]
@@ -484,7 +484,7 @@ Example of an axis object with Polygon values:
 ```js
 {
   "dataType": "Polygon",
-  "dimensions": ["x","y"],
+  "components": ["x","y"],
   "values": [
     [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
   ]
@@ -495,14 +495,14 @@ Example of an axis object with Polygon values:
 
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
-- A reference system connection object must have a member `"dimensions"` which has as value an array of dimension identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
-- A reference system connection object must have exactly one of the members `"srs"`, `"trs"`, or `"rs"`, where `"srs"` has as value a spatial reference system object, `"trs"` a temporal reference system object, and `"rs"` a reference system object that is neither spatial nor temporal. Section 5 defines common types of spatial and temporal reference system objects.
+- A reference system connection object must have a member `"components"` which has as value an array of component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
+- A reference system connection object must have a member `"system"` which has as value a reference system object. Section 5 defines common types of  reference system objects.
 
 Example of a reference system connection object:
 ```js
 {
-  "dimensions": ["y","x","z"],
-  "srs": {
+  "components": ["y","x","z"],
+  "system": {
     "type": "GeodeticCRS",
     "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
   }
@@ -529,14 +529,14 @@ Example of a domain object with [`"Grid"`](profiles.md) profile:
   },
   "rangeAxisOrder": ["t","z","y","x"],
   "referencing": [{
-    "dimensions": ["t"],
-    "trs": {
+    "components": ["t"],
+    "system": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "dimensions": ["y","x","z"],
-    "srs": {
+    "components": ["y","x","z"],
+    "system": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
     }
@@ -552,7 +552,7 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
   "axes": {
     "composite": {
       "dataType": "Tuple",
-      "dimensions": ["t","x","y"],
+      "components": ["t","x","y"],
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
         ["2008-01-01T04:30:00Z", 2, 21]
@@ -560,14 +560,14 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
     }
   },
   "referencing": [{
-    "dimensions": ["t"],
-    "trs": {
+    "components": ["t"],
+    "system": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "dimensions": ["x","y"],
-    "srs": {
+    "components": ["x","y"],
+    "system": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
     }
