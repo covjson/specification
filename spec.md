@@ -39,12 +39,10 @@ WORK-IN-PROGRESS
 ## TODO
 
 The following items are (major) outstanding issues to be resolved for the first version: 
-- [#10](https://github.com/Reading-eScience-Centre/coveragejson/issues/10)
-  Enforcing CRS constraints (e.g. longitudes across date line)
-- [#44](https://github.com/Reading-eScience-Centre/coveragejson/issues/44)
-  Decide whether to support non-JSON range encoding formats
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
+- [#51](https://github.com/Reading-eScience-Centre/coveragejson/issues/51)
+  Version number inclusion / evolution of format
 
 ## 1. Introduction
 
