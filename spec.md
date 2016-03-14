@@ -326,8 +326,9 @@ and `"SST_stddev"`:
 
 ## 5. Reference system objects
 
-Referencing values in some system is achieved with reference systems, which are typically spatial or temporal.
-The following defines common spatial and temporal reference systems.
+Referencing values in some system is achieved with reference systems, which are typically spatial or temporal,
+but can also be identifier-based.
+The following defines common types of such reference systems.
 
 ### 5.1. Spatial Reference Systems
 
@@ -403,6 +404,42 @@ Example:
   "calendar": "Gregorian"
 }
 ```
+
+### 5.3. Identifier-based Reference Systems
+
+Identifier-based reference systems (identifier RS) .
+
+- An identifier RS object must have a member `"type"` with value `"IdentifierRS"`.
+- An identifier RS object may have a member `"id"` where the value must be a string and should be a common identifier for the reference system.
+- An identifier RS object may have a member `"label"` where the value must be an i18n object that is the name of the reference system.
+- An identifier RS object must have a member `"targetConcept"` where the value is an object that must have a member `"label"` where the value must be an i18n object that is the name of the concept which is referenced in the system.
+- An identifier RS object may have a member `"identifiers"` where the value is an object where each key is an identifier referenced by the identifier RS and each value an object describing the referenced concept, equal to `"targetConcept"`.
+- Domain values associated to an identifier RS must be strings.
+
+Example of a geographic identifier reference system:
+```js
+{
+  "type": "IdentifierRS",
+  "id": "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+  "label": { "en": "ISO 3166-1 alpha-2 codes" },
+  "targetConcept": {
+    "id": "http://dbpedia.org/resource/Country",
+    "label": {"en": "Country", "de": "Land" }
+  },
+  "identifiers": {
+    "de": {
+      "id": "http://dbpedia.org/resource/Germany",
+      "label": { "de": "Deutschland", "en": "Germany" }
+    },
+    "gb": {
+      "id": "http://dbpedia.org/resource/United_Kingdom",
+      "label": { "de": "Vereinigtes Königreich", "en": "United Kingdom" }
+    }
+  }
+}
+```
+The domain values in the above example would be `"de"` and `"gb"`.
+
 
 ## 6. CoverageJSON Objects
 
