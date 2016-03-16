@@ -40,6 +40,8 @@
     "Domain": "covjson:Domain",
     "Grid": "covjson:Grid",
     "VerticalProfile": "covjson:VerticalProfile",
+    "MultiPointSeries": "covjson:MultiPointSeries",
+    "MultiPoint": "covjson:MultiPoint",
     "PointSeries": "covjson:PointSeries",
     "Point": "covjson:Point",
     "Trajectory": "covjson:Trajectory",

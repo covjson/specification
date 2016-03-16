@@ -46,6 +46,7 @@ Requirements for all domain profiles defined in this specification:
 `"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` must be referenced by a spatial coordinate reference system.
 - The axis and component identifier `"t"` must refer to temporal coordinates and be referenced by a temporal reference system.
 - If a spatial CRS is used that has the axes longitude and latitude, or easting and northing, then the axis and component identifier `"x"` must refer to longitude / easting, and `"y"` to latitude / northing.
+- A domain that states conformance to one of the profiles in this specification may have any number of additional one-coordinate axes not defined here. Any such axes must appear at the end of `"rangeAxisOrder"` (if existing).
 
 
 ### Overview of domain profiles
@@ -56,6 +57,8 @@ Grid                 |[M]|[M]|[O]|[O]
 VerticalProfile      | M | M |[M]| O
 PointSeries          | M | M | O |[M]
 Point                | M | M | O | O
+MultiPointSeries     |   |   |   |[M]| [M]
+MultiPoint           |   |   |   | O | [M]
 PolygonSeries        |   |   | O |[M]| M
 Polygon              |   |   | O | O | M
 MultiPolygonSeries   |   |   | O |[M]| [M]
@@ -153,7 +156,99 @@ Example:
 }
 ```
 
-### 2.5. Trajectory
+### 2.5. MultiPointSeries
+
+- A MultiPointSeries domain must have the axes `"composite"` and `"t"`.
+- The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
+- The axis order must be `"t","composite"`.
+
+Example:
+```js
+{
+  "type": "Domain",
+  "profile": "MultiPointSeries",
+  "axes": {
+    "t": { "values": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] },
+    "composite": {
+      "dataType": "Tuple",
+      "components": ["x","y","z"],
+      "values": [
+        [1, 20, 1],
+        [2, 21, 3]
+      ]
+    }
+  },
+  "rangeAxisOrder": ["t","composite"],
+  "referencing": [...]
+}
+```
+
+Example without z:
+```js
+{
+  "type": "Domain",
+  "profile": "MultiPointSeries",
+  "axes": {
+    "t": { "values": ["2008-01-01T04:00:00Z","2008-01-01T05:00:00Z"] },
+    "composite": {
+      "dataType": "Tuple",
+      "components": ["x","y"],
+      "values": [
+        [1, 20],
+        [2, 21]
+      ]
+    }    
+  },
+  "rangeAxisOrder": ["t","composite"],
+  "referencing": [...]
+}
+```
+
+### 2.6. MultiPoint
+
+- A MultiPoint domain must have the axis `"composite"` and may have the axis `"t"` where `"t"` must have a single coordinate only.
+- The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
+
+Example:
+```js
+{
+  "type": "Domain",
+  "profile": "MultiPoint",
+  "axes": {
+    "t": { "values": ["2008-01-01T04:00:00Z"] },
+    "composite": {
+      "dataType": "Tuple",
+      "components": ["x","y","z"],
+      "values": [
+        [1, 20, 1],
+        [2, 21, 3]
+      ]
+    }
+  },
+  "referencing": [...]
+}
+```
+
+Example without z and t:
+```js
+{
+  "type": "Domain",
+  "profile": "MultiPoint",
+  "axes": {
+    "composite": {
+      "dataType": "Tuple",
+      "components": ["x","y"],
+      "values": [
+        [1, 20],
+        [2, 21]
+      ]
+    }    
+  },
+  "referencing": [...]
+}
+```
+
+### 2.7. Trajectory
 
 - A Trajectory domain must have the axis `"composite"` and may have the axis `"z"` where `"z"` must have a single coordinate only.
 - The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"t","x","y","z"` or `"t","x","y"`.
@@ -217,7 +312,7 @@ Example with z defined as constant value:
 }
 ```
 
-### 2.6. Section
+### 2.8. Section
 
 - A Section domain must have the axes `"composite"` and `"z"`.
 - The axis `"composite"` must have the data type `"Tuple"` and the component identifiers `"t","x","y"`.
@@ -245,7 +340,7 @@ Example:
 }
 ```
 
-### 2.7. Polygon
+### 2.9. Polygon
 
 Polygons are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional components).
 
@@ -277,7 +372,7 @@ Example:
 }
 ```
 
-### 2.8. PolygonSeries
+### 2.10. PolygonSeries
 
 - A PolygonSeries domain must have the axes `"composite"` and `"t"` where `"composite"` must have a single Polygon value.
 - A PolygonSeries domain may have the axis `"z"` which must have a single value only.
@@ -303,7 +398,7 @@ Example:
 }
 ```
 
-### 2.9. MultiPolygon
+### 2.11. MultiPolygon
 
 - A MultiPolygon domain must have the axis `"composite"` where the values are Polygons.
 - The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
@@ -330,7 +425,7 @@ Example:
 }
 ```
 
-### 2.10. MultiPolygonSeries
+### 2.12. MultiPolygonSeries
 
 - A MultiPolygonSeries domain must have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons.
 - The axis `"composite"` must have the data type `"Polygon"` and the component identifiers `"x","y"`.
@@ -362,8 +457,11 @@ Example:
 
 ## 3. Coverage profiles
 
-`<DomainProfile>Coverage`
+A coverage with `"<DomainProfile>Coverage"` profile has a domain with `"<DomainProfile>"` profile.
 
 ## 4. Coverage collection profiles
 
-`<DomainProfile>CoverageCollection`
+A coverage collection with `"<DomainProfile>CoverageCollection"` profile only contains coverages
+with `"<DomainProfile>Coverage"` profile.
+
+
