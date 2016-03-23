@@ -7,17 +7,17 @@ WORK-IN-PROGRESS
   <tr>
     <th>Authors</th>
     <td>
-      Maik Riechert (<a href="http://www.reading.ac.uk">University of Reading</a>),
+      <a href="https://github.com/neothemachine">Maik Riechert</a> (<a href="http://www.reading.ac.uk">University of Reading</a>),
       <a href="http://www.met.reading.ac.uk/users/users/1659">Jon Blower</a> (<a href="http://www.reading.ac.uk">University of Reading</a>)
     </td>
   </tr>
   <tr>
     <th>Revision</th>
-    <td>0.1</td>
+    <td>0.2-draft</td>
   </tr>
   <tr>
     <th>Date</th>
-    <td>02 March 2016</td>
+    <td>xx yy 2016</td>
   </tr>
   <tr>
     <th>Abstract</th>
@@ -106,11 +106,11 @@ A CoverageJSON grid coverage of global air temperature:
     }
   },
   "ranges" : {
-    "TEMP" : "http://.../coverages/123/ranges/TEMP"
+    "TEMP" : "http://example.com/coverages/123/TEMP"
   }
 }
 ```
-where `"http://.../coverages/123/ranges/TEMP"` points to the following document:
+where `"http://example.com/coverages/123/TEMP"` points to the following document:
 ```js
 {
   "type" : "Range",
@@ -206,7 +206,7 @@ Example for a categorical-data parameter:
     "en": "The land cover category."
   },
   "observedProperty" : {
-    "id" : "http://foo/land_cover",
+    "id" : "http://example.com/land_cover",
     "label" : {
       "en": "Land Cover"
     },
@@ -214,7 +214,7 @@ Example for a categorical-data parameter:
       "en": "longer description..."
     },
     "categories": [{
-      "id": "http://.../landcover1/categories/grass",
+      "id": "http://example.com/land_cover/categories/grass",
       "label": {
         "en": "Grass"
       },
@@ -222,15 +222,15 @@ Example for a categorical-data parameter:
         "en": "Very green grass."
       }
     }, {
-      "id": "http://.../landcover1/categories/forest",
+      "id": "http://example.com/land_cover/categories/forest",
       "label": {
         "en": "Forest"
       }
-    }, ...]
+    }]
   },
   "categoryEncoding": {
-    "http://.../landcover1/categories/grass": 1,
-    "http://.../landcover1/categories/forest": [2,3]
+    "http://example.com/land_cover/categories/grass": 1,
+    "http://example.com/land_cover/categories/forest": [2,3]
   }
 }
 ```
@@ -683,7 +683,201 @@ The file extension shall be `covjson`.
 
 ## Appendix A. Coverage Examples
 
-TODO, see http://reading-escience-centre.github.io/leaflet-coverage-demo/
+### Vertical Profile Coverage
+
+```js
+{
+  "type" : "Coverage",
+  "profile" : "VerticalProfileCoverage",
+  "domain" : {
+    "type" : "Domain",
+    "profile" : "VerticalProfile",
+    "axes": {
+      "x" : { "values": [-10.1] },
+      "y" : { "values": [ -40.2] },
+      "z" : { "values": [ 
+              5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
+              38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
+              74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
+              110.0881, 116.0371, 121.9859 ] },
+      "t" : { "values": ["2013-01-13T11:12:20Z"] }
+    },
+    "referencing": [{
+      "components": ["x","y"],
+      "system": {
+        "type": "GeodeticCRS",
+        "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+      }
+    }, {
+      "components": ["z"],
+      "systems": {
+        "type": "VerticalCRS",
+        "cs": {
+          "axes": [{
+            "name": {
+              "en": "Pressure"
+            },
+            "direction": "down",
+            "unit": {
+              "symbol": "Pa"
+            }
+          }]
+        }
+      }
+    }, {
+      "components": ["t"],
+      "system": {
+        "type": "TemporalRS",
+        "calendar": "Gregorian"
+      }
+    }]
+  },
+  "parameters" : {
+    "PSAL": {
+      "type" : "Parameter",
+      "description" : {
+        "en": "The measured salinity, in practical salinity units (psu) of the sea water "
+      },
+      "unit" : {
+        "symbol" : "psu"
+      },
+      "observedProperty" : {
+        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_salinity/",
+        "label" : {
+          "en": "Sea Water Salinity"
+        }
+      }
+    },
+    "POTM": {
+      "type" : "Parameter",
+      "description" : {
+        "en": "The potential temperature, in degrees celcius, of the sea water"
+      },
+      "unit" : {
+        "symbol" : "°C"
+      },
+      "observedProperty" : {
+        "id" : "http://vocab.nerc.ac.uk/standard_name/sea_water_potential_temperature/",
+        "label" : {
+          "en": "Sea Water Potential Temperature"
+        }
+      }
+    }
+  },
+  "ranges" : {
+    "PSAL" : {
+      "type" : "Range",
+      "dataType": "float",
+      "values" : [ 43.9599, 43.9599, 43.9640, 43.9640, 43.9679, 43.9879, 44.0040,
+                   44.0120, 44.0120, 44.0159, 44.0320, 44.0320, 44.0480, 44.0559,
+                   44.0559, 44.0579, 44.0680, 44.0740, 44.0779, 44.0880, 44.0940 ]
+    },
+    "POTM" : {
+      "type" : "Range",
+      "dataType": "float",
+      "values" : [ 23.8, 23.7, 23.5, 23.4, 23.2, 22.4, 21.8,
+                   21.7, 21.5, 21.3, 21.0, 20.6, 20.1, 19.7,
+                   19.4, 19.1, 18.9, 18.8, 18.7, 18.6, 18.5 ]
+    }
+  }
+}
+```
+
+### Coverage Collection
+
+```js
+{
+  "type" : "CoverageCollection",
+  "parameters" : {
+    "PSAL": {
+      "type" : "Parameter",
+      "description" : {
+        "en": "The measured salinity, in practical salinity units (psu) of the sea water"
+      },
+      "unit" : {
+        "symbol" : "psu"
+      },
+      "observedProperty" : {
+        "id": "http://vocab.nerc.ac.uk/standard_name/sea_water_salinity/",
+        "label" : {
+          "en": "Sea Water Salinity"
+        }
+      }
+    }
+  },
+  "referencing": [{
+    "components": ["x","y"],
+    "system": {
+      "type": "GeodeticCRS",
+      "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+    }
+  }, {
+    "components": ["z"],
+    "system": {
+      "type": "VerticalCRS",
+      "cs": {
+        "axes": [{
+          "name": {
+            "en": "Pressure"
+          },
+          "direction": "down",
+          "unit": {
+            "symbol": "Pa"
+          }
+        }]
+      }
+    }
+  }, {
+    "components": ["t"],
+    "system": {
+      "type": "TemporalRS",
+      "calendar": "Gregorian"
+    }
+  }],
+  "coverages": [
+    {
+      "type" : "Coverage",
+      "profile": "VerticalProfileCoverage",
+      "domain" : {
+        "type": "Domain",
+        "profile" : "VerticalProfile",
+        "axes": {
+          "x": { "values": [-10.1] },
+          "y": { "values": [-40.2] },
+          "z": { "values": [ 5, 8, 14 ] },
+          "t": { "values": ["2013-01-13T11:12:20Z"] }
+        }
+      },
+      "ranges" : {
+        "PSAL" : {
+          "type" : "Range",
+          "dataType": "float",
+          "values" : [ 43.7, 43.8, 43.9 ]
+        }
+      }
+    }, {
+      "type" : "Coverage",
+      "profile": "VerticalProfileCoverage",
+      "domain" : {
+        "type": "Domain",
+        "profile" : "VerticalProfile",
+        "axes": {
+          "x": { "values": [-11.1] },
+          "y": { "values": [-45.2] },
+          "z": { "values": [ 4, 7, 9 ] },
+          "t": { "values": ["2013-01-13T12:12:20Z"] }
+        }
+      },
+      "ranges" : {
+        "PSAL" : {
+          "type" : "Range",
+          "dataType": "float",
+          "values" : [ 42.7, 41.8, 40.9 ]
+        }
+      }
+    }]
+}
+```
 
 ## Attribution
 
