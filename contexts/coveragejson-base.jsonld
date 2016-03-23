@@ -37,6 +37,8 @@
     
     "Grid": "covjsonp:Grid",
     "VerticalProfile": "covjsonp:VerticalProfile",
+    "MultiPointSeries": "covjsonp:MultiPointSeries",
+    "MultiPoint": "covjsonp:MultiPoint",
     "PointSeries": "covjsonp:PointSeries",
     "Point": "covjsonp:Point",
     "Trajectory": "covjsonp:Trajectory",
@@ -47,6 +49,8 @@
     
     "GridCoverage": "covjsonp:GridCoverage",
     "VerticalProfileCoverage": "covjsonp:VerticalProfileCoverage",
+    "MultiPointSeriesCoverage": "covjsonp:MultiPointSeriesCoverage",
+    "MultiPointCoverage": "covjsonp:MultiPointCoverage",
     "PointSeriesCoverage": "covjsonp:PointSeriesCoverage",
     "PointCoverage": "covjsonp:PointCoverage",
     "TrajectoryCoverage": "covjsonp:TrajectoryCoverage",
@@ -57,6 +61,8 @@
     
     "GridCoverageCollection": "covjsonp:GridCoverageCollection",
     "VerticalProfileCoverageCollection": "covjsonp:VerticalProfileCoverageCollection",
+    "MultiPointSeriesCoverageCollection": "covjsonp:MultiPointSeriesCoverageCollection",
+    "MultiPointCoverageCollection": "covjsonp:MultiPointCoverageCollection",
     "PointSeriesCoverageCollection": "covjsonp:PointSeriesCoverageCollection",
     "PointCoverageCollection": "covjsonp:PointCoverageCollection",
     "TrajectoryCoverageCollection": "covjsonp:TrajectoryCoverageCollection",
