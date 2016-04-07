@@ -92,7 +92,7 @@ A CoverageJSON grid coverage of global air temperature:
           "en": "Degree Celsius"
         },
         "symbol": {
-          "value": "Cel"
+          "value": "Cel",
           "type": "http://www.opengis.net/def/uom/UCUM/"
         }
       },
@@ -191,7 +191,7 @@ Example for a continuous-data parameter:
       "en": "Degree Celsius"
     },
     "symbol": {
-      "value": "Cel"
+      "value": "Cel",
       "type": "http://www.opengis.net/def/uom/UCUM/"
     }
   }
