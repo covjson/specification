@@ -66,7 +66,6 @@ A CoverageJSON grid coverage of global air temperature:
       "y": { "start": -89.5, "stop": 89.5, "num": 180 },
       "t": { "values": ["2013-01-13T00:00:00Z"] }
     },
-    "rangeAxisOrder": ["t","y","x"],
     "referencing": [{
       "components": ["x","y"],
       "system": {
@@ -113,9 +112,12 @@ A CoverageJSON grid coverage of global air temperature:
 where `"http://example.com/coverages/123/TEMP"` points to the following document:
 ```js
 {
-  "type" : "Range",
-  "values" : [ 27.1, 24.1, null, 25.1, ... ], // 360*180 values,
-  "dataType": "float"
+  "type" : "NdArray",
+  "dataType": "float",
+  "axisNames": ["t","y","x"],
+  "shape": [1, 180, 360],
+  "values" : [ 27.1, 24.1, null, 25.1, ... ]
+  
 }
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
@@ -446,27 +448,24 @@ The domain values in the above example would be `"de"` and `"gb"`.
 CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
 - The CoverageJSON object may have any number of members (name/value pairs).
-- The CoverageJSON object must have a member with the name `"type"` which has as value one of: `"Domain"`, `"Range"`, `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+- The CoverageJSON object must have a member with the name `"type"` which has as value one of: `"Domain"`, `"NdArray"` (a range encoding), `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
 
 ### 6.1. Domain Objects
 
-A domain object is a CoverageJSON object which defines a coordinate space and the order of the enumeration of all coordinates in that space.
+A domain object is a CoverageJSON object which defines a set of positions and their extent in one or more referencing systems.
 Its general structure is:
 ```js
 {
   "type": "Domain",
   "profile": "...",
   "axes": { ... },
-  "rangeAxisOrder": [...],
   "referencing": [...]
 }
 ```
 
 - The value of the type member must be `"Domain"`.
 - For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
-- A domain object must have the members `"axes"` and, if there is more than one axis with more than one axis value, `"rangeAxisOrder"`.
-- The value of `"axes"` must be an object where each key is an axis identifier and each value an axis object as defined below. 
-- The value of `"rangeAxisOrder"` must be an array of all axis identifiers of the domain object. It determines in which order range values must be stored (see "Coordinate Space" below).
+- A domain object must have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
 - A domain object may have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
 - A domain object must have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
 
@@ -474,10 +473,10 @@ Its general structure is:
 
 - An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values.
-- The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. 
+- The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. Note that `"start"` can be greater than `"stop"` in which case the axis values are descending.
 - The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single component and each axis value must be a number or string. For `"Tuple"`, each axis value must be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
 - If missing, the member `"dataType"` defaults to `"Primitive"` and must not be included for that default case.
-- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values must be ordered monotonically, that is, increasing or decreasing.
+- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, must be ordered monotonically, that is, increasing or decreasing.
 - The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components defined by `"dataType"`.
 - If missing, the member `"components"` defaults to a one-element array of the axis identifier and must not be included for that default case.
 - A component identifier shall not be defined more than once in all axis objects of a domain object.
@@ -544,12 +543,7 @@ Example of a reference system connection object:
 }
 ```
 
-#### 6.1.3. Coordinate Space
-
-- A coordinate space is defined by an array `[C1, C2, ..., Cn]` where each of `C1` to `Cn` is an array of coordinates. The number of elements in a coordinate space are `|C1| * |C2| * ... * |Cn|`, where a composite coordinate counts as a single coordinate. Each element in the space can be referenced by a unique number. A coordinate space assigns a unique number to `[c1, c2, ..., cn]` by assuming an `n`-dimensional array of shape `[|C1|, |C2|, ..., |Cn|]` stored in row-major order.
-- The coordinate space of a domain object is defined by the array `[C1, C2, ..., Cn]` where `C1` is the `"values"` member corresponding to the first axis identifier in the `"rangeAxisOrder"` array, or any member if no `"rangeAxisOrder"` exists. `C2` corresponds to the second axis identifier in `"rangeAxisOrder"`, continuing until the last axis identifier `Cn`.
-
-#### 6.1.4. Examples
+#### 6.1.3. Examples
 
 Example of a domain object with [`"Grid"`](profiles.md) profile:
 ```js
@@ -562,7 +556,6 @@ Example of a domain object with [`"Grid"`](profiles.md) profile:
     "z": { "values": [1] },
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
-  "rangeAxisOrder": ["t","z","y","x"],
   "referencing": [{
     "components": ["t"],
     "system": {
@@ -611,9 +604,9 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
 ```
 
 
-### 6.2. Range Objects
+### 6.2. NdArray Objects
 
-A CoverageJSON object with the type `"Range"` is a range object.
+A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represents a multi-dimensional array with named axes, encoded as a flat one-dimensional array in row-major order.
 
 - A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
 - A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. 
@@ -622,9 +615,14 @@ A CoverageJSON object with the type `"Range"` is a range object.
 Example:
 ```js
 {
-  "type": "Range",
-  "values": [12.3, 12.5, 11.5, 23.1, null, null, 10.1],
-  "dataType": "float"
+  "type": "NdArray",
+  "dataType": "float",
+  "shape": [4, 2],
+  "axisNames": ["y", "x"],
+  "values": [
+    12.3, 12.5, 11.5, 23.1, 
+    null, null, 10.1, 9.1
+  ]  
 }
 ```
 
@@ -638,7 +636,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either a range object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The array elements of the `"values"` member of each range object must correspond to the coordinate space defined by `"domain"` in terms of element order and count. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
+- A coverage object must have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object must correspond to the domain axes defined by `"domain"`. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 
 ### 6.4. Coverage Collection Objects
 
@@ -677,7 +675,7 @@ If a domain or range is referenced by a URL in a CoverageJSON document, then the
 
 ## 9. Media Type and File Extension
 
-The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs.
+The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents must be serialized using the UTF-8 character encoding.
 
 The file extension shall be `covjson`.
 
@@ -766,15 +764,19 @@ The file extension shall be `covjson`.
   },
   "ranges" : {
     "PSAL" : {
-      "type" : "Range",
+      "type" : "NdArray",
       "dataType": "float",
+      "shape": [1, 21, 1, 1],
+      "axisNames": ["t", "z", "y", "x"],
       "values" : [ 43.9599, 43.9599, 43.9640, 43.9640, 43.9679, 43.9879, 44.0040,
                    44.0120, 44.0120, 44.0159, 44.0320, 44.0320, 44.0480, 44.0559,
                    44.0559, 44.0579, 44.0680, 44.0740, 44.0779, 44.0880, 44.0940 ]
     },
     "POTM" : {
-      "type" : "Range",
+      "type" : "NdArray",
       "dataType": "float",
+      "shape": [1, 21, 1, 1],
+      "axisNames": ["t", "z", "y", "x"],
       "values" : [ 23.8, 23.7, 23.5, 23.4, 23.2, 22.4, 21.8,
                    21.7, 21.5, 21.3, 21.0, 20.6, 20.1, 19.7,
                    19.4, 19.1, 18.9, 18.8, 18.7, 18.6, 18.5 ]
@@ -850,8 +852,10 @@ The file extension shall be `covjson`.
       },
       "ranges" : {
         "PSAL" : {
-          "type" : "Range",
+          "type" : "NdArray",
           "dataType": "float",
+          "shape": [1, 3, 1, 1],
+          "axisNames": ["t", "z", "y", "x"],
           "values" : [ 43.7, 43.8, 43.9 ]
         }
       }
@@ -870,8 +874,10 @@ The file extension shall be `covjson`.
       },
       "ranges" : {
         "PSAL" : {
-          "type" : "Range",
+          "type" : "NdArray",
           "dataType": "float",
+          "shape": [1, 3, 1, 1],
+          "axisNames": ["t", "z", "y", "x"],
           "values" : [ 42.7, 41.8, 40.9 ]
         }
       }
