@@ -52,7 +52,7 @@ Requirements for all domain profiles defined in this specification:
 
 Requirements for all coverage profiles defined in this specification:
 - A coverage with <DomainProfile>Coverage profile must have a domain with <DomainProfile> profile.
-- Additional one-coordinate domain axes must appear at the end of `"axisNames"` in NdArray objects.
+- The axis ordering in `"axisNames"` of NdArray objects should follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist.
 
 Requirements for all coverage collection profiles defined in this specification:
 - A coverage collection with <DomainProfile>CoverageCollection profile must only contain coverages with <DomainProfile>Coverage profile.
@@ -107,7 +107,7 @@ Example:
 
 #### GridCoverage profile
 
-- A coverage with GridCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","y","x"`, `"z","y","x"`, `"t","y","x"`, or `"y","x"`, depending on which axes are defined in the domain.
+- A coverage with GridCoverage profile must have a domain with Grid profile.
 
 Example:
 ```js
@@ -163,7 +163,7 @@ Example:
 
 #### VerticalProfileCoverage profile
 
-- A coverage with VerticalCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","y","x"` or `"z","y","x"`, depending on which axes are defined in the domain.
+- A coverage with VerticalProfileCoverage profile must have a domain with VerticalProfile profile.
 
 Example:
 ```js
@@ -220,7 +220,7 @@ Example:
 
 #### PointSeriesCoverage profile
 
-- A coverage with PointSeriesCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","y","x"` or `"t","y","x"`, depending on which axes are defined in the domain.
+- A coverage with PointSeriesCoverage profile must have a domain with PointSeries profile.
 
 Example:
 ```js
@@ -276,7 +276,7 @@ Example:
 
 #### PointCoverage profile
 
-- A coverage with PointSeriesCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","y","x"`, `"z","y","x"`, `"t","y","x"`, or `"y","x"`, depending on which axes are defined in the domain.
+- A coverage with PointCoverage profile must have a domain with Point profile.
 
 Example:
 ```js
@@ -358,7 +358,7 @@ Example without z:
 
 #### MultiPointSeriesCoverage profile
 
-- A coverage with MultiPointSeriesCoverage profile must have NdArray objects with `"axisNames"` of `"t","composite"`.
+- A coverage with MultiPointSeriesCoverage profile must have a domain with MultiPointSeries profile.
 
 Example:
 ```js
@@ -445,7 +445,7 @@ Example without z and t:
 
 #### MultiPointCoverage profile
 
-- A coverage with MultiPointCoverage profile must have NdArray objects with `"axisNames"` of either `"t","composite"` or `"composite"`, depending on which axes are defined in the domain..
+- A coverage with MultiPointCoverage profile must have a domain with MultiPoint profile.
 
 Example:
 ```js
@@ -550,7 +550,7 @@ Example with z defined as constant value:
 
 #### TrajectoryCoverage profile
 
-- A coverage with TrajectoryCoverage profile must have NdArray objects with `"axisNames"` of either `"z","composite"` or `"composite"`, depending on which axes are defined in the domain.
+- A coverage with TrajectoryCoverage profile must have a domain with Trajectory profile.
 
 Example:
 ```js
@@ -617,7 +617,7 @@ Example:
 
 #### SectionCoverage profile
 
-- A coverage with SectionCoverage profile must have NdArray objects with `"axisNames"` of `"z","composite"`.
+- A coverage with SectionCoverage profile must have a domain with Section profile.
 
 Example:
 ```js
@@ -689,7 +689,7 @@ Example:
 
 #### PolygonCoverage profile
 
-- A coverage with PolygonCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","composite"`, `"z","composite"`, `"t","composite"` or `"composite"`, depending on which axes are defined in the domain.
+- A coverage with PolygonCoverage profile must have a domain with Polygon profile.
 
 Example:
 ```js
@@ -757,7 +757,7 @@ Example:
 
 #### PolygonSeriesCoverage profile
 
-- A coverage with PolygonSeriesCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","composite"`, `"z","composite"`, `"t","composite"` or `"composite"`, depending on which axes are defined in the domain.
+- A coverage with PolygonSeriesCoverage profile must have a domain with PolygonSeries profile.
 
 Example:
 ```js
@@ -826,7 +826,7 @@ Example:
 
 #### MultiPolygonCoverage profile
 
-- A coverage with MultiPolygonCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","composite"`, `"z","composite"`, `"t","composite"` or `"composite"`, depending on which axes are defined in the domain.
+- A coverage with MultiPolygonCoverage profile must have a domain with MultiPolygon profile.
 
 Example:
 ```js
@@ -896,7 +896,7 @@ Example:
 
 #### MultiPolygonSeriesCoverage profile
 
-- A coverage with MultiPolygonSeriesCoverage profile must have NdArray objects with `"axisNames"` of either `"t","z","composite"` or `"t","composite"`, depending on which axes are defined in the domain.
+- A coverage with MultiPolygonSeriesCoverage profile must have a domain with MultiPolygonSeries profile.
 
 Example:
 ```js
