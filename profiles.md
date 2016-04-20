@@ -41,7 +41,7 @@ WORK-IN-PROGRESS
 
 ## 2. Common Profiles
 
-This specification defines the following domain profiles: Grid, VerticalProfile, PointSeries, Point, MultiPointSeries, MultiPoint, PolygonSeries, Polygon, MultiPolygonSeries, MultiPolygon, Trajectory, Section. Each domain profile <DomainProfile> has a corresponding coverage profile named <DomainProfile>Coverage, and a coverage collection profile named <DomainProfile>CoverageCollection.
+This specification defines the following domain profiles: Grid, VerticalProfile, PointSeries, Point, MultiPointSeries, MultiPoint, PolygonSeries, Polygon, MultiPolygonSeries, MultiPolygon, Trajectory, Section. Each domain profile `<DomainProfile>` has a corresponding coverage profile named `<DomainProfile>Coverage`, and a coverage collection profile named `<DomainProfile>CoverageCollection`.
 
 Requirements for all domain profiles defined in this specification:
 - The axis and component identifiers `"x"` and `"y"` must refer to horizontal spatial coordinates, 
@@ -51,11 +51,11 @@ Requirements for all domain profiles defined in this specification:
 - A domain that states conformance to one of the profiles in this specification may have any number of additional one-coordinate axes not defined here.
 
 Requirements for all coverage profiles defined in this specification:
-- A coverage with <DomainProfile>Coverage profile must have a domain with <DomainProfile> profile.
+- A coverage with `<DomainProfile>Coverage` profile must have a domain with `<DomainProfile>` profile.
 - The axis ordering in `"axisNames"` of NdArray objects should follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist.
 
 Requirements for all coverage collection profiles defined in this specification:
-- A coverage collection with <DomainProfile>CoverageCollection profile must only contain coverages with <DomainProfile>Coverage profile.
+- A coverage collection with `<DomainProfile>CoverageCollection` profile must only contain coverages with `<DomainProfile>Coverage` profile.
 
 ### Overview of domain profiles
 
