@@ -30,8 +30,7 @@
     "members": { "@id": "covjson:member", "@type": "@vocab" },
     "domain": "covjson:domain",
     "domainTemplate": "covjson:domainTemplate",
-    "ranges": "covjson:rangeSet",
-    "RangeSet": "covjson:RangeSet",
+    "ranges": { "@id": "covjson:range", "@type": "@id", "@container": "@index" },
     
     "Domain": "covjson:Domain",
     "Coverage": "covjson:Coverage",
