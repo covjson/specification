@@ -18,7 +18,7 @@
     "description": { "@id": "dct:description", "@container": "@language" },
     "observedProperty": "ssn:observedProperty",
 
-    "profile": "covjson:profile",
+    "profile": {"@id": "covjson:profile", "@type": "@vocab"},
 
     "coverages": "hydra:member",
     "Parameter": "covjson:Parameter",
