@@ -636,6 +636,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
 - A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
+- A coverage object may have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
 - A coverage object must have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object must correspond to the domain axes defined by `"domain"`. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 
 ### 6.4. Coverage Collection Objects
@@ -645,6 +646,7 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object may have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
 - A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
+- A coverage collection object may have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
 - A coverage collection object may have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
 ## 7. JSON-LD
