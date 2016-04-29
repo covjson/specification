@@ -414,7 +414,8 @@ Identifier-based reference systems (identifier RS) .
 - An identifier RS object must have a member `"type"` with value `"IdentifierRS"`.
 - An identifier RS object may have a member `"id"` where the value must be a string and should be a common identifier for the reference system.
 - An identifier RS object may have a member `"label"` where the value must be an i18n object that is the name of the reference system.
-- An identifier RS object must have a member `"targetConcept"` where the value is an object that must have a member `"label"` where the value must be an i18n object that is the name of the concept which is referenced in the system.
+- An identifier RS object may have a member `"description"` where the value must be an i18n object that is the (perhaps lengthy) description of the reference system.
+- An identifier RS object must have a member `"targetConcept"` where the value is an object that must have a member `"label"` and may have a member `"description"` where the value of each must be an i18n object that is the name or description, respectively, of the concept which is referenced in the system.
 - An identifier RS object may have a member `"identifiers"` where the value is an object where each key is an identifier referenced by the identifier RS and each value an object describing the referenced concept, equal to `"targetConcept"`.
 - Domain values associated to an identifier RS must be strings.
 
