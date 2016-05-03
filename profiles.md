@@ -61,10 +61,10 @@ Requirements for all coverage collection profiles defined in this specification:
 
 Profile              | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
-Grid                 |+|+|[+]|[+] 
-VerticalProfile      | 1 | 1 |+| [1]
-PointSeries          | 1 | 1 | [1] | [+]
-Point                | 1 | 1 | [1] | [1]
+Grid                 | + | + |[+]|[+] 
+VerticalProfile      | 1 | 1 | + | [1]
+PointSeries          | 1 | 1 |[1]| [+]
+Point                | 1 | 1 |[1]| [1]
 MultiPointSeries     |   |   |   |[+]| [+]
 MultiPoint           |   |   |   |[1]| [+]
 PolygonSeries        |   |   |[1]|[+]| 1
@@ -74,14 +74,13 @@ MultiPolygon         |   |   |[1]|[1]| [+]
 Trajectory           |   |   |[1]|   | [+]
 Section              |   |   |[+]|   | [+]
 
+Symbol | Description
+-----|--------------------
+1   | Axis with single coordinate
+[1] | Optional axis with one coordinate
++   | Axis with one or more coordinates
+[+] | Optional axis with one or more coordinates
 
-1 = Axis with single coordinate
-
-[1] = Optional axis with one coordinate
-
-+ = Axis with one or more coordinates
-
-[+] = Optional axis with one or more coordinates
 
 
 ### 2.1. Grid
