@@ -76,7 +76,7 @@ Section              |   |   |[+]|   | [+]
 
 Symbol | Description
 -----|--------------------
-1   | Axis with single coordinate
+1   | Axis with one coordinate
 [1] | Optional axis with one coordinate
 +   | Axis with one or more coordinates
 [+] | Optional axis with one or more coordinates
