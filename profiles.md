@@ -65,27 +65,26 @@ Requirements for all coverage collection profiles defined in this specification:
 
 Profile              | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
-Grid                 |[M]|[M]|[O]|[O] 
-VerticalProfile      | M | M |[M]| O
-PointSeries          | M | M | O |[M]
-Point                | M | M | O | O
-MultiPointSeries     |   |   |   |[M]| [M]
-MultiPoint           |   |   |   | O | [M]
-PolygonSeries        |   |   | O |[M]| M
-Polygon              |   |   | O | O | M
-MultiPolygonSeries   |   |   | O |[M]| [M]
-MultiPolygon         |   |   | O | O | [M]
-Trajectory           |   |   | O |   | [M]
-Section              |   |   |[M]|   | [M]
+Grid                 | + | + |[+]|[+] 
+VerticalProfile      | 1 | 1 | + | [1]
+PointSeries          | 1 | 1 |[1]| [+]
+Point                | 1 | 1 |[1]| [1]
+MultiPointSeries     |   |   |   |[+]| [+]
+MultiPoint           |   |   |   |[1]| [+]
+PolygonSeries        |   |   |[1]|[+]| 1
+Polygon              |   |   |[1]|[1]| 1
+MultiPolygonSeries   |   |   |[1]|[+]| [+]
+MultiPolygon         |   |   |[1]|[1]| [+]
+Trajectory           |   |   |[1]|   | [+]
+Section              |   |   |[+]|   | [+]
 
+Symbol | Description
+-----|--------------------
+1   | Axis with one coordinate
+[1] | Optional axis with one coordinate
++   | Axis with one or more coordinates
+[+] | Optional axis with one or more coordinates
 
-M = Mandatory, axis with single coordinate
-
-O = Optional, axis with single coordinate
-
-[M] = Mandatory, axis with one or more coordinates
-
-[O] = Optional, axis with one or more coordinates
 
 
 ### 2.1. Grid
