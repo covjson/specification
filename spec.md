@@ -46,7 +46,7 @@ The following items are (major) outstanding issues to be resolved for the first 
 
 ## 1. Introduction
 
-CoverageJSON is a format for encoding coverage data like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object may represent a domain, a range, a coverage, or a collection of coverages. A range in CoverageJSON  represents coverage values. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
+CoverageJSON is a format for encoding coverage data like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object MAY represent a domain, a range, a coverage, or a collection of coverages. A range in CoverageJSON  represents coverage values. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.
 
 A complete CoverageJSON data structure is always an object (in JSON terms). In CoverageJSON, an object consists of a collection of name/value pairs -- also called members. For each member, the name is always a string. Member values are either a string, number, object, array or one of the literals: true, false, and null. An array consists of elements where each element is a value as described above.
 
@@ -160,16 +160,16 @@ Example:
 
 Parameter objects represent metadata about the values of the coverage in terms of the observed property (like water temperature), the units, and others.
 
-- A parameter object may have any number of members (name/value pairs).
-- A parameter object must have a member with the name `"type"` and the value `"Parameter"`.
-- A parameter object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
-- A parameter object may have a member with the name `"label"` where the value must be an i18n object that is the name of the parameter and which should be short. Note that this should be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
-- A parameter object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter.
-- A parameter object must have a member with the name `"observedProperty"` where the value is an object which must have the member `"label"` and which may have the members `"id"`, `"description"`, and `"categories"`. The value of `"label"` must be an i18n object that is the name of the observed property and which should be short. If given, the value of `"id"` must be a string and should be a common identifier. If given, the value of `"description"` must be an i18n object with a textual description of the observed property. If given, the value of `"categories"` must be a non-empty array of category objects. A category object must an `"id"` and a `"label"` member,  and may have a `"description"` member. The value of `"id"` must be a string and should be a common identifier. The value of `"label"` must be an i18n object of the name of the category and should be short. If given, the value of `"description"` must be an i18n object with a textual description of the category.
-- A parameter object may have a member with the name `"categoryEncoding"` where the value is an object where each key is equal to an `"id"` value of the `"categories"` array within the `"observedProperty"` member of the parameter object. There must be no duplicate keys. The value is either an integer or an array of integers where each integer must be unique within the object.
-- A parameter object may have a member with the name `"unit"` where the value is an object which must have either or both the members `"label"` or/and "`symbol`", and which may have the member `"id"`. If given, the value of `"symbol"` must either be a string of the symbolic notation of the unit, or an object with the members `"value"` and `"type"` where `"value"` is the symbolic unit notation and `"type"` is a URI which references the unit serialization scheme that is used. If given, the value of `"label"` must be an i18n object of the name of the unit and should be short. If given, the value of `"id"` must be a string and should be a common identifier. It is strongly recommended to reference a unit serialization scheme to allow automatic unit conversion.
-- If [UCUM](http://unitsofmeasure.org) is used as unit serialization scheme, then the `"type"` value of `"symbol"` shall be `"http://www.opengis.net/def/uom/UCUM/"`.
-- A parameter object must not have a `"unit"` member if the `"observedProperty"` member has a `"categories"` member.
+- A parameter object MAY have any number of members (name/value pairs).
+- A parameter object MUST have a member with the name `"type"` and the value `"Parameter"`.
+- A parameter object MAY have a member with the name `"id"` where the value MUST be a string and SHOULD be a common identifier.
+- A parameter object MAY have a member with the name `"label"` where the value MUST be an i18n object that is the name of the parameter and which SHOULD be short. Note that this SHOULD be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
+- A parameter object MAY have a member with the name `"description"` where the value MUST be an i18n object which is a, perhaps lengthy, textual description of the parameter.
+- A parameter object MUST have a member with the name `"observedProperty"` where the value is an object which MUST have the member `"label"` and which MAY have the members `"id"`, `"description"`, and `"categories"`. The value of `"label"` MUST be an i18n object that is the name of the observed property and which SHOULD be short. If given, the value of `"id"` MUST be a string and SHOULD be a common identifier. If given, the value of `"description"` MUST be an i18n object with a textual description of the observed property. If given, the value of `"categories"` MUST be a non-empty array of category objects. A category object MUST an `"id"` and a `"label"` member,  and MAY have a `"description"` member. The value of `"id"` MUST be a string and SHOULD be a common identifier. The value of `"label"` MUST be an i18n object of the name of the category and SHOULD be short. If given, the value of `"description"` MUST be an i18n object with a textual description of the category.
+- A parameter object MAY have a member with the name `"categoryEncoding"` where the value is an object where each key is equal to an `"id"` value of the `"categories"` array within the `"observedProperty"` member of the parameter object. There MUST be no duplicate keys. The value is either an integer or an array of integers where each integer MUST be unique within the object.
+- A parameter object MAY have a member with the name `"unit"` where the value is an object which MUST have either or both the members `"label"` or/and "`symbol`", and which MAY have the member `"id"`. If given, the value of `"symbol"` MUST either be a string of the symbolic notation of the unit, or an object with the members `"value"` and `"type"` where `"value"` is the symbolic unit notation and `"type"` is a URI which references the unit serialization scheme that is used. If given, the value of `"label"` MUST be an i18n object of the name of the unit and SHOULD be short. If given, the value of `"id"` MUST be a string and SHOULD be a common identifier. It is RECOMMENDED to reference a unit serialization scheme to allow automatic unit conversion.
+- If [UCUM](http://unitsofmeasure.org) is used as unit serialization scheme, then the `"type"` value of `"symbol"` SHALL be `"http://www.opengis.net/def/uom/UCUM/"`.
+- A parameter object MUST NOT have a `"unit"` member if the `"observedProperty"` member has a `"categories"` member.
 
 
 Example for a continuous-data parameter:
@@ -241,14 +241,14 @@ Example for a categorical-data parameter:
 
 Parameter group objects represent logical groups of parameters, for example vector quantities.
 
-- A parameter group object may have any number of members (name/value pairs).
-- A parameter group object must have a member with the name `"type"` and the value `"ParameterGroup"`.
-- A parameter group object may have a member with the name `"id"` where the value must be a string and should be a common identifier.
-- A parameter group object may have a member with the name `"label"` where the value must be an i18n object that is the name of the parameter group and which should be short. Note that this should be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
-- A parameter group object may have a member with the name `"description"` where the value must be an i18n object which is a, perhaps lengthy, textual description of the parameter group.
-- A parameter group object may have a member with the name `"observedProperty"` where the value is an object as specified for parameter objects.
-- A parameter group object must have either or both the members `"label"` or/and `"observedProperty"`.
-- A parameter group object must have a member with the name `"members"` where the value is a non-empty array of parameter identifiers (see 6.3 Coverage objects).
+- A parameter group object MAY have any number of members (name/value pairs).
+- A parameter group object MUST have a member with the name `"type"` and the value `"ParameterGroup"`.
+- A parameter group object MAY have a member with the name `"id"` where the value MUST be a string and SHOULD be a common identifier.
+- A parameter group object MAY have a member with the name `"label"` where the value MUST be an i18n object that is the name of the parameter group and which SHOULD be short. Note that this SHOULD be left out if it would be identical to the `"label"` of the `"observedProperty"` member.
+- A parameter group object MAY have a member with the name `"description"` where the value MUST be an i18n object which is a, perhaps lengthy, textual description of the parameter group.
+- A parameter group object MAY have a member with the name `"observedProperty"` where the value is an object as specified for parameter objects.
+- A parameter group object MUST have either or both the members `"label"` or/and `"observedProperty"`.
+- A parameter group object MUST have a member with the name `"members"` where the value is a non-empty array of parameter identifiers (see 6.3 Coverage objects).
 
 Example of a group describing a vector quantity:
 ```js
@@ -383,13 +383,13 @@ Example of a vertical CRS with embedded detail information:
 Time is referenced by a temporal reference system (temporal RS).
 In this specification, only a string-based notation for time values is defined.
 
-- A temporal RS object must have a member `"type"`. The only currently defined value of it is `"TemporalRS"`.
-- A temporal RS object must have a member `"calendar"` with value `"Gregorian"` or a URI.
-- If the Gregorian calender is used, then `"calendar"` must have the value `"Gregorian"` and cannot be a URI.
-- A temporal RS object may have a member `"timeScale"` with a URI as value. 
+- A temporal RS object MUST have a member `"type"`. The only currently defined value of it is `"TemporalRS"`.
+- A temporal RS object MUST have a member `"calendar"` with value `"Gregorian"` or a URI.
+- If the Gregorian calender is used, then `"calendar"` MUST have the value `"Gregorian"` and cannot be a URI.
+- A temporal RS object MAY have a member `"timeScale"` with a URI as value. 
   If omitted, the time scale defaults to UTC (`"http://www.opengis.net/def/trs/BIPM/0/UTC"`).
-  If the time scale is UTC, the `"timeScale"` member must be omitted.
-- If the calendar is based on years, months, days, then the referenced values should use one of the following
+  If the time scale is UTC, the `"timeScale"` member MUST be omitted.
+- If the calendar is based on years, months, days, then the referenced values SHOULD use one of the following
   ISO8601-based lexical representations:
   - YYYY
   - ±XYYYY (where X stands for extra year digits)
@@ -397,7 +397,7 @@ In this specification, only a string-based notation for time values is defined.
   - YYYY-MM-DD
   - YYYY-MM-DDTHH:MM:SS[.F]Z where Z is either "Z" or a time scale offset +|-HH:MM
 - If calendar dates with reduced precision are used in a lexical representation (e.g. `"2016"`), then
-  a client should interpret those dates in that reduced precision.
+  a client SHOULD interpret those dates in that reduced precision.
 
 Example:
 ```js
@@ -411,13 +411,13 @@ Example:
 
 Identifier-based reference systems (identifier RS) .
 
-- An identifier RS object must have a member `"type"` with value `"IdentifierRS"`.
-- An identifier RS object may have a member `"id"` where the value must be a string and should be a common identifier for the reference system.
-- An identifier RS object may have a member `"label"` where the value must be an i18n object that is the name of the reference system.
-- An identifier RS object may have a member `"description"` where the value must be an i18n object that is the (perhaps lengthy) description of the reference system.
-- An identifier RS object must have a member `"targetConcept"` where the value is an object that must have a member `"label"` and may have a member `"description"` where the value of each must be an i18n object that is the name or description, respectively, of the concept which is referenced in the system.
-- An identifier RS object may have a member `"identifiers"` where the value is an object where each key is an identifier referenced by the identifier RS and each value an object describing the referenced concept, equal to `"targetConcept"`.
-- Domain values associated to an identifier RS must be strings.
+- An identifier RS object MUST have a member `"type"` with value `"IdentifierRS"`.
+- An identifier RS object MAY have a member `"id"` where the value MUST be a string and SHOULD be a common identifier for the reference system.
+- An identifier RS object MAY have a member `"label"` where the value MUST be an i18n object that is the name of the reference system.
+- An identifier RS object MAY have a member `"description"` where the value MUST be an i18n object that is the (perhaps lengthy) description of the reference system.
+- An identifier RS object MUST have a member `"targetConcept"` where the value is an object that MUST have a member `"label"` and MAY have a member `"description"` where the value of each MUST be an i18n object that is the name or description, respectively, of the concept which is referenced in the system.
+- An identifier RS object MAY have a member `"identifiers"` where the value is an object where each key is an identifier referenced by the identifier RS and each value an object describing the referenced concept, equal to `"targetConcept"`.
+- Domain values associated to an identifier RS MUST be strings.
 
 Example of a geographic identifier reference system:
 ```js
@@ -448,8 +448,8 @@ The domain values in the above example would be `"de"` and `"gb"`.
 
 CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
-- The CoverageJSON object may have any number of members (name/value pairs).
-- The CoverageJSON object must have a member with the name `"type"` which has as value one of: `"Domain"`, `"NdArray"` (a range encoding), `"Coverage"`, or `"CoverageCollection"`. The case of the type member values must be as shown here.
+- The CoverageJSON object MAY have any number of members (name/value pairs).
+- The CoverageJSON object MUST have a member with the name `"type"` which has as value one of: `"Domain"`, `"NdArray"` (a range encoding), `"Coverage"`, or `"CoverageCollection"`. The case of the type member values MUST be as shown here.
 
 ### 6.1. Domain Objects
 
@@ -464,25 +464,25 @@ Its general structure is:
 }
 ```
 
-- The value of the type member must be `"Domain"`.
-- For interoperability reasons it is strongly recommended that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
-- A domain object must have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
-- A domain object may have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
-- A domain object must have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
+- The value of the type member MUST be `"Domain"`.
+- For interoperability reasons it is RECOMMENDED that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
+- A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
+- A domain object MAY have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
+- A domain object MUST have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
 
 #### 6.1.1. Axis Objects
 
-- An axis object must have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
+- An axis object MUST have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values.
-- The values of `"start"` and `"stop"` must be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` must have identical values. For `num > 1`, the array elements of `"values"` may be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. Note that `"start"` can be greater than `"stop"` in which case the axis values are descending.
-- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` must be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single component and each axis value must be a number or string. For `"Tuple"`, each axis value must be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"Polygon"`, each axis value must be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
-- If missing, the member `"dataType"` defaults to `"Primitive"` and must not be included for that default case.
-- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, must be ordered monotonically, that is, increasing or decreasing.
+- The values of `"start"` and `"stop"` MUST be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` MUST have identical values. For `num > 1`, the array elements of `"values"` MAY be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. Note that `"start"` can be greater than `"stop"` in which case the axis values are descending.
+- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` MUST be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single component and each axis value MUST be a number or string. For `"Tuple"`, each axis value MUST be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"Polygon"`, each axis value MUST be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
+- If missing, the member `"dataType"` defaults to `"Primitive"` and MUST not be included for that default case.
+- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, MUST be ordered monotonically, that is, increasing or decreasing.
 - The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components defined by `"dataType"`.
-- If missing, the member `"components"` defaults to a one-element array of the axis identifier and must not be included for that default case.
-- A component identifier shall not be defined more than once in all axis objects of a domain object.
-- An axis object may have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
-- If a domain axis object has no `"bounds"` member then a bounds array may be derived automatically.
+- If missing, the member `"components"` defaults to a one-element array of the axis identifier and MUST NOT be included for that default case.
+- A component identifier SHALL NOT be defined more than once in all axis objects of a domain object.
+- An axis object MAY have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
+- If a domain axis object has no `"bounds"` member then a bounds array MAY be derived automatically.
 
 Example of an axis object with bounds:
 ```js
@@ -530,8 +530,8 @@ Example of an axis object with Polygon values:
 
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
-- A reference system connection object must have a member `"components"` which has as value an array of component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers may be relevant, e.g. for 2D/3D coordinate reference systems.
-- A reference system connection object must have a member `"system"` which has as value a reference system object. Section 5 defines common types of  reference system objects.
+- A reference system connection object MUST have a member `"components"` which has as value an array of component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers MAY be relevant, e.g. for 2D/3D coordinate reference systems.
+- A reference system connection object MUST have a member `"system"` which has as value a reference system object. Section 5 defines common types of  reference system objects.
 
 Example of a reference system connection object:
 ```js
@@ -609,9 +609,9 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
 
 A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represents a multi-dimensional array with named axes, encoded as a flat one-dimensional array in row-major order.
 
-- A range object must have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
-- A range object must have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and must correspond to the data type of the non-null values in the `"values"` array. 
-- Note that common JSON implementations may use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
+- A range object MUST have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
+- A range object MUST have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and MUST correspond to the data type of the non-null values in the `"values"` array. 
+- Note that common JSON implementations MAY use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
 ```js
@@ -631,28 +631,28 @@ Example:
 
 A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
-- A coverage object may have the member `"profile"` with a string value to indicate that the coverage follows a certain structure (e.g. has a certain domain profile or restrictions on parameters). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
-- If a coverage has a commonly used identifier, that identifier should be included as a member of the coverage object with the name `"id"`.
-- A coverage object must have a member with the name `"domain"` where the value is either a domain object or a URL.
-- If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object must have the member `"domainProfile"` where the value must equal the `"profile"` value of the referenced domain.
-- A coverage object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
-- A coverage object must have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
-- A coverage object may have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
-- A coverage object must have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object must correspond to the domain axes defined by `"domain"`. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member must be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
+- A coverage object MAY have the member `"profile"` with a string value to indicate that the coverage follows a certain structure (e.g. has a certain domain profile or restrictions on parameters). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
+- If a coverage has a commonly used identifier, that identifier SHOULD be included as a member of the coverage object with the name `"id"`.
+- A coverage object MUST have a member with the name `"domain"` where the value is either a domain object or a URL.
+- If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object MUST have the member `"domainProfile"` where the value MUST equal the `"profile"` value of the referenced domain.
+- A coverage object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
+- A coverage object MUST have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
+- A coverage object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
+- A coverage object MUST have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object MUST correspond to the domain axes defined by `"domain"`. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member MUST be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 
 ### 6.4. Coverage Collection Objects
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
-- A coverage collection object may have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification may be given by full URIs only.
-- A coverage collection object must have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
-- A coverage collection object may have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
-- A coverage collection object may have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
-- A coverage collection object may have a member with the name `"referencing"` where the value is an array of reference system connection objects.
+- A coverage collection object MAY have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
+- A coverage collection object MUST have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
+- A coverage collection object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
+- A coverage collection object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
+- A coverage collection object MAY have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
 ## 7. JSON-LD
 
-A JSON-LD context may be established by including a `"@context"` element in the root of a CoverageJSON object which should refer to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary contexts. Domain axis values and range values should *not* be exposed as linked data since they are currently not suitable for such representation.
+A JSON-LD context MAY be established by including a `"@context"` element in the root of a CoverageJSON object which SHOULD refer to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary contexts. Domain axis values and range values SHOULD *not* be exposed as linked data since they are currently not suitable for such representation.
 
 Example:
 ```js
@@ -668,19 +668,19 @@ Example:
 }
 ```
 
-All identifiers referred to in a CoverageJSON object should be URIs. These URIs should be taken from established vocabularies if available.
+All identifiers referred to in a CoverageJSON object SHOULD be URIs. These URIs SHOULD be taken from established vocabularies if available.
 
 TODO expand
 
 ## 8. Resolving domain and range URLs
 
-If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header should be set appropriately to the CoverageJSON media type.
+If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header SHOULD be set appropriately to the CoverageJSON media type.
 
 ## 9. Media Type and File Extension
 
-The CoverageJSON media type shall be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents must be serialized using the UTF-8 character encoding.
+The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
 
-The file extension shall be `covjson`.
+The file extension SHALL be `covjson`.
 
 ## Appendix A. Coverage Examples
 
