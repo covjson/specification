@@ -56,7 +56,7 @@ Requirements for all domain profiles defined in this specification:
 
 Requirements for all coverage profiles defined in this specification:
 - A coverage with `<DomainProfile>Coverage` profile MUST have a domain with `<DomainProfile>` profile.
-- The axis ordering in `"axisNames"` of NdArray objects SHOULD follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist.
+- The axis ordering in `"axisNames"` of NdArray objects SHOULD follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist or are single-valued.
 
 Requirements for all coverage collection profiles defined in this specification:
 - A coverage collection with `<DomainProfile>CoverageCollection` profile MUST only contain coverages with `<DomainProfile>Coverage` profile.
@@ -191,8 +191,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "y", "x"],
-      "shape": [1, 3, 1, 1],
+      "axisNames": ["z"],
+      "shape": [3],
       "values" : [...]
     }
   }
@@ -248,8 +248,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "y", "x"],
-      "shape": [2, 1, 1, 1],
+      "axisNames": ["t"],
+      "shape": [2],
       "values" : [...]
     }
   }
@@ -304,8 +304,6 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "y", "x"],
-      "shape": [1, 1, 1, 1],
       "values" : [...]
     }
   }
@@ -477,8 +475,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "composite"],
-      "shape": [1, 2],
+      "axisNames": ["composite"],
+      "shape": [2],
       "values" : [...]
     }
   }
@@ -722,8 +720,6 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "composite"],
-      "shape": [1, 1, 1],
       "values" : [...]
     }
   }
@@ -790,8 +786,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "composite"],
-      "shape": [2, 1, 1],
+      "axisNames": ["t"],
+      "shape": [2],
       "values" : [...]
     }
   }
@@ -860,8 +856,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "composite"],
-      "shape": [1, 1, 2],
+      "axisNames": ["composite"],
+      "shape": [2],
       "values" : [...]
     }
   }
@@ -930,8 +926,8 @@ Example:
     "temperature" : {
       "type" : "NdArray",
       "dataType": "float",
-      "axisNames": ["t", "z", "composite"],
-      "shape": [3, 1, 2],
+      "axisNames": ["t", "composite"],
+      "shape": [3, 2],
       "values" : [...]
     }
   }

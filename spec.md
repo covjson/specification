@@ -609,9 +609,11 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
 
 A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represents a multi-dimensional array with named axes, encoded as a flat one-dimensional array in row-major order.
 
-- A range object MUST have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
-- A range object MUST have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and MUST correspond to the data type of the non-null values in the `"values"` array. 
-- Note that common JSON implementations MAY use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
+- An NdArray object MUST have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
+- An NdArray object MUST have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and MUST correspond to the data type of the non-null values in the `"values"` array.
+- An NdArray object MAY have a member with the name `"shape"` where the value is an array of integers. For 0D arrays, `"shape"` MAY be omitted (defaulting to `[]`), for >= 1D arrays it MUST be included.
+- An NdArray object MAY have a member with the name  `"axisNames"` where the value is a string array of the same length as `"shape"`. For 0D arrays, `"axisNames"` MAY be omitted (defaulting to `[]`), for >= 1D arrays it MUST be included.
+- Note that common JSON implementations use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
 ```js
@@ -638,7 +640,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object MUST have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
-- A coverage object MUST have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object MUST correspond to the domain axes defined by `"domain"`. If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member MUST be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
+- A coverage object MUST have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object MUST correspond to the domain axes defined by `"domain"`, while single-valued axes MAY be omitted.  If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member MUST be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 
 ### 6.4. Coverage Collection Objects
 
