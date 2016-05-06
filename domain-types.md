@@ -60,17 +60,17 @@ Requirements for all domain types defined in this specification:
 Domain Type          | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
 Grid                 | + | + |[+]|[+] 
-VerticalProfile      | 1 | 1 | + | [1]
-PointSeries          | 1 | 1 |[1]| [+]
-Point                | 1 | 1 |[1]| [1]
-MultiPointSeries     |   |   |   |[+]| [+]
-MultiPoint           |   |   |   |[1]| [+]
-PolygonSeries        |   |   |[1]|[+]| 1
+VerticalProfile      | 1 | 1 | + |[1]
+PointSeries          | 1 | 1 |[1]| +
+Point                | 1 | 1 |[1]|[1]
+MultiPointSeries     |   |   |   | + | +
+MultiPoint           |   |   |   |[1]| +
+PolygonSeries        |   |   |[1]| + | 1
 Polygon              |   |   |[1]|[1]| 1
-MultiPolygonSeries   |   |   |[1]|[+]| [+]
-MultiPolygon         |   |   |[1]|[1]| [+]
-Trajectory           |   |   |[1]|   | [+]
-Section              |   |   |[+]|   | [+]
+MultiPolygonSeries   |   |   |[1]| + | +
+MultiPolygon         |   |   |[1]|[1]| +
+Trajectory           |   |   |[1]|   | +
+Section              |   |   | + |   | +
 
 Symbol | Description
 -----|--------------------
