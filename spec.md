@@ -41,8 +41,8 @@ WORK-IN-PROGRESS
 The following items are (major) outstanding issues to be resolved for the first version: 
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
-- [#51](https://github.com/Reading-eScience-Centre/coveragejson/issues/51)
-  Version number inclusion / evolution of format
+- [#50](https://github.com/Reading-eScience-Centre/coveragejson/issues/50)
+  Custom metadata / semantics of extra fields
 
 ## 1. Introduction
 
@@ -57,10 +57,9 @@ A CoverageJSON grid coverage of global air temperature:
 ```js
 {
   "type" : "Coverage",
-  "profile": "GridCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "Grid",
+    "domainType": "Grid",
     "axes": {
       "x": { "start": -179.5, "stop": 179.5, "num": 360 },
       "y": { "start": -89.5, "stop": 89.5, "num": 180 },
@@ -114,8 +113,8 @@ where `"http://example.com/coverages/123/TEMP"` points to the following document
 {
   "type" : "NdArray",
   "dataType": "float",
-  "axisNames": ["t","y","x"],
-  "shape": [1, 180, 360],
+  "axisNames": ["y","x"],
+  "shape": [180, 360],
   "values" : [ 27.1, 24.1, null, 25.1, ... ]
   
 }
@@ -458,14 +457,14 @@ Its general structure is:
 ```js
 {
   "type": "Domain",
-  "profile": "...",
+  "domainType": "...",
   "axes": { ... },
   "referencing": [...]
 }
 ```
 
 - The value of the type member MUST be `"Domain"`.
-- For interoperability reasons it is RECOMMENDED that a domain object has the member `"profile"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
+- For interoperability reasons it is RECOMMENDED that a domain object has the member `"domainType"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Domain Types Specification"](domain-types.md), which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
 - A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
 - A domain object MAY have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
 - A domain object MUST have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
@@ -546,11 +545,11 @@ Example of a reference system connection object:
 
 #### 6.1.3. Examples
 
-Example of a domain object with [`"Grid"`](profiles.md) profile:
+Example of a domain object with [`"Grid"`](domain-types.md) domain type:
 ```js
 {
   "type": "Domain",
-  "profile": "Grid",
+  "domainType": "Grid",
   "axes": {
     "x": { "values": [1,2,3] },
     "y": { "values": [20,21] },
@@ -573,11 +572,11 @@ Example of a domain object with [`"Grid"`](profiles.md) profile:
 }
 ```
 
-Example of a domain object with [`"Trajectory"`](profiles.md) profile:
+Example of a domain object with [`"Trajectory"`](domain-types.md) domain type:
 ```js
 {
   "type": "Domain",
-  "profile": "Trajectory",
+  "domainType": "Trajectory",
   "axes": {
     "composite": {
       "dataType": "Tuple",
@@ -603,7 +602,6 @@ Example of a domain object with [`"Trajectory"`](profiles.md) profile:
   }]
 }
 ```
-
 
 ### 6.2. NdArray Objects
 
@@ -633,10 +631,10 @@ Example:
 
 A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
-- A coverage object MAY have the member `"profile"` with a string value to indicate that the coverage follows a certain structure (e.g. has a certain domain profile or restrictions on parameters). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
 - If a coverage has a commonly used identifier, that identifier SHOULD be included as a member of the coverage object with the name `"id"`.
 - A coverage object MUST have a member with the name `"domain"` where the value is either a domain object or a URL.
-- If the value of `"domain"` is a URL and the referenced domain has a `"profile"` member, then the coverage object MUST have the member `"domainProfile"` where the value MUST equal the `"profile"` value of the referenced domain.
+- If the value of `"domain"` is a URL and the referenced domain has a `"domainType"` member, then the coverage object SHOULD have the member `"domainType"` where the value MUST equal that of the referenced domain.
+- If the coverage object is part of a coverage collection which has a `"domainType"` member then that member SHOULD be omitted in the coverage object.
 - A coverage object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object MUST have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
@@ -646,7 +644,8 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
-- A coverage collection object MAY have the member `"profile"` with a string value to indicate that the coverage collection follows a certain structure (e.g. only has coverages with a specific domain or coverage profile). See the ["Common CoverageJSON Profiles Specification"](profiles.md), which forms part of this specification, for details. Custom profiles not part of this specification MAY be given by full URIs only.
+- A coverage collection object MAY have the member `"domainType"` with a string value to indicate that the coverage collection only contains coverages of the given domain type. See the ["Common CoverageJSON Domain Types Specification"](domain-types.md), which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
+- If a coverage collection object has the member `"domainType"`, then this member is inherited to all included coverages.
 - A coverage collection object MUST have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
 - A coverage collection object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
@@ -691,10 +690,9 @@ The file extension SHALL be `covjson`.
 ```js
 {
   "type" : "Coverage",
-  "profile" : "VerticalProfileCoverage",
   "domain" : {
     "type" : "Domain",
-    "profile" : "VerticalProfile",
+    "domainType" : "VerticalProfile",
     "axes": {
       "x" : { "values": [-10.1] },
       "y" : { "values": [ -40.2] },
@@ -795,6 +793,7 @@ The file extension SHALL be `covjson`.
 ```js
 {
   "type" : "CoverageCollection",
+  "domainType" : "VerticalProfile",
   "parameters" : {
     "PSAL": {
       "type" : "Parameter",
@@ -844,10 +843,8 @@ The file extension SHALL be `covjson`.
   "coverages": [
     {
       "type" : "Coverage",
-      "profile": "VerticalProfileCoverage",
       "domain" : {
         "type": "Domain",
-        "profile" : "VerticalProfile",
         "axes": {
           "x": { "values": [-10.1] },
           "y": { "values": [-40.2] },
@@ -859,17 +856,15 @@ The file extension SHALL be `covjson`.
         "PSAL" : {
           "type" : "NdArray",
           "dataType": "float",
-          "shape": [1, 3, 1, 1],
-          "axisNames": ["t", "z", "y", "x"],
+          "shape": [3],
+          "axisNames": ["z"],
           "values" : [ 43.7, 43.8, 43.9 ]
         }
       }
     }, {
       "type" : "Coverage",
-      "profile": "VerticalProfileCoverage",
       "domain" : {
         "type": "Domain",
-        "profile" : "VerticalProfile",
         "axes": {
           "x": { "values": [-11.1] },
           "y": { "values": [-45.2] },
@@ -881,8 +876,8 @@ The file extension SHALL be `covjson`.
         "PSAL" : {
           "type" : "NdArray",
           "dataType": "float",
-          "shape": [1, 3, 1, 1],
-          "axisNames": ["t", "z", "y", "x"],
+          "shape": [3],
+          "axisNames": ["z"],
           "values" : [ 42.7, 41.8, 40.9 ]
         }
       }

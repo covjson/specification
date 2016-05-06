@@ -1,4 +1,4 @@
-# Common CoverageJSON Profiles Specification
+# Common CoverageJSON Domain Types Specification
 
 WORK-IN-PROGRESS
 
@@ -43,27 +43,21 @@ WORK-IN-PROGRESS
 - JSON-LD is defined in [http://www.w3.org/TR/json-ld/](http://www.w3.org/TR/json-ld/).
 - The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [IETF RFC 2119](http://www.ietf.org/rfc/rfc2119.txt).
 
-## 2. Common Profiles
+## 2. Common Domain Types
 
-This specification defines the following domain profiles: Grid, VerticalProfile, PointSeries, Point, MultiPointSeries, MultiPoint, PolygonSeries, Polygon, MultiPolygonSeries, MultiPolygon, Trajectory, Section. Each domain profile `<DomainProfile>` has a corresponding coverage profile named `<DomainProfile>Coverage`, and a coverage collection profile named `<DomainProfile>CoverageCollection`.
+This specification defines the following domain domain types: Grid, VerticalProfile, PointSeries, Point, MultiPointSeries, MultiPoint, PolygonSeries, Polygon, MultiPolygonSeries, MultiPolygon, Trajectory, Section.
 
-Requirements for all domain profiles defined in this specification:
+Requirements for all domain types defined in this specification:
 - The axis and component identifiers `"x"` and `"y"` MUST refer to horizontal spatial coordinates, 
 `"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` MUST be referenced by a spatial coordinate reference system.
 - The axis and component identifier `"t"` MUST refer to temporal coordinates and be referenced by a temporal reference system.
 - If a spatial CRS is used that has the axes longitude and latitude, or easting and northing, then the axis and component identifier `"x"` MUST refer to longitude / easting, and `"y"` to latitude / northing.
-- A domain that states conformance to one of the profiles in this specification MAY have any number of additional one-coordinate axes not defined here.
+- A domain that states conformance to one of the domain types in this specification MAY have any number of additional one-coordinate axes not defined here.
+- In a Coverage object, the axis ordering in `"axisNames"` of NdArray objects SHOULD follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist or are single-valued.
 
-Requirements for all coverage profiles defined in this specification:
-- A coverage with `<DomainProfile>Coverage` profile MUST have a domain with `<DomainProfile>` profile.
-- The axis ordering in `"axisNames"` of NdArray objects SHOULD follow the order "t", "z", "y, "x", "composite", leaving out all axes that do not exist or are single-valued.
+### Overview of domain types
 
-Requirements for all coverage collection profiles defined in this specification:
-- A coverage collection with `<DomainProfile>CoverageCollection` profile MUST only contain coverages with `<DomainProfile>Coverage` profile.
-
-### Overview of domain profiles
-
-Profile              | x | y | z | t | composite
+Domain Type          | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
 Grid                 | + | + |[+]|[+] 
 VerticalProfile      | 1 | 1 | + | [1]
@@ -89,15 +83,13 @@ Symbol | Description
 
 ### 2.1. Grid
 
-#### Grid profile
+- A domain with Grid domain type MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"`.
 
-- A domain with Grid profile MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"`.
-
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "Grid",
+  "domainType": "Grid",
   "axes": {
     "x": { "values": [1,2,3] },
     "y": { "values": [20,21] },
@@ -108,18 +100,13 @@ Example:
 }
 ```
 
-#### GridCoverage profile
-
-- A coverage with GridCoverage profile MUST have a domain with Grid profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "GridCoverage",
   "domain" : {
     "type" : "Domain",
-    "profile" : "Grid",
+    "domainType" : "Grid",
     "axes": {
       "x": { "values": [1,2,3] },
       "y": { "values": [20,21] },
@@ -145,15 +132,13 @@ Example:
 
 ### 2.2. VerticalProfile
 
-#### VerticalProfile profile
+- A domain with VerticalProfile domain type MUST have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` MUST have a single coordinate only.
 
-- A domain with VerticalProfile profile MUST have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` MUST have a single coordinate only.
-
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "VerticalProfile",
+  "domainType": "VerticalProfile",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [21] },
@@ -164,18 +149,13 @@ Example:
 }
 ```
 
-#### VerticalProfileCoverage profile
-
-- A coverage with VerticalProfileCoverage profile MUST have a domain with VerticalProfile profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "VerticalProfileCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "VerticalProfile",
+    "domainType": "VerticalProfile",
     "axes": {
       "x": { "values": [1] },
       "y": { "values": [21] },
@@ -201,16 +181,14 @@ Example:
 
 ### 2.3. PointSeries
 
-#### PointSeries profile
+- A domain with PointSeries domain type MUST have the axes `"x"`, `"y"`, and `"t"` where `"x"` and `"y"` MUST have a single coordinate only.
+- A domain with PointSeries domain type MAY have the axis `"z"` which MUST have a single coordinate only.
 
-- A domain with PointSeries profile MUST have the axes `"x"`, `"y"`, and `"t"` where `"x"` and `"y"` MUST have a single coordinate only.
-- A domain with PointSeries profile MAY have the axis `"z"` which MUST have a single coordinate only.
-
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "PointSeries",
+  "domainType": "PointSeries",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [20] },
@@ -221,18 +199,13 @@ Example:
 }
 ```
 
-#### PointSeriesCoverage profile
-
-- A coverage with PointSeriesCoverage profile MUST have a domain with PointSeries profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "PointSeriesCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "PointSeries",
+    "domainType": "PointSeries",
     "axes": {
       "x": { "values": [1] },
       "y": { "values": [20] },
@@ -258,15 +231,13 @@ Example:
 
 ### 2.4. Point
 
-#### Point profile
+- A domain with Point domain type MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"` where all MUST have a single coordinate only.
 
-- A domain with Point profile MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"` where all MUST have a single coordinate only.
-
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "Point",
+  "domainType": "Point",
   "axes": {
     "x": { "values": [1] },
     "y": { "values": [20] },
@@ -277,18 +248,13 @@ Example:
 }
 ```
 
-#### PointCoverage profile
-
-- A coverage with PointCoverage profile MUST have a domain with Point profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "PointCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "Point",
+    "domainType": "Point",
     "axes": {
       "x": { "values": [1] },
       "y": { "values": [20] },
@@ -312,16 +278,14 @@ Example:
 
 ### 2.5. MultiPointSeries
 
-#### MultiPointSeries profile
-
-- A domain with MultiPointSeries profile MUST have the axes `"composite"` and `"t"`.
+- A domain with MultiPointSeries domain type MUST have the axes `"composite"` and `"t"`.
 - The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPointSeries",
+  "domainType": "MultiPointSeries",
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
     "composite": {
@@ -337,11 +301,11 @@ Example:
 }
 ```
 
-Example without z:
+Domain example without z:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPointSeries",
+  "domainType": "MultiPointSeries",
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
     "composite": {
@@ -357,18 +321,13 @@ Example without z:
 }
 ```
 
-#### MultiPointSeriesCoverage profile
-
-- A coverage with MultiPointSeriesCoverage profile MUST have a domain with MultiPointSeries profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "MultiPointSeriesCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "MultiPointSeries",
+    "domainType": "MultiPointSeries",
     "axes": {
       "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
       "composite": {
@@ -400,16 +359,14 @@ Example:
 
 ### 2.6. MultiPoint
 
-#### MultiPoint profile
-
-- A domain with MultiPoint profile MUST have the axis `"composite"` and MAY have the axis `"t"` where `"t"` MUST have a single coordinate only.
+- A domain with MultiPoint domain type MUST have the axis `"composite"` and MAY have the axis `"t"` where `"t"` MUST have a single coordinate only.
 - The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPoint",
+  "domainType": "MultiPoint",
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z"] },
     "composite": {
@@ -425,11 +382,11 @@ Example:
 }
 ```
 
-Example without z and t:
+Domain example without z and t:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPoint",
+  "domainType": "MultiPoint",
   "axes": {
     "composite": {
       "dataType": "Tuple",
@@ -444,18 +401,13 @@ Example without z and t:
 }
 ```
 
-#### MultiPointCoverage profile
-
-- A coverage with MultiPointCoverage profile MUST have a domain with MultiPoint profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "MultiPointCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "MultiPoint",
+    "domainType": "MultiPoint",
     "axes": {
       "t": { "values": ["2008-01-01T04:00:00Z"] },
       "composite": {
@@ -485,17 +437,15 @@ Example:
 
 ### 2.7. Trajectory
 
-#### Trajectory profile
-
-- A domain with Trajectory profile MUST have the axis `"composite"` and MAY have the axis `"z"` where `"z"` MUST have a single coordinate only.
+- A domain with Trajectory domain type MUST have the axis `"composite"` and MAY have the axis `"z"` where `"z"` MUST have a single coordinate only.
 - The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"t","x","y","z"` or `"t","x","y"`.
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "Trajectory",
+  "domainType": "Trajectory",
   "axes": {
     "composite": {
       "dataType": "Tuple",
@@ -510,11 +460,11 @@ Example:
 }
 ```
 
-Example without z:
+Domain example without z:
 ```js
 {
   "type": "Domain",
-  "profile": "Trajectory",
+  "domainType": "Trajectory",
   "axes": {
     "composite": {
       "dataType": "Tuple",
@@ -529,11 +479,11 @@ Example without z:
 }
 ```
 
-Example with z defined as constant value:
+Domain example with z defined as constant value:
 ```js
 {
   "type": "Domain",
-  "profile": "Trajectory",
+  "domainType": "Trajectory",
   "axes": {
     "composite": {
       "dataType": "Tuple",
@@ -549,18 +499,13 @@ Example with z defined as constant value:
 }
 ```
 
-#### TrajectoryCoverage profile
-
-- A coverage with TrajectoryCoverage profile MUST have a domain with Trajectory profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "TrajectoryCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "Trajectory",
+    "domainType": "Trajectory",
     "axes": {
       "composite": {
         "dataType": "Tuple",
@@ -590,17 +535,15 @@ Example:
 
 ### 2.8. Section
 
-#### Section profile
-
-- A domain with Section profile MUST have the axes `"composite"` and `"z"`.
+- A domain with Section domain type MUST have the axes `"composite"` and `"z"`.
 - The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"t","x","y"`.
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "Section",
+  "domainType": "Section",
   "axes": {
     "z": { "values": [10,20,30] },
     "composite": {
@@ -616,18 +559,13 @@ Example:
 }
 ```
 
-#### SectionCoverage profile
-
-- A coverage with SectionCoverage profile MUST have a domain with Section profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "SectionCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "Section",
+    "domainType": "Section",
     "axes": {
       "z": { "values": [10,20,30] },
       "composite": {
@@ -658,21 +596,19 @@ Example:
 
 ### 2.9. Polygon
 
-#### Polygon profile
-
-Polygons in this domain profile are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional components):
+Polygons in this domain domain type are defined equally to GeoJSON, except that they can only contain `[x,y]` positions (and not `z` or additional components):
 - A LinearRing is an array of 4 or more `[x,y]` arrays where each of `x` and `y` is a coordinate value. The first and last `[x,y]` elements are identical.
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first MUST be the exterior ring and any others MUST be interior rings or holes.
 
-- A domain with Polygon profile MUST have the axis `"composite"` which has a single Polygon value.
+- A domain with Polygon domain type MUST have the axis `"composite"` which has a single Polygon value.
 - The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A Polygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "Polygon",
+  "domainType": "Polygon",
   "axes": {
     "composite": {
       "dataType": "Polygon",
@@ -688,18 +624,13 @@ Example:
 }
 ```
 
-#### PolygonCoverage profile
-
-- A coverage with PolygonCoverage profile MUST have a domain with Polygon profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "PolygonCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "Polygon",
+    "domainType": "Polygon",
     "axes": {
       "composite": {
         "dataType": "Polygon",
@@ -728,17 +659,15 @@ Example:
 
 ### 2.10. PolygonSeries
 
-#### PolygonSeries profile
-
-- A domain with PolygonSeries profile MUST have the axes `"composite"` and `"t"` where `"composite"` MUST have a single Polygon value. Polygons are defined in the Polygon profile.
-- A domain with PolygonSeries profile MAY have the axis `"z"` which MUST have a single value only.
+- A domain with PolygonSeries domain type MUST have the axes `"composite"` and `"t"` where `"composite"` MUST have a single Polygon value. Polygons are defined in the Polygon domain type.
+- A domain with PolygonSeries domain type MAY have the axis `"z"` which MUST have a single value only.
 - The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "PolygonSeries",
+  "domainType": "PolygonSeries",
   "axes": {
     "composite": {
       "dataType": "Polygon",
@@ -754,18 +683,13 @@ Example:
 }
 ```
 
-#### PolygonSeriesCoverage profile
-
-- A coverage with PolygonSeriesCoverage profile MUST have a domain with PolygonSeries profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "PolygonSeriesCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "PolygonSeries",
+    "domainType": "PolygonSeries",
     "axes": {
       "composite": {
         "dataType": "Polygon",
@@ -796,17 +720,15 @@ Example:
 
 ### 2.11. MultiPolygon
 
-#### MultiPolygon profile
-
-- A domain with MultiPolygon profile MUST have the axis `"composite"` where the values are Polygons. Polygons are defined in the Polygon profile.
+- A domain with MultiPolygon domain type MUST have the axis `"composite"` where the values are Polygons. Polygons are defined in the Polygon domain type.
 - The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPolygon",
+  "domainType": "MultiPolygon",
   "axes": {
     "composite": {
       "dataType": "Polygon",
@@ -823,18 +745,13 @@ Example:
 }
 ```
 
-#### MultiPolygonCoverage profile
-
-- A coverage with MultiPolygonCoverage profile MUST have a domain with MultiPolygon profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "MultiPolygonCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "MultiPolygon",
+    "domainType": "MultiPolygon",
     "axes": {
       "composite": {
         "dataType": "Polygon",
@@ -866,17 +783,15 @@ Example:
 
 ### 2.12. MultiPolygonSeries
 
-#### MultiPolygonSeries profile
-
-- A domain with MultiPolygonSeries profile MUST have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons. Polygons are defined in the Polygon profile.
+- A domain with MultiPolygonSeries domain type MUST have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons. Polygons are defined in the Polygon domain type.
 - The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain MAY have the axis `"z"` which MUST have a single value only.
 
-Example:
+Domain example:
 ```js
 {
   "type": "Domain",
-  "profile": "MultiPolygonSeries",
+  "domainType": "MultiPolygonSeries",
   "axes": {
     "composite": {
       "dataType": "Polygon",
@@ -893,18 +808,13 @@ Example:
 }
 ```
 
-#### MultiPolygonSeriesCoverage profile
-
-- A coverage with MultiPolygonSeriesCoverage profile MUST have a domain with MultiPolygonSeries profile.
-
-Example:
+Coverage example:
 ```js
 {
   "type" : "Coverage",
-  "profile" : "MultiPolygonSeriesCoverage",
   "domain" : {
     "type": "Domain",
-    "profile": "MultiPolygonSeries",
+    "domainType": "MultiPolygonSeries",
     "axes": {
       "composite": {
         "dataType": "Polygon",
