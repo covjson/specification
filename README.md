@@ -36,7 +36,7 @@ For all these reasons, the CoverageJSON format was developed which tries to fill
 While the format is still in development and changing, a range of libraries are developed for reading and visualizing CoverageJSON documents:
 - [JavaScript API for Coverage Data](https://github.com/Reading-eScience-Centre/coverage-jsapi) - an abstraction over CoverageJSON for dealing with arbitrary coverage data in JavaScript
 - [covjson-reader](https://github.com/Reading-eScience-Centre/covjson-reader) - JavaScript library that reads CoverageJSON from objects or URLs, exposing the data as JavaScript Coverage and CoverageCollection objects (see API above)
-- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing JavaScript Coverage objects, currently with support for [Common CoverageJSON Profiles](https://github.com/Reading-eScience-Centre/coveragejson/blob/master/profiles.md) only
+- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing JavaScript Coverage objects, currently with support for [Common CoverageJSON Domain Types](https://github.com/Reading-eScience-Centre/coveragejson/blob/master/domain-types.md) only
 
 However, as the format is so simple, it is easy to prototype an application from scratch. If you think the format is *not* simple enough, please open an issue and explain why you feel that way - it's a priority for us to make it simple!
 
