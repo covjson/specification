@@ -145,6 +145,7 @@ The following lists some areas where the model used by CoverageJSON departs from
 ## 2. i18n Objects
 
 An i18n object represents a string in multiple languages where each key is a language tag as defined in [BCP 47](http://tools.ietf.org/html/bcp47), and the value is the string in that language.
+The special language tag `"und"` can be used to identify a value whose language is unknown or undetermined.
 
 Example:
 
