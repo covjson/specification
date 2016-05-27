@@ -66,6 +66,7 @@
     "members": { "@id": "covjson:member", "@type": "@vocab" },
      
     "ranges": { "@id": "covjson:range", "@type": "@id", "@container": "@index" },
+    "NdArray": "covjson:NdArray",
     "shape": { "@id": "covjson:shape", "@container": "@list" },
     "axisNames": { "@id": "covjson:axisNames", "@container": "@list" },
     "float": "xsd:double",
