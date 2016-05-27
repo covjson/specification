@@ -1,8 +1,11 @@
 {
   "@context": {
+    "@vocab": "_:",
     "id": "@id",
     "type": "@type",
     "value": "@value",
+    
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "covjson": "https://w3id.org/covjson/core#",
     "dt": "https://w3id.org/covjson/domainTypes#",
     "ssn": "http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#",
@@ -16,23 +19,61 @@
     "label": { "@id": "skos:prefLabel", "@container": "@language" },
     "title": { "@id": "dct:title", "@container": "@language" },
     "description": { "@id": "dct:description", "@container": "@language" },
-    "observedProperty": "ssn:observedProperty",
-
-    "domainType": {"@id": "covjson:domainType", "@type": "@vocab"},
-
-    "coverages": "hydra:member",
-    "Parameter": "covjson:Parameter",
-    "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
     "unit": "qudt:unit",
     "symbol": "qudt:symbol",
+    
+    "Domain": "covjson:Domain",
+    "domain": "covjson:domain",   
+    "domainType": { "@id": "covjson:domainType", "@type": "@vocab" },
+    "axes": { "@id": "covjson:axis", "@container": "@index" },
+    "dataType": { "@id": "covjson:dataType", "@type": "@vocab" },
+    "Primitive": "covjson:Primitive",
+    "Tuple": "covjson:Tuple",
+    "Polygon": "covjson:Polygon",
+    "num": "covjson:num",
+    "start": "covjson:start",
+    "stop": "covjson:stop",
+    
+    "referencing": "covjson:referencing",
+    "components": { "@id": "covjson:components", "@container": "@list" },
+    "system": "covjson:referenceSystem",
+    "RS": "covjson:ReferenceSystem",    
+    "CRS": "covjson:CoordinateReferenceSystem",
+    "cs": "ignf:coordinateSystem",
+    "CS": "ignf:CoordinateSystem",    
+    "TemporalRS": "inspiregloss:TemporalReferenceSystem",
+    "TemporalCRS": "covjson:TemporalCRS",
+    "calendar": { "@id": "covjson:calendar", "@type": "@vocab" },
+    "Gregorian": "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
+    "timeScale": "covjson:timeScale",    
+    "SpatialRS": "inspiregloss:SpatialReferenceSystem",
+    "SpatialCRS": "ignf:CRS",
+    "GeodeticCRS": "ignf:GeodeticCRS",
+    "ProjectedCRS": "ignf:ProjectedCRS",
+    "VerticalCRS": "ignf:VerticalCRS",
+    "datum": "ignf:datum",
+    "csAxes": "ignf:axis",
+    "direction": "ignf:axisDirection",    
+    "IdentifierRS": "covjson:IdentifierReferenceSystem",
+    "targetConcept": "covjson:targetConcept",
+    "identifiers": { "@id": "covjson:identifiers", "@type": "@id", "@container": "@index" },
+    
+    "Parameter": "covjson:Parameter",
+    "parameters": { "@id": "covjson:parameter", "@type": "@id", "@container": "@index" },
+    "observedProperty": "ssn:observedProperty",
     "categoryEncoding": "covjson:categoryEncoding",
     "ParameterGroup": "covjson:ParameterGroup",
     "members": { "@id": "covjson:member", "@type": "@vocab" },
-    "domain": "covjson:domain",
+     
     "ranges": { "@id": "covjson:range", "@type": "@id", "@container": "@index" },
+    "shape": { "@id": "covjson:shape", "@container": "@list" },
+    "axisNames": { "@id": "covjson:axisNames", "@container": "@list" },
+    "float": "xsd:double",
+    "integer": "xsd:integer",
+    "string": "xsd:string",
     
-    "Domain": "covjson:Domain",
     "Coverage": "covjson:Coverage",
+    "coverages": "hydra:member",
     "CoverageCollection": "covjson:CoverageCollection",
     
     "Grid": "dt:Grid",
@@ -69,34 +110,6 @@
     "SectionCoverageCollection": "dt:SectionCoverageCollection",
     "MultiPolygonSeriesCoverageCollection": "dt:MultiPolygonSeriesCoverageCollection",
     "MultiPolygonCoverageCollection": "dt:MultiPolygonCoverageCollection",
-    "PolygonCoverageCollection": "dt:PolygonCoverageCollection",
-    
-    "referencing": "covjson:referencing",
-    "components": { "@id": "covjson:components", "@container": "@list" },
-    "system": "covjson:referenceSystem",
-    "RS": "covjson:ReferenceSystem",
-    
-    "CRS": "covjson:CoordinateReferenceSystem",
-    "cs": "ignf:coordinateSystem",
-    "CS": "ignf:CoordinateSystem",
-    
-    "TemporalRS": "inspiregloss:TemporalReferenceSystem",
-    "TemporalCRS": "covjson:TemporalCRS",
-    "calendar": { "@id": "covjson:calendar", "@type": "@vocab" },
-    "Gregorian": "http://www.opengis.net/def/uom/ISO-8601/0/Gregorian",
-    "timeScale": "covjson:timeScale",
-    
-    "SpatialRS": "inspiregloss:SpatialReferenceSystem",
-    "SpatialCRS": "ignf:CRS",
-    "GeodeticCRS": "ignf:GeodeticCRS",
-    "ProjectedCRS": "ignf:ProjectedCRS",
-    "VerticalCRS": "ignf:VerticalCRS",
-    "datum": "ignf:datum",
-    "axes": "ignf:axis",
-    "direction": "ignf:axisDirection",
-    
-    "IdentifierRS": "covjson:IdentifierReferenceSystem",
-    "targetConcept": "covjson:targetConcept",
-    "identifiers": { "@id": "covjson:identifiers", "@type": "@id", "@container": "@index" }
+    "PolygonCoverageCollection": "dt:PolygonCoverageCollection"
   }
 }
