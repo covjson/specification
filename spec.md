@@ -363,7 +363,7 @@ Example of a vertical CRS with embedded detail information:
   },
   "cs": {
     "id": "http://www.opengis.net/def/cs/EPSG/0/6499",
-    "axes": [{
+    "csAxes": [{
       "id": "http://www.opengis.net/def/axis/EPSG/0/114",
       "name": {
         "en": "Gravity-related height"
