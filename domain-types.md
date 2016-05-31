@@ -279,7 +279,7 @@ Coverage example:
 ### 2.5. MultiPointSeries
 
 - A domain with MultiPointSeries domain type MUST have the axes `"composite"` and `"t"`.
-- The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
+- The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
 Domain example:
 ```js
@@ -289,7 +289,7 @@ Domain example:
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["x","y","z"],
       "values": [
         [1, 20, 1],
@@ -309,7 +309,7 @@ Domain example without z:
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["x","y"],
       "values": [
         [1, 20],
@@ -331,7 +331,7 @@ Coverage example:
     "axes": {
       "t": { "values": ["2008-01-01T04:00:00Z", "2008-01-01T05:00:00Z"] },
       "composite": {
-        "dataType": "Tuple",
+        "dataType": "tuple",
         "components": ["x","y","z"],
         "values": [
           [1, 20, 1],
@@ -360,7 +360,7 @@ Coverage example:
 ### 2.6. MultiPoint
 
 - A domain with MultiPoint domain type MUST have the axis `"composite"` and MAY have the axis `"t"` where `"t"` MUST have a single coordinate only.
-- The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
+- The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
 Domain example:
 ```js
@@ -370,7 +370,7 @@ Domain example:
   "axes": {
     "t": { "values": ["2008-01-01T04:00:00Z"] },
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["x","y","z"],
       "values": [
         [1, 20, 1],
@@ -389,7 +389,7 @@ Domain example without z and t:
   "domainType": "MultiPoint",
   "axes": {
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["x","y"],
       "values": [
         [1, 20],
@@ -411,7 +411,7 @@ Coverage example:
     "axes": {
       "t": { "values": ["2008-01-01T04:00:00Z"] },
       "composite": {
-        "dataType": "Tuple",
+        "dataType": "tuple",
         "components": ["x","y","z"],
         "values": [
           [1, 20, 1],
@@ -438,7 +438,7 @@ Coverage example:
 ### 2.7. Trajectory
 
 - A domain with Trajectory domain type MUST have the axis `"composite"` and MAY have the axis `"z"` where `"z"` MUST have a single coordinate only.
-- The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"t","x","y","z"` or `"t","x","y"`.
+- The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"t","x","y","z"` or `"t","x","y"`.
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Domain example:
@@ -448,7 +448,7 @@ Domain example:
   "domainType": "Trajectory",
   "axes": {
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["t","x","y","z"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20, 1],
@@ -467,7 +467,7 @@ Domain example without z:
   "domainType": "Trajectory",
   "axes": {
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
@@ -486,7 +486,7 @@ Domain example with z defined as constant value:
   "domainType": "Trajectory",
   "axes": {
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["t","x","y"],      
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
@@ -508,7 +508,7 @@ Coverage example:
     "domainType": "Trajectory",
     "axes": {
       "composite": {
-        "dataType": "Tuple",
+        "dataType": "tuple",
         "components": ["t","x","y","z"],      
         "values": [
           ["2008-01-01T04:00:00Z", 1, 20, 1],
@@ -536,7 +536,7 @@ Coverage example:
 ### 2.8. Section
 
 - A domain with Section domain type MUST have the axes `"composite"` and `"z"`.
-- The axis `"composite"` MUST have the data type `"Tuple"` and the component identifiers `"t","x","y"`.
+- The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"t","x","y"`.
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Domain example:
@@ -547,7 +547,7 @@ Domain example:
   "axes": {
     "z": { "values": [10,20,30] },
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["t","x","y"],
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
@@ -569,7 +569,7 @@ Coverage example:
     "axes": {
       "z": { "values": [10,20,30] },
       "composite": {
-        "dataType": "Tuple",
+        "dataType": "tuple",
         "components": ["t","x","y"],
         "values": [
           ["2008-01-01T04:00:00Z", 1, 20],
@@ -601,7 +601,7 @@ Polygons in this domain domain type are defined equally to GeoJSON, except that 
 - A Polygon is an array of LinearRing arrays. For Polygons with multiple rings, the first MUST be the exterior ring and any others MUST be interior rings or holes.
 
 - A domain with Polygon domain type MUST have the axis `"composite"` which has a single Polygon value.
-- The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
+- The axis `"composite"` MUST have the data type `"polygon"` and the component identifiers `"x","y"`.
 - A Polygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
 Domain example:
@@ -611,7 +611,7 @@ Domain example:
   "domainType": "Polygon",
   "axes": {
     "composite": {
-      "dataType": "Polygon",
+      "dataType": "polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -633,7 +633,7 @@ Coverage example:
     "domainType": "Polygon",
     "axes": {
       "composite": {
-        "dataType": "Polygon",
+        "dataType": "polygon",
         "components": ["x","y"],
         "values": [
           [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -661,7 +661,7 @@ Coverage example:
 
 - A domain with PolygonSeries domain type MUST have the axes `"composite"` and `"t"` where `"composite"` MUST have a single Polygon value. Polygons are defined in the Polygon domain type.
 - A domain with PolygonSeries domain type MAY have the axis `"z"` which MUST have a single value only.
-- The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
+- The axis `"composite"` MUST have the data type `"polygon"` and the component identifiers `"x","y"`.
 
 Domain example:
 ```js
@@ -670,7 +670,7 @@ Domain example:
   "domainType": "PolygonSeries",
   "axes": {
     "composite": {
-      "dataType": "Polygon",
+      "dataType": "polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -692,7 +692,7 @@ Coverage example:
     "domainType": "PolygonSeries",
     "axes": {
       "composite": {
-        "dataType": "Polygon",
+        "dataType": "polygon",
         "components": ["x","y"],
         "values": [
           [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -721,7 +721,7 @@ Coverage example:
 ### 2.11. MultiPolygon
 
 - A domain with MultiPolygon domain type MUST have the axis `"composite"` where the values are Polygons. Polygons are defined in the Polygon domain type.
-- The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
+- The axis `"composite"` MUST have the data type `"polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
 Domain example:
@@ -731,7 +731,7 @@ Domain example:
   "domainType": "MultiPolygon",
   "axes": {
     "composite": {
-      "dataType": "Polygon",
+      "dataType": "polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
@@ -754,7 +754,7 @@ Coverage example:
     "domainType": "MultiPolygon",
     "axes": {
       "composite": {
-        "dataType": "Polygon",
+        "dataType": "polygon",
         "components": ["x","y"],
         "values": [
           [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
@@ -784,7 +784,7 @@ Coverage example:
 ### 2.12. MultiPolygonSeries
 
 - A domain with MultiPolygonSeries domain type MUST have the axes `"composite"` and `"t"` where the values of `"composite"` are Polygons. Polygons are defined in the Polygon domain type.
-- The axis `"composite"` MUST have the data type `"Polygon"` and the component identifiers `"x","y"`.
+- The axis `"composite"` MUST have the data type `"polygon"` and the component identifiers `"x","y"`.
 - A MultiPolygon domain MAY have the axis `"z"` which MUST have a single value only.
 
 Domain example:
@@ -794,7 +794,7 @@ Domain example:
   "domainType": "MultiPolygonSeries",
   "axes": {
     "composite": {
-      "dataType": "Polygon",
+      "dataType": "polygon",
       "components": ["x","y"],
       "values": [
         [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],
@@ -817,7 +817,7 @@ Coverage example:
     "domainType": "MultiPolygonSeries",
     "axes": {
       "composite": {
-        "dataType": "Polygon",
+        "dataType": "polygon",
         "components": ["x","y"],
         "values": [
           [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ],

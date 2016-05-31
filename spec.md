@@ -475,9 +475,9 @@ Its general structure is:
 - An axis object MUST have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values.
 - The values of `"start"` and `"stop"` MUST be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` MUST have identical values. For `num > 1`, the array elements of `"values"` MAY be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. Note that `"start"` can be greater than `"stop"` in which case the axis values are descending.
-- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` MUST be either `"Primitive"`, `"Tuple"`, `"Polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"Primitive"`, there is a single component and each axis value MUST be a number or string. For `"Tuple"`, each axis value MUST be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"Polygon"`, each axis value MUST be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
-- If missing, the member `"dataType"` defaults to `"Primitive"` and MUST not be included for that default case.
-- If `"dataType"` is `"Primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, MUST be ordered monotonically, that is, increasing or decreasing.
+- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The value of `"dataType"` MUST be either `"primitive"`, `"tuple"`, `"polygon"`, or a full custom URI (although custom data types are not recommended for interoperability reasons). For `"primitive"`, there is a single component and each axis value MUST be a number or string. For `"tuple"`, each axis value MUST be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"polygon"`, each axis value MUST be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
+- If missing, the member `"dataType"` defaults to `"primitive"` and MUST not be included for that default case.
+- If `"dataType"` is `"primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, MUST be ordered monotonically, that is, increasing or decreasing.
 - The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components defined by `"dataType"`.
 - If missing, the member `"components"` defaults to a one-element array of the axis identifier and MUST NOT be included for that default case.
 - A component identifier SHALL NOT be defined more than once in all axis objects of a domain object.
@@ -506,7 +506,7 @@ Example of an axis object with regular axis encoding:
 Example of an axis object with tuple values:
 ```js
 {
-  "dataType": "Tuple",
+  "dataType": "tuple",
   "components": ["t","x","y"],  
   "values": [
     ["2008-01-01T04:00:00Z",1,20],
@@ -518,7 +518,7 @@ Example of an axis object with tuple values:
 Example of an axis object with Polygon values:
 ```js
 {
-  "dataType": "Polygon",
+  "dataType": "polygon",
   "components": ["x","y"],
   "values": [
     [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
@@ -580,7 +580,7 @@ Example of a domain object with [`"Trajectory"`](domain-types.md) domain type:
   "domainType": "Trajectory",
   "axes": {
     "composite": {
-      "dataType": "Tuple",
+      "dataType": "tuple",
       "components": ["t","x","y"],
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
