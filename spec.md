@@ -449,7 +449,7 @@ The domain values in the above example would be `"de"` and `"gb"`.
 CoverageJSON documents always consist of a single object. This object (referred to as the CoverageJSON object below) represents a domain, range, coverage, or collection of coverages.
 
 - The CoverageJSON object MAY have any number of members (name/value pairs).
-- The CoverageJSON object MUST have a member with the name `"type"` which has as value one of: `"Domain"`, `"NdArray"` (a range encoding), `"Coverage"`, or `"CoverageCollection"`. The case of the type member values MUST be as shown here.
+- The CoverageJSON object MUST have a member with the name `"type"` which has as value one of: `"Domain"`, `"NdArray"` (a range encoding), `"TiledNdArray"` (a range encoding), `"Coverage"`, or `"CoverageCollection"`. The case of the type member values MUST be as shown here.
 
 ### 6.1. Domain Objects
 
@@ -606,12 +606,12 @@ Example of a domain object with [`"Trajectory"`](domain-types.md) domain type:
 
 ### 6.2. NdArray Objects
 
-A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represents a multi-dimensional array with named axes, encoded as a flat one-dimensional array in row-major order.
+A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represents a multidimensional (>= 0D) array with named axes, encoded as a flat one-dimensional array in row-major order.
 
 - An NdArray object MUST have a member with the name `"values"` where the value is an array of numbers and nulls, or strings and nulls, where nulls represent missing data.
 - An NdArray object MUST have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"` and MUST correspond to the data type of the non-null values in the `"values"` array.
 - An NdArray object MAY have a member with the name `"shape"` where the value is an array of integers. For 0D arrays, `"shape"` MAY be omitted (defaulting to `[]`), for >= 1D arrays it MUST be included.
-- An NdArray object MAY have a member with the name  `"axisNames"` where the value is a string array of the same length as `"shape"`. For 0D arrays, `"axisNames"` MAY be omitted (defaulting to `[]`), for >= 1D arrays it MUST be included.
+- An NdArray object MAY have a member with the name `"axisNames"` where the value is a string array of the same length as `"shape"`. For 0D arrays, `"axisNames"` MAY be omitted (defaulting to `[]`), for >= 1D arrays it MUST be included.
 - Note that common JSON implementations use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
@@ -628,7 +628,104 @@ Example:
 }
 ```
 
-### 6.3. Coverage Objects
+### 6.3. TiledNdArray Objects
+
+A CoverageJSON object with the type `"TiledNdArray"` is a TiledNdArray object. It represents a multidimensional (>= 1D) array with named axes that is split up into sets of linked NdArray documents. Each tileset typically covers a specific data access scenario, for example, loading a single time slice of a grid vs. loading a time series of a spatial subset of a grid.
+
+- A TiledNdArray object MUST have a member with the name `"dataType"` where the value is either `"float"`, `"integer"`, or `"string"`.
+- A TiledNdArray object MUST have a member with the name `"shape"` where the value is a non-empty array of integers.
+- A TiledNdArray object MUST have a member with the name `"axisNames"` where the value is a string array of the same length as `"shape"`.
+- A TiledNdArray object MUST have a member with the name `"tileSets"` where the value is a non-empty array of TileSet objects.
+- A TileSet object MUST have a member with the name `"tileShape"` where the value is an array of the same length as `"shape"` and where each array element is either null or an integer lower or equal than the corresponding element in `"shape"`. A null value denotes that the axis is not tiled.
+- A TileSet object MUST have a member with the name `"urlTemplate"` where the value is a Level 1 URI template as defined in [RFC 6570](https://tools.ietf.org/html/rfc6570). The URI template MUST contain a variable for each axis name whose corresponding element in `"tileShape"` is not null. A variable for an axis of total size `totalSize` (from `"shape"`) and tile size `tileSize` (from `"tileShape"`) has as value one of the integers `0, 1, ..., q + r - 1` where `q` and `r` are the quotient and remainder obtained by dividing `totalSize` by `tileSize`. Each URI that can be generated from the URI template MUST resolve to an NdArray CoverageJSON document where the members `"dataType"` and `"axisNames`" are identical to the ones of the TiledNdArray object, and where each value of `"shape"` is an integer equal, or lower if an edge tile, to the corresponding element in `"tileShape"` while replacing null with the corresponding element of `"shape"` of the TiledNdArray.
+
+Example:
+```js
+{
+  "type" : "TiledNdArray",
+  "dataType": "integer",
+  "axisNames": ["t", "y", "x"],
+  "shape": [2, 5, 10],
+  "tileSets": [{
+    "tileShape": [null, null, null],
+    "urlTemplate": "http://example.com/a/all.covjson"
+  }, {
+    "tileShape": [1, null, null],
+    "urlTemplate": "http://example.com/b/{t}.covjson"
+  }, {
+    "tileShape": [null, 2, 3],
+    "urlTemplate": "http://example.com/c/{y}-{x}.covjson"
+  }]
+}
+
+// http://example.com/a/all.covjson
+{
+  "type": "NdArray",
+  "dataType": "integer",
+  "axisNames": ["t", "y", "x"],
+  "shape": [2, 5, 10],
+  "values": [
+     1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
+    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+    61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
+    71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+    91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+  ]
+}
+
+// http://example.com/b/0.covjson
+{
+  "type": "NdArray",
+  "dataType": "integer",
+  "axisNames": ["t", "y", "x"],
+  "shape": [1, 5, 10],
+  "values": [
+     1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
+    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+    31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50
+  ]
+}
+
+// http://example.com/c/0-0.covjson
+{
+  "type": "NdArray",
+  "dataType": "integer",
+  "axisNames": ["t", "y", "x"],
+  "shape": [2, 2, 3],
+  "values": [
+     1,  2,  3,
+    11, 12, 13,
+    
+    51, 52, 53,
+    61, 62, 63
+  ]
+}
+
+// http://example.com/c/0-3.covjson
+{
+  "type": "NdArray",
+  "dataType": "integer",
+  "axisNames": ["t", "y", "x"],
+  "shape": [2, 2, 1],
+  "values": [
+    10,
+    20,
+  
+    60,
+    70
+  ]
+}
+```
+
+### 6.4. Coverage Objects
 
 A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
@@ -639,9 +736,9 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object. The identifier corresponds to the commonly known concept of "variable name" and is merely used in clients for conveniently accessing the corresponding range object.
 - A coverage object MUST have a `"parameters"` member if the coverage object is not part of a coverage collection or if the coverage collection does not have a `"parameters"` member.
 - A coverage object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
-- A coverage object MUST have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray object or a URL. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray object MUST correspond to the domain axes defined by `"domain"`, while single-valued axes MAY be omitted.  If the referenced parameter object has a `"categoryEncoding"` member, then each array element of the `"values"` NdArray member MUST be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
+- A coverage object MUST have a member with the name `"ranges"` where the value is a range set object. Any member of a range set object has as name any of the names in a `"parameters"` object in scope and as value either an NdArray or TiledNdArray object or a URL resolving to a CoverageJSON document of such object. A `"parameters"` member in scope is either within the enclosing coverage object or, if part of a coverage collection, in the parent coverage collection object. The shape and axis names of each NdArray or TiledNdArray object MUST correspond to the domain axes defined by `"domain"`, while single-valued axes MAY be omitted. If the referenced parameter object has a `"categoryEncoding"` member, then each non-null array element of the `"values"` member of the NdArray object, or the linked NdArray objects within a TiledNdArray object, MUST be equal to one of the values defined in the `"categoryEncoding"` object and be interpreted as the matching category.
 
-### 6.4. Coverage Collection Objects
+### 6.5. Coverage Collection Objects
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
