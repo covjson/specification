@@ -116,7 +116,6 @@ where `"http://example.com/coverages/123/TEMP"` points to the following document
   "axisNames": ["y","x"],
   "shape": [180, 360],
   "values" : [ 27.1, 24.1, null, 25.1, ... ]
-  
 }
 ```
 Range data can also be directly embedded into the main CoverageJSON document, making it stand-alone.
