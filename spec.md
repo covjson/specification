@@ -1,9 +1,11 @@
+[domain-types]: domain-types.md
+
 # The CoverageJSON Format Specification
 
 WORK-IN-PROGRESS
 
 <!-- Document Info -->
-<table>
+<table class="table">
   <tr>
     <th>Authors</th>
     <td>
@@ -39,6 +41,7 @@ WORK-IN-PROGRESS
 ## TODO
 
 The following items are (major) outstanding issues to be resolved for the first version: 
+
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
 - [#50](https://github.com/Reading-eScience-Centre/coveragejson/issues/50)
@@ -109,6 +112,7 @@ A CoverageJSON grid coverage of global air temperature:
 }
 ```
 where `"http://example.com/coverages/123/TEMP"` points to the following document:
+
 ```json
 {
   "type" : "NdArray",
@@ -130,6 +134,7 @@ and is the successor of the
 The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF). 
 
 The following lists some areas where the model used by CoverageJSON departs from CIS:
+
 - CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of components (TODO introduce components before).
 - CIS has separate domain concepts for grids vs other types, CoverageJSON always uses collections of orthogonal axes for organizing domains, whether gridded or not.
 - CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
@@ -172,6 +177,7 @@ Parameter objects represent metadata about the values of the coverage in terms o
 
 
 Example for a continuous-data parameter:
+
 ```json
 {
   "type" : "Parameter",
@@ -200,6 +206,7 @@ Example for a continuous-data parameter:
 ```
 
 Example for a categorical-data parameter:
+
 ```json
 {
   "type" : "Parameter",
@@ -250,6 +257,7 @@ Parameter group objects represent logical groups of parameters, for example vect
 - A parameter group object MUST have a member with the name `"members"` where the value is a non-empty array of parameter identifiers (see 6.3 Coverage objects).
 
 Example of a group describing a vector quantity:
+
 ```json
 {
   "type": "ParameterGroup",
@@ -264,6 +272,7 @@ Example of a group describing a vector quantity:
 where `"WIND_SPEED"` and `"WIND_DIR"` reference existing parameters in a CoverageJSON coverage or collection object by their short identifiers.
 
 Example of a group describing uncertainty of a parameter:
+
 ```json
 {
   "type": "ParameterGroup",
@@ -280,6 +289,7 @@ Example of a group describing uncertainty of a parameter:
 }
 ```
 where `"SST_mean"` references the following parameter:
+
 ```json
 {
   "type" : "Parameter",
@@ -302,7 +312,9 @@ where `"SST_mean"` references the following parameter:
   }
 }
 ```
+
 and `"SST_stddev"`:
+
 ```json
 {
   "type" : "Parameter",
@@ -334,6 +346,7 @@ The following defines common types of such reference systems.
 ### 5.1. Spatial Reference Systems
 
 Example of a geodetic CRS:
+
 ```json
 {
   "type": "GeodeticCRS",
@@ -342,6 +355,7 @@ Example of a geodetic CRS:
 ```
 
 Example of a projected CRS (here [British National Grid](http://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/)):
+
 ```json
 {
   "type": "ProjectedCRS",
@@ -350,10 +364,11 @@ Example of a projected CRS (here [British National Grid](http://spatialreference
 ```
 
 Example of a vertical CRS with embedded detail information:
+
 ```json
 {
   "type": "VerticalCRS",
-  "id": "http://www.opengis.net/def/crs/EPSG/0/5703"
+  "id": "http://www.opengis.net/def/crs/EPSG/0/5703",
   "datum": {
     "id": "http://www.opengis.net/def/datum/EPSG/0/5103",
     "label": {
@@ -399,6 +414,7 @@ In this specification, only a string-based notation for time values is defined.
   a client SHOULD interpret those dates in that reduced precision.
 
 Example:
+
 ```json
 {
   "type": "TemporalRS",
@@ -419,6 +435,7 @@ Identifier-based reference systems (identifier RS) .
 - Domain values associated to an identifier RS MUST be strings.
 
 Example of a geographic identifier reference system:
+
 ```json
 {
   "type": "IdentifierRS",
@@ -454,6 +471,7 @@ CoverageJSON documents always consist of a single object. This object (referred 
 
 A domain object is a CoverageJSON object which defines a set of positions and their extent in one or more referencing systems.
 Its general structure is:
+
 ```json
 {
   "type": "Domain",
@@ -464,7 +482,7 @@ Its general structure is:
 ```
 
 - The value of the type member MUST be `"Domain"`.
-- For interoperability reasons it is RECOMMENDED that a domain object has the member `"domainType"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Domain Types Specification"](domain-types.md), which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
+- For interoperability reasons it is RECOMMENDED that a domain object has the member `"domainType"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Domain Types Specification"][domain-types], which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
 - A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
 - A domain object MAY have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
 - A domain object MUST have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
@@ -484,6 +502,7 @@ Its general structure is:
 - If a domain axis object has no `"bounds"` member then a bounds array MAY be derived automatically.
 
 Example of an axis object with bounds:
+
 ```json
 {
   "values": [20,21],
@@ -493,16 +512,18 @@ Example of an axis object with bounds:
 ```
 
 Example of an axis object with regular axis encoding:
+
 ```json
 {
   "start": 0,
   "stop": 5,
   "num": 6
-  // equal to: "values": [0,1,2,3,4,5]
 }
 ```
+The axis values in the above example are equal to `"values": [0,1,2,3,4,5]`.
 
 Example of an axis object with tuple values:
+
 ```json
 {
   "dataType": "tuple",
@@ -515,6 +536,7 @@ Example of an axis object with tuple values:
 ```
 
 Example of an axis object with Polygon values:
+
 ```json
 {
   "dataType": "polygon",
@@ -533,6 +555,7 @@ A reference system connection object creates a link between values within domain
 - A reference system connection object MUST have a member `"system"` which has as value a reference system object. Section 5 defines common types of  reference system objects.
 
 Example of a reference system connection object:
+
 ```json
 {
   "components": ["y","x","z"],
@@ -545,7 +568,8 @@ Example of a reference system connection object:
 
 #### 6.1.3. Examples
 
-Example of a domain object with [`"Grid"`](domain-types.md) domain type:
+Example of a domain object with [`"Grid"`][domain-types] domain type:
+
 ```json
 {
   "type": "Domain",
@@ -572,7 +596,8 @@ Example of a domain object with [`"Grid"`](domain-types.md) domain type:
 }
 ```
 
-Example of a domain object with [`"Trajectory"`](domain-types.md) domain type:
+Example of a domain object with [`"Trajectory"`][domain-types] domain type:
+
 ```json
 {
   "type": "Domain",
@@ -614,6 +639,7 @@ A CoverageJSON object with the type `"NdArray"` is an NdArray object. It represe
 - Note that common JSON implementations use 64-bit floating point numbers as data type for `"values"`, therefore precision has to be taken into account. For example, only integers within the extent [-2^32, 2^32] can be accurately represented with 64-bit floating point numbers.
 
 Example:
+
 ```json
 {
   "type": "NdArray",
@@ -639,6 +665,7 @@ A CoverageJSON object with the type `"TiledNdArray"` is a TiledNdArray object. I
 - A TileSet object MUST have a member with the name `"urlTemplate"` where the value is a Level 1 URI template as defined in [RFC 6570](https://tools.ietf.org/html/rfc6570). The URI template MUST contain a variable for each axis name whose corresponding element in `"tileShape"` is not null. A variable for an axis of total size `totalSize` (from `"shape"`) and tile size `tileSize` (from `"tileShape"`) has as value one of the integers `0, 1, ..., q + r - 1` where `q` and `r` are the quotient and remainder obtained by dividing `totalSize` by `tileSize`. Each URI that can be generated from the URI template MUST resolve to an NdArray CoverageJSON document where the members `"dataType"` and `"axisNames`" are identical to the ones of the TiledNdArray object, and where each value of `"shape"` is an integer equal, or lower if an edge tile, to the corresponding element in `"tileShape"` while replacing null with the corresponding element of `"shape"` of the TiledNdArray.
 
 Example:
+
 ```json
 {
   "type" : "TiledNdArray",
@@ -656,8 +683,11 @@ Example:
     "urlTemplate": "http://example.com/c/{y}-{x}.covjson"
   }]
 }
+```
 
-// http://example.com/a/all.covjson
+`http://example.com/a/all.covjson`:
+
+```json
 {
   "type": "NdArray",
   "dataType": "integer",
@@ -677,8 +707,11 @@ Example:
     91, 92, 93, 94, 95, 96, 97, 98, 99, 100
   ]
 }
+```
 
-// http://example.com/b/0.covjson
+`http://example.com/b/0.covjson`:
+
+```json
 {
   "type": "NdArray",
   "dataType": "integer",
@@ -692,8 +725,11 @@ Example:
     41, 42, 43, 44, 45, 46, 47, 48, 49, 50
   ]
 }
+```
 
-// http://example.com/c/0-0.covjson
+`http://example.com/c/0-0.covjson`:
+
+```json
 {
   "type": "NdArray",
   "dataType": "integer",
@@ -707,8 +743,11 @@ Example:
     61, 62, 63
   ]
 }
+```
 
-// http://example.com/c/0-3.covjson
+`http://example.com/c/0-3.covjson`:
+
+```json
 {
   "type": "NdArray",
   "dataType": "integer",
@@ -741,7 +780,7 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
 
-- A coverage collection object MAY have the member `"domainType"` with a string value to indicate that the coverage collection only contains coverages of the given domain type. See the ["Common CoverageJSON Domain Types Specification"](domain-types.md), which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
+- A coverage collection object MAY have the member `"domainType"` with a string value to indicate that the coverage collection only contains coverages of the given domain type. See the ["Common CoverageJSON Domain Types Specification"][domain-types], which forms part of this specification, for details. Custom domain types not part of this specification MAY be given by full URIs only.
 - If a coverage collection object has the member `"domainType"`, then this member is inherited to all included coverages.
 - A coverage collection object MUST have a member with the name `"coverages"`. The value corresponding to `"coverages"` is an array. Each element in the array is a coverage object as defined above.
 - A coverage collection object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
@@ -753,6 +792,7 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 A JSON-LD context MAY be established by including a `"@context"` element in the root of a CoverageJSON object which SHOULD refer to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary contexts. Domain axis values and range values SHOULD *not* be exposed as linked data since they are currently not suitable for such representation.
 
 Example:
+
 ```json
 {
   "@context": [
