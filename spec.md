@@ -47,6 +47,12 @@ The following items are (major) outstanding issues to be resolved for the first 
 - [#50](https://github.com/Reading-eScience-Centre/coveragejson/issues/50)
   Custom metadata / semantics of extra fields
 
+## Contents
+{:.no_toc}
+
+* TOC
+{:toc}
+
 ## 1. Introduction
 
 CoverageJSON is a format for encoding coverage data like grids, time series, and vertical profiles, distinguished by the geometry of their spatiotemporal domain. A CoverageJSON object represents a domain, a range, a coverage, or a collection of coverages. A range in CoverageJSON  represents coverage values. A coverage in CoverageJSON is the combination of a domain, parameters, ranges, and additional metadata. A coverage collection represents a list of coverages.

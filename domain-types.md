@@ -35,9 +35,15 @@ WORK-IN-PROGRESS
   </tr>
 </table>
 
+## Contents
+{:.no_toc}
+
+* TOC
+{:toc}
+
 ## 1. Introduction
 
-### 1.3. Definitions
+### 1.1. Definitions
 
 - JavaScript Object Notation (JSON), and the terms object, name, value, array, string, number, and null, are defined in [IETF RFC 4627](http://www.ietf.org/rfc/rfc4627.txt).
 - JSON-LD is defined in [http://www.w3.org/TR/json-ld/](http://www.w3.org/TR/json-ld/).
