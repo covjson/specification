@@ -3,7 +3,7 @@
 WORK-IN-PROGRESS
 
 <!-- Document Info -->
-<table>
+<table class="table">
   <tr>
     <th>Authors</th>
     <td>
@@ -86,7 +86,8 @@ Symbol | Description
 - A domain with Grid domain type MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"`.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Grid",
@@ -101,7 +102,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -135,7 +137,8 @@ Coverage example:
 - A domain with VerticalProfile domain type MUST have the axes `"x"`, `"y"`, and `"z"`, where `"x"` and `"y"` MUST have a single coordinate only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "VerticalProfile",
@@ -150,7 +153,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -185,7 +189,8 @@ Coverage example:
 - A domain with PointSeries domain type MAY have the axis `"z"` which MUST have a single coordinate only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "PointSeries",
@@ -200,7 +205,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -234,7 +240,8 @@ Coverage example:
 - A domain with Point domain type MUST have the axes `"x"` and `"y"` and MAY have the axes `"z"` and `"t"` where all MUST have a single coordinate only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Point",
@@ -249,7 +256,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -282,7 +290,8 @@ Coverage example:
 - The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPointSeries",
@@ -302,7 +311,8 @@ Domain example:
 ```
 
 Domain example without z:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPointSeries",
@@ -322,7 +332,8 @@ Domain example without z:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -363,7 +374,8 @@ Coverage example:
 - The axis `"composite"` MUST have the data type `"tuple"` and the component identifiers `"x","y","z"` or `"x","y"`.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPoint",
@@ -383,7 +395,8 @@ Domain example:
 ```
 
 Domain example without z and t:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPoint",
@@ -402,7 +415,8 @@ Domain example without z and t:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -442,7 +456,8 @@ Coverage example:
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Trajectory",
@@ -461,7 +476,8 @@ Domain example:
 ```
 
 Domain example without z:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Trajectory",
@@ -480,7 +496,8 @@ Domain example without z:
 ```
 
 Domain example with z defined as constant value:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Trajectory",
@@ -500,7 +517,8 @@ Domain example with z defined as constant value:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -540,7 +558,8 @@ Coverage example:
 - The value ordering of the axis `"composite"` MUST follow the ordering of its `"t"` component as defined in the corresponding reference system.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Section",
@@ -560,7 +579,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -605,7 +625,8 @@ Polygons in this domain domain type are defined equally to GeoJSON, except that 
 - A Polygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "Polygon",
@@ -625,7 +646,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -664,7 +686,8 @@ Coverage example:
 - The axis `"composite"` MUST have the data type `"polygon"` and the component identifiers `"x","y"`.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "PolygonSeries",
@@ -684,7 +707,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -725,7 +749,8 @@ Coverage example:
 - A MultiPolygon domain MAY have the axes `"z"` and `"t"` which both MUST have a single value only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPolygon",
@@ -746,7 +771,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
@@ -788,7 +814,8 @@ Coverage example:
 - A MultiPolygon domain MAY have the axis `"z"` which MUST have a single value only.
 
 Domain example:
-```js
+
+```json
 {
   "type": "Domain",
   "domainType": "MultiPolygonSeries",
@@ -809,7 +836,8 @@ Domain example:
 ```
 
 Coverage example:
-```js
+
+```json
 {
   "type" : "Coverage",
   "domain" : {
