@@ -1,14 +1,14 @@
 # CoverageJSON
 
-[![Join the chat at https://gitter.im/Reading-eScience-Centre/coveragejson](https://badges.gitter.im/Reading-eScience-Centre/coveragejson.svg)](https://gitter.im/Reading-eScience-Centre/coveragejson?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/covjson/specification](https://badges.gitter.im/covjson/specification.svg)](https://gitter.im/covjson/specification?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This repository hosts the experimental CoverageJSON specification that is currently being developed.
 
-**Feedback is very welcome!** Please use either the [issues](https://github.com/Reading-eScience-Centre/coveragejson/issues), [join the gitter chat](https://gitter.im/Reading-eScience-Centre/coveragejson), or [send us an email](mailto:m.riechert@reading.ac.uk,j.d.blower@reading.ac.uk?Subject=CoverageJSON%20feedback).
+**Feedback is very welcome!** Please use either the [issues](https://github.com/covjson/specification/issues), [join the gitter chat](https://gitter.im/covjson/specification), or [send us an email](mailto:m.riechert@reading.ac.uk,j.d.blower@reading.ac.uk?Subject=CoverageJSON%20feedback).
 
 ## What is CoverageJSON?
 
-[CoverageJSON](https://github.com/Reading-eScience-Centre/coveragejson/blob/master/spec.md) is a data format for publishing [coverage data](https://en.wikipedia.org/wiki/Coverage_data) to the web in a web-friendly way.
+[CoverageJSON](https://covjson.org) is a data format for publishing [coverage data](https://en.wikipedia.org/wiki/Coverage_data) to the web in a web-friendly way.
 
 ## What is a coverage?
 
@@ -36,7 +36,7 @@ For all these reasons, the CoverageJSON format was developed which tries to fill
 While the format is still in development and changing, a range of libraries are developed for reading and visualizing CoverageJSON documents:
 - [JavaScript API for Coverage Data](https://github.com/Reading-eScience-Centre/coverage-jsapi) - an abstraction over CoverageJSON for dealing with arbitrary coverage data in JavaScript
 - [covjson-reader](https://github.com/Reading-eScience-Centre/covjson-reader) - JavaScript library that reads CoverageJSON from objects or URLs, exposing the data as JavaScript Coverage and CoverageCollection objects (see API above)
-- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing JavaScript Coverage objects, currently with support for [Common CoverageJSON Domain Types](https://github.com/Reading-eScience-Centre/coveragejson/blob/master/domain-types.md) only
+- [leaflet-coverage](https://github.com/Reading-eScience-Centre/leaflet-coverage) - [Leaflet](http://leafletjs.com) plugin for visualizing JavaScript Coverage objects, currently with support for [Common CoverageJSON Domain Types](http://covjson.org/domain-types) only
 
 However, as the format is so simple, it is easy to prototype an application from scratch. If you think the format is *not* simple enough, please open an issue and explain why you feel that way - it's a priority for us to make it simple!
 
