@@ -312,7 +312,7 @@ where `"SST_mean"` references the following parameter:
       "en": "Kelvin"
     },
     "symbol": {
-      "value": "K"
+      "value": "K",
       "type": "http://www.opengis.net/def/uom/UCUM/"
     }
   }
@@ -336,7 +336,7 @@ and `"SST_stddev"`:
       "en": "Kelvin"
     },
     "symbol": {
-      "value": "K"
+      "value": "K",
       "type": "http://www.opengis.net/def/uom/UCUM/"
     }
   }
