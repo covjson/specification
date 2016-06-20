@@ -54,6 +54,7 @@ WORK-IN-PROGRESS
 This specification defines the following domain domain types: Grid, VerticalProfile, PointSeries, Point, MultiPointSeries, MultiPoint, PolygonSeries, Polygon, MultiPolygonSeries, MultiPolygon, Trajectory, Section.
 
 Requirements for all domain types defined in this specification:
+
 - The axis and component identifiers `"x"` and `"y"` MUST refer to horizontal spatial coordinates, 
 `"z"` to vertical spatial coordinates, and all of `"x"`, `"y"`, and `"z"` MUST be referenced by a spatial coordinate reference system.
 - The axis and component identifier `"t"` MUST refer to temporal coordinates and be referenced by a temporal reference system.
