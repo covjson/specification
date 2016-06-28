@@ -57,7 +57,7 @@
     "direction": "ignf:axisDirection",
     "IdentifierRS": "cjcore:IdentifierReferenceSystem",
     "targetConcept": "cjcore:targetConcept",
-    "identifiers": { "@id": "cjcore:identifiers", "@type": "@id", "@container": "@index" },
+    "identifiers": { "@id": "cjcore:identifier", "@type": "@id", "@container": "@index" },
     
     "Parameter": "cjcore:Parameter",
     "parameters": { "@id": "cjcore:parameter", "@type": "@id", "@container": "@index" },
