@@ -795,14 +795,14 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 ## 7. JSON-LD
 
-A JSON-LD context MAY be established by including a `"@context"` element in the root of a CoverageJSON object which SHOULD refer to the base CoverageJSON context `"https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld"` and any other necessary contexts. Domain axis values and range values SHOULD *not* be exposed as linked data since they are currently not suitable for such representation.
+A JSON-LD context MAY be established by including a `"@context"` element in the root of a CoverageJSON object which SHOULD refer to the base CoverageJSON context `"http://covjson.org/context.jsonld"` and any other necessary contexts. Domain axis values and range values SHOULD *not* be exposed as linked data since they are currently not suitable for such representation.
 
 Example:
 
 ```json
 {
   "@context": [
-     "https://rawgit.com/reading-escience-centre/coveragejson/master/contexts/coveragejson-base.jsonld",
+     "http://covjson.org/context.jsonld",
      {
       ...
      }
@@ -822,7 +822,7 @@ If a domain or range is referenced by a URL in a CoverageJSON document, then the
 
 ## 9. Media Type and File Extension
 
-The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://coveragejson.org/profiles/standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
+The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://covjson.org/def/core#standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
 
 The file extension SHALL be `covjson`.
 
