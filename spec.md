@@ -793,7 +793,86 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
 - A coverage collection object MAY have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
-## 7. JSON-LD
+## 7. Extensions
+
+A CoverageJSON document can be extended with custom members and types in a robust and interoperable way. For that, it makes use of full URIs and compact URIs (prefix:name) in order to avoid conflicts with other extensions and future versions of the format. A central registry of compact URI prefixes is provided which anyone can extend and which is a simple mapping from compact URI prefix to namespace URI in order to avoid collisions with other extensions that are based on compact URIs as well. Extensions that do not follow this approach MAY use simple names instead of full or compact URIs but have to accept the consequence of the document being less interoperable and future-proof. In certain use cases this is not an issue and may be a preferred solution for simplicity reasons, for example, if such CoverageJSON documents are only used internally and are not meant to be shared to a wider audience.
+
+### 7.1. Custom members
+
+If a custom member is added to a CoverageJSON document, its name SHOULD be a compact URIs of the form `"prefix:name"`.
+
+Example:
+
+```json
+{
+  "type" : "Coverage",
+  "dct:license": "https://creativecommons.org/licenses/by/4.0/"
+  ...
+}
+```
+
+The prefix SHOULD be registered at http://covjson.org/prefixes/ which in the example above would be `dct = http://purl.org/dc/terms/`.
+
+If the value of a custom member can have multiple structures, for example a string or an object, then a client should ignore the member if it does not understand the structure that is used.
+
+Example of a different value structure:
+
+```json
+{
+  "type" : "Coverage",
+  "dct:license": {
+    "id": "https://creativecommons.org/licenses/by/4.0/",
+    "label": {
+      "en": "Creative Commons Attribution 4.0 International License"
+    }
+  }
+  ...
+}
+```
+
+### 7.2. Custom types
+
+Custom types MAY be used with the following members:
+
+- `"domainType"` in domain objects
+- `"dataType"` in axis objects
+- `"type"` in reference system objects
+- `"type"` in unit symbol objects
+
+The custom value of those members SHOULD be either a full URI or a compact URI. If a compact URI is used, then the prefix SHOULD be registered at http://covjson.org/prefixes/.
+
+Example of a custom unit symbol type using a full URI:
+
+```json
+{
+  "type" : "Parameter",
+  "unit" : {
+    "symbol": {
+      "value": "degreeC",
+      "type": "http://www.opengis.net/def/uom/UDUNITS/"
+    }
+  },
+  "observedProperty" : {
+    "label" : {
+      "en": "Air temperature"
+    }
+  }
+}
+```
+
+Example of a custom reference system type using a compact URI:
+
+```json
+{
+  "type": "uor:HEALPixRS",
+  "uor:h": 3,
+  "uor:k": 3,
+  "uor:ordering": "nested"
+}
+```
+
+
+## 8. JSON-LD
 
 A JSON-LD context MAY be established by including a `"@context"` element in the root of a CoverageJSON object which SHOULD refer to the base CoverageJSON context `"http://covjson.org/context.jsonld"` and any other necessary contexts. Domain axis values and range values SHOULD *not* be exposed as linked data since they are currently not suitable for such representation.
 
@@ -816,11 +895,11 @@ All identifiers referred to in a CoverageJSON object SHOULD be URIs. These URIs 
 
 TODO expand
 
-## 8. Resolving domain and range URLs
+## 9. Resolving domain and range URLs
 
 If a domain or range is referenced by a URL in a CoverageJSON document, then the client should, whenever is appropriate, load the data from the given URL and treat the loaded data as if it was directly embedded in place of the URL. When sending HTTP requests, the `Accept` header SHOULD be set appropriately to the CoverageJSON media type.
 
-## 9. Media Type and File Extension
+## 10. Media Type and File Extension
 
 The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://covjson.org/def/core#standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
 
