@@ -840,7 +840,7 @@ Custom types MAY be used with the following members:
 - `"type"` in unit symbol objects
 - `"type"` within custom members that have an object as value
 
-The custom value of those members SHOULD be either an absolute URI or a compact URI. If a compact URI is used, then the prefix SHOULD be registered at http://covjson.org/prefixes/.
+The custom value of those members SHOULD be either an absolute URI or a compact URI. If a compact URI is used, then the prefix SHOULD be registered at <http://covjson.org/prefixes/>.
 
 Example of a custom unit symbol type using an absolute URI:
 
@@ -875,13 +875,13 @@ Example of a custom reference system type using a compact URI:
 
 ## 8. JSON-LD
 
-If no JSON-LD context is given, then the default context `http://covjson.org/context.jsonld` SHALL be assumed. Note that this context includes registered namespace prefixes and MAY be updated in a backwards-compatible way as the format evolves.
+If no JSON-LD context is given, then the default context `http://covjson.org/context.jsonld` SHALL be assumed. Note that this context includes [registered namespace prefixes](http://covjson.org/prefixes/) and MAY be updated in a backwards-compatible way as the format evolves.
 
 Additional semantics not provided by the default context MAY be provided by specifying an explicit `"@context"` member in the root of a CoverageJSON document. The value of that member MUST be an array where the first element is the default context URL. Any additional context definitions SHALL NOT override definitions of the default context, except when the definition is identical.
 
 Providing an explicit context is especially useful for extensions. A recommended practice is to include any used namespace prefixes, even if registered, in the explicit context. This provides additional clarity and helps humans understand the document more quickly.
 
-It is NOT RECOMMENDED to use the explicit JSON-LD context to map simple names, for example, `"license": "dct:license"`. On one side, this would hinder interoperability for generic non-JSON-LD clients, as they generally rely on absolute URIs or registered prefixes of compact URIs. On the other side, it would make documents less forward-compatible as there may be name collisions with future versions of the format where semantics of that name may be defined differently. It is therefore RECOMMENDED to use compact or absolute URIs if an explicit JSON-LD context is included.
+It is NOT RECOMMENDED to use the explicit JSON-LD context to map simple names, for example, `"license": "dct:license"`. On one side, this would hinder interoperability for generic non-JSON-LD clients, as they generally rely on absolute URIs or [registered prefixes](http://covjson.org/prefixes/) of compact URIs. On the other side, it would make documents less future-proof as there may be name collisions with future versions of the format where semantics of that name may be defined differently. It is therefore RECOMMENDED to use compact or absolute URIs if an explicit JSON-LD context is included.
 
 Note that domain axis values and range values SHOULD NOT be exposed as linked data via the JSON-LD context since they are not suitable for such representation.
 

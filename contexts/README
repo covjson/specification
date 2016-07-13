@@ -1,0 +1,3 @@
+The http://covjson.org/prefixes.jsonld context referenced in the context.jsonld file is
+generated from the https://github.com/covjson/covjson.github.io/blob/master/_data/prefixes.yaml file.
+Whenever the file is updated, the prefixes.jsonld file is automatically deployed to the web server via GitHub's Jekyll. 
