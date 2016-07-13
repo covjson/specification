@@ -795,7 +795,7 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 
 ## 7. Extensions
 
-A CoverageJSON document can be extended with custom members and types in a robust and interoperable way. For that, it makes use of absolute URIs and compact URIs (prefix:suffix) in order to avoid conflicts with other extensions and future versions of the format. A central registry of compact URI prefixes is provided which anyone can extend and which is a simple mapping from compact URI prefix to namespace URI in order to avoid collisions with other extensions that are based on compact URIs as well. Extensions that do not follow this approach MAY use simple names instead of full or compact URIs but have to accept the consequence of the document being less interoperable and future-proof. In certain use cases this is not an issue and may be a preferred solution for simplicity reasons, for example, if such CoverageJSON documents are only used internally and are not meant to be shared to a wider audience.
+A CoverageJSON document can be extended with custom members and types in a robust and interoperable way. For that, it makes use of absolute URIs and compact URIs (prefix:suffix) in order to avoid conflicts with other extensions and future versions of the format. A central registry of compact URI prefixes is provided which anyone can extend and which is a simple mapping from compact URI prefix to namespace URI in order to avoid collisions with other extensions that are based on compact URIs as well. Extensions that do not follow this approach MAY use simple names instead of absolute or compact URIs but have to accept the consequence of the document being less interoperable and future-proof. In certain use cases this is not an issue and may be a preferred solution for simplicity reasons, for example, if such CoverageJSON documents are only used internally and are not meant to be shared to a wider audience.
 
 ### 7.1. Custom members
 
@@ -806,7 +806,7 @@ Example:
 ```json
 {
   "type" : "Coverage",
-  "dct:license": "https://creativecommons.org/licenses/by/4.0/"
+  "dct:license": "https://creativecommons.org/licenses/by/4.0/",
   ...
 }
 ```
@@ -825,7 +825,7 @@ Example of a different value structure:
     "label": {
       "en": "Creative Commons Attribution 4.0 International License"
     }
-  }
+  },
   ...
 }
 ```
@@ -877,11 +877,13 @@ Example of a custom reference system type using a compact URI:
 
 If no JSON-LD context is given, then the default context `http://covjson.org/context.jsonld` SHALL be assumed. Note that this context includes registered namespace prefixes and MAY be updated in a backwards-compatible way as the format evolves.
 
-Additional semantics not provided by the default context MAY be provided by specifiying an explicit `"@context"` member in the root of a CoverageJSON document. The value of that member MUST be an array where the first element is the default context URL. Any additional context definitions SHALL NOT override definitions of the default context, except when the definition is identical.
+Additional semantics not provided by the default context MAY be provided by specifying an explicit `"@context"` member in the root of a CoverageJSON document. The value of that member MUST be an array where the first element is the default context URL. Any additional context definitions SHALL NOT override definitions of the default context, except when the definition is identical.
 
 Providing an explicit context is especially useful for extensions. A recommended practice is to include any used namespace prefixes, even if registered, in the explicit context. This provides additional clarity and helps humans understand the document more quickly.
 
-Note that domain axis values and range values SHOULD *not* be exposed as linked data via the JSON-LD context since they are not suitable for such representation.
+It is NOT RECOMMENDED to use the explicit JSON-LD context to map simple names, for example, `"license": "dct:license"`. On one side, this would hinder interoperability for generic non-JSON-LD clients, as they generally rely on absolute URIs or registered prefixes of compact URIs. On the other side, it would make documents less forward-compatible as there may be name collisions with future versions of the format where semantics of that name may be defined differently. It is therefore RECOMMENDED to use compact or absolute URIs if an explicit JSON-LD context is included.
+
+Note that domain axis values and range values SHOULD NOT be exposed as linked data via the JSON-LD context since they are not suitable for such representation.
 
 Example:
 
@@ -895,7 +897,7 @@ Example:
     }
   ],
   "type" : "Coverage",
-  "dct:license": "https://creativecommons.org/licenses/by/4.0/"
+  "dct:license": "https://creativecommons.org/licenses/by/4.0/",
    ...
 }
 ```
