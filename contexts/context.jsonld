@@ -1,6 +1,6 @@
 {
   "@context": [
-    "http://covjson.org/prefixes.jsonld"
+    "https://covjson.org/prefixes.jsonld"
   , {
     "@vocab": "_:",
     "id": "@id",

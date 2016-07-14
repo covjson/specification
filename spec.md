@@ -9,7 +9,7 @@ WORK-IN-PROGRESS
   <tr>
     <th>Authors</th>
     <td>
-      <a href="https://github.com/neothemachine">Maik Riechert</a> (<a href="http://www.reading.ac.uk">University of Reading</a>),
+      <a href="https://github.com/letmaik">Maik Riechert</a> (<a href="http://www.reading.ac.uk">University of Reading</a>),
       <a href="http://www.met.reading.ac.uk/users/users/1659">Jon Blower</a> (<a href="http://www.reading.ac.uk">University of Reading</a>)
     </td>
   </tr>
@@ -809,7 +809,7 @@ Example:
 }
 ```
 
-The prefix SHOULD be registered at http://covjson.org/prefixes/ which in the example above would be `dct = http://purl.org/dc/terms/`.
+The prefix SHOULD be registered at <https://covjson.org/prefixes/> which in the example above would be `dct = http://purl.org/dc/terms/`.
 
 If the value of a custom member can have multiple structures, for example a string or an object, then a client should ignore the member if it does not understand the structure that is used.
 
@@ -838,7 +838,7 @@ Custom types MAY be used with the following members:
 - `"type"` in unit symbol objects
 - `"type"` within custom members that have an object as value
 
-The custom value of those members SHOULD be either an absolute URI or a compact URI. If a compact URI is used, then the prefix SHOULD be registered at <http://covjson.org/prefixes/>.
+The custom value of those members SHOULD be either an absolute URI or a compact URI. If a compact URI is used, then the prefix SHOULD be registered at <https://covjson.org/prefixes/>.
 
 Example of a custom unit symbol type using an absolute URI:
 
@@ -873,13 +873,13 @@ Example of a custom reference system type using a compact URI:
 
 ## 8. JSON-LD
 
-If no JSON-LD context is given, then the default context `http://covjson.org/context.jsonld` SHALL be assumed. Note that this context includes [registered namespace prefixes](http://covjson.org/prefixes/) and MAY be updated in a backwards-compatible way as the format evolves.
+If no JSON-LD context is given, then the default context `https://covjson.org/context.jsonld` SHALL be assumed. Note that this context includes [registered namespace prefixes](https://covjson.org/prefixes/) and MAY be updated in a backwards-compatible way as the format evolves.
 
 Additional semantics not provided by the default context MAY be provided by specifying an explicit `"@context"` member in the root of a CoverageJSON document. The value of that member MUST be an array where the first element is the default context URL. Any additional context definitions SHALL NOT override definitions of the default context, except when the definition is identical.
 
 Providing an explicit context is especially useful for extensions. A recommended practice is to include any used namespace prefixes, even if registered, in the explicit context. This provides additional clarity and helps humans understand the document more quickly.
 
-It is NOT RECOMMENDED to use the explicit JSON-LD context to map simple names, for example, `"license": "dct:license"`. On one side, this would hinder interoperability for generic non-JSON-LD clients, as they generally rely on absolute URIs or [registered prefixes](http://covjson.org/prefixes/) of compact URIs. On the other side, it would make documents less future-proof as there may be name collisions with future versions of the format where semantics of that name may be defined differently. It is therefore RECOMMENDED to use compact or absolute URIs if an explicit JSON-LD context is included.
+It is NOT RECOMMENDED to use the explicit JSON-LD context to map simple names, for example, `"license": "dct:license"`. On one side, this would hinder interoperability for generic non-JSON-LD clients, as they generally rely on absolute URIs or [registered prefixes](https://covjson.org/prefixes/) of compact URIs. On the other side, it would make documents less future-proof as there may be name collisions with future versions of the format where semantics of that name may be defined differently. It is therefore RECOMMENDED to use compact or absolute URIs if an explicit JSON-LD context is included.
 
 Note that domain axis values and range values SHOULD NOT be exposed as linked data via the JSON-LD context since they are not suitable for such representation.
 
@@ -888,7 +888,7 @@ Example:
 ```json
 {
   "@context": [
-    "http://covjson.org/context.jsonld",
+    "https://covjson.org/context.jsonld",
     {
       "dct": "http://purl.org/dc/terms/",
       "dct:license": { "@type": "@id" }
@@ -908,7 +908,7 @@ If a domain or range is referenced by a URL in a CoverageJSON document, then the
 
 ## 10. Media Type and File Extension
 
-The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `http://covjson.org/def/core#standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
+The CoverageJSON media type SHALL be `application/prs.coverage+json` with an optional parameter `profile` which is a non-empty list of space-separated URIs identifying specific constraints or conventions that apply to a CoverageJSON document according to [RFC6906](http://www.ietf.org/rfc/rfc6906.txt). The only profile URI defined in this document is `https://covjson.org/def/core#standalone` which asserts that all domain and range objects are directly embedded in a CoverageJSON document and not referenced by URLs. There is no `charset` parameter and CoverageJSON documents MUST be serialized using the UTF-8 character encoding.
 
 The file extension SHALL be `covjson`.
 
