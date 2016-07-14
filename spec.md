@@ -44,8 +44,6 @@ The following items are (major) outstanding issues to be resolved for the first 
 
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
-- [#50](https://github.com/Reading-eScience-Centre/coveragejson/issues/50)
-  Custom metadata / semantics of extra fields
 
 ## Contents
 {:.no_toc}
