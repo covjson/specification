@@ -121,8 +121,8 @@ where `"http://example.com/coverages/123/TEMP"` points to the following document
 {
   "type" : "NdArray",
   "dataType": "float",
-  "axisNames": ["y","x"],
-  "shape": [180, 360],
+  "axisNames": ["t","y","x"],
+  "shape": [1, 180, 360],
   "values" : [ 27.1, 24.1, null, 25.1, ... ]
 }
 ```
