@@ -942,10 +942,10 @@ The file extension SHALL be `covjson`.
       }
     }, {
       "components": ["z"],
-      "systems": {
+      "system": {
         "type": "VerticalCRS",
         "cs": {
-          "axes": [{
+          "csAxes": [{
             "name": {
               "en": "Pressure"
             },
@@ -1053,7 +1053,7 @@ The file extension SHALL be `covjson`.
     "system": {
       "type": "VerticalCRS",
       "cs": {
-        "axes": [{
+        "csAxes": [{
           "name": {
             "en": "Pressure"
           },
