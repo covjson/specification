@@ -782,6 +782,10 @@ A CoverageJSON object with the type `"Coverage"` is a coverage object.
 - A coverage object MAY have a member with the name `"rangeAlternates"` where the value is a range alternates object. Any member of a range alternates object has as name a format identifier and a value that is defined by the format definition.
 - Note that it is allowed to have an empty `"ranges"` member object. This can make sense if `"rangeAlternates"` is given and clients are expected to have support for the alternative range format(s).
 
+Example:
+
+See the [Vertcal Profile Coverage Example](https://covjson.org/spec/#vertical-profile-coverage)
+
 ### 6.5. Coverage Collection Objects
 
 A CoverageJSON object with the type `"CoverageCollection"` is a coverage collection object.
@@ -792,6 +796,10 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object MAY have a member with the name `"parameters"` where the value is an object where each member has as name a short identifier and as value a parameter object.
 - A coverage collection object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
 - A coverage collection object MAY have a member with the name `"referencing"` where the value is an array of reference system connection objects.
+
+Example: 
+
+See the [Coverage Collection Example](https://covjson.org/spec/#coverage-collection)
 
 ## 7. Extensions
 
