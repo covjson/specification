@@ -40,7 +40,7 @@ WORK-IN-PROGRESS
 
 ## TODO
 
-The following items are (major) outstanding issues to be resolved for the first version: 
+The following items are (major) outstanding issues to be resolved for the first version:
 
 - [#45](https://github.com/Reading-eScience-Centre/coveragejson/issues/45)
   Representation of multiple time axes
@@ -73,13 +73,13 @@ A CoverageJSON grid coverage of global air temperature:
       "t": { "values": ["2013-01-13T00:00:00Z"] }
     },
     "referencing": [{
-      "components": ["x","y"],
+      "coordinates": ["x","y"],
       "system": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
       }
     }, {
-      "components": ["t"],
+      "coordinates": ["t"],
       "system": {
         "type": "TemporalRS",
         "calendar": "Gregorian"
@@ -135,11 +135,11 @@ defines a coverage model targeted towards OGC service types like Web Coverage Se
 and is the successor of the
 ["GML 3.2.1 Application Schema – Coverages" version 1.0](https://portal.opengeospatial.org/files/?artifact_id=48553) (short GMLCOV).
 
-The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF). 
+The model of CoverageJSON can be seen as a mix of CIS and the data cube-based [NetCDF file format](https://en.wikipedia.org/wiki/NetCDF).
 
 The following lists some areas where the model used by CoverageJSON departs from CIS:
 
-- CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of components (TODO introduce components before).
+- CIS enforces exactly one coordinate reference system (CRS) per coverage, CoverageJSON allows CRSs to be associated with a given combination of coordinates.
 - CIS has separate domain concepts for grids vs other types, CoverageJSON always uses collections of orthogonal axes for organizing domains, whether gridded or not.
 - CIS has no specific model for describing categories of a categorical parameter, CoverageJSON defines such a model.
 - CIS has no notion of semantically grouping parameters (e.g. velocity = speed + direction), CoverageJSON allows that.
@@ -404,7 +404,7 @@ In this specification, only a string-based notation for time values is defined.
 - A temporal RS object MUST have a member `"type"`. The only currently defined value of it is `"TemporalRS"`.
 - A temporal RS object MUST have a member `"calendar"` with value `"Gregorian"` or a URI.
 - If the Gregorian calender is used, then `"calendar"` MUST have the value `"Gregorian"` and cannot be a URI.
-- A temporal RS object MAY have a member `"timeScale"` with a URI as value. 
+- A temporal RS object MAY have a member `"timeScale"` with a URI as value.
   If omitted, the time scale defaults to UTC (`"http://www.opengis.net/def/trs/BIPM/0/UTC"`).
   If the time scale is UTC, the `"timeScale"` member MUST be omitted.
 - If the calendar is based on years, months, days, then the referenced values SHOULD use one of the following
@@ -487,7 +487,7 @@ Its general structure is:
 
 - The value of the type member MUST be `"Domain"`.
 - For interoperability reasons it is RECOMMENDED that a domain object has the member `"domainType"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Domain Types Specification"][domain-types], which forms part of this specification, for details. Custom domain types may be used as recommended in the section "Extensions".
-- A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below. 
+- A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below.
 - A domain object MAY have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
 - A domain object MUST have a `"referencing"` member if the domain object is not part of a coverage collection or if the coverage collection does not have a `"referencing"` member.
 
@@ -496,12 +496,12 @@ Its general structure is:
 - An axis object MUST have either a `"values"` member or, as a compact notation for a regularly spaced numeric axis, all the members `"start"`, `"stop"`, and `"num"`.
 - The value of `"values"` is a non-empty array of axis values.
 - The values of `"start"` and `"stop"` MUST be numbers, and the value of `"num"` an integer greater than zero. If the value of `"num"` is `1`, then `"start"` and `"stop"` MUST have identical values. For `num > 1`, the array elements of `"values"` MAY be reconstructed with the formula `start + i * step` where `i` is the ith element and in the interval `[0, num-1]` and `step = (stop - start) / (num - 1)`. If `num = 1` then `"values"` is `[start]`. Note that `"start"` can be greater than `"stop"` in which case the axis values are descending.
-- The value of `"dataType"` determines the structure of an axis value and its components that are made available for referencing. The values of `"dataType"` defined in this specification are `"primitive"`, `"tuple"`, and `"polygon"`. Custom values MAY be used as detailed in the "Extensions" section. For `"primitive"`, there is a single component and each axis value MUST be a number or string. For `"tuple"`, each axis value MUST be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of components. For `"polygon"`, each axis value MUST be a GeoJSON Polygon coordinate array, where each of the coordinate components (e.g. the x coordinates) form a component in the order they appear.
+- The value of `"dataType"` determines the structure of an axis value and its coordinates that are made available for referencing. The values of `"dataType"` defined in this specification are `"primitive"`, `"tuple"`, and `"polygon"`. Custom values MAY be used as detailed in the "Extensions" section. For `"primitive"`, there is a single coordinate identifier and each axis value MUST be a number or string. For `"tuple"`, each axis value MUST be an array of fixed size of primitive values in a defined order, where the tuple size corresponds to the number of coordinate identifiers. For `"polygon"`, each axis value MUST be a GeoJSON Polygon coordinate array, where the order of coordinates in each of the coordinate pairs is given by the `"coordinates"` array.
 - If missing, the member `"dataType"` defaults to `"primitive"` and MUST not be included for that default case.
 - If `"dataType"` is `"primitive"` and the associated reference system (see 6.1.2) defines a natural ordering of values then the array values in `"values"`, if existing, MUST be ordered monotonically, that is, increasing or decreasing.
-- The value of `"components"` is a non-empty array of component identifiers corresponding to the order of the components defined by `"dataType"`.
-- If missing, the member `"components"` defaults to a one-element array of the axis identifier and MUST NOT be included for that default case.
-- A component identifier SHALL NOT be defined more than once in all axis objects of a domain object.
+- The value of `"coordinates"` is a non-empty array of coordinate identifiers corresponding to the order of the coordinates defined by `"dataType"`.
+- If missing, the member `"coordinates"` defaults to a one-element array of the axis identifier and MUST NOT be included for that default case.
+- A coordinate identifier SHALL NOT be defined more than once in all axis objects of a domain object.
 - An axis object MAY have axis value bounds defined in the member `"bounds"` where the value is an array of values of length `len*2` with `len` being the length of the `"values"` array. For each axis value at array index `i` in the `"values"` array, a lower and upper bounding value at positions `2*i` and `2*i+1`, respectively, are given in the bounds array.
 - If a domain axis object has no `"bounds"` member then a bounds array MAY be derived automatically.
 
@@ -531,7 +531,7 @@ Example of an axis object with tuple values:
 ```json
 {
   "dataType": "tuple",
-  "components": ["t","x","y"],  
+  "coordinates": ["t","x","y"],  
   "values": [
     ["2008-01-01T04:00:00Z",1,20],
     ["2008-01-01T04:30:00Z",2,21]
@@ -544,7 +544,7 @@ Example of an axis object with Polygon values:
 ```json
 {
   "dataType": "polygon",
-  "components": ["x","y"],
+  "coordinates": ["x","y"],
   "values": [
     [ [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]  ]
   ]
@@ -555,14 +555,14 @@ Example of an axis object with Polygon values:
 
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
-- A reference system connection object MUST have a member `"components"` which has as value an array of component identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers MAY be relevant, e.g. for 2D/3D coordinate reference systems.
+- A reference system connection object MUST have a member `"coordinates"` which has as value an array of coordinate identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers MAY be relevant, e.g. for 2D/3D coordinate reference systems.
 - A reference system connection object MUST have a member `"system"` which has as value a reference system object. At minimum, a reference system object MUST have a `"type"` member, where common type values and additional type-dependent members are defined in section 5. Custom types MAY be used as recommended in section "Extensions".
 
 Example of a reference system connection object:
 
 ```json
 {
-  "components": ["y","x","z"],
+  "coordinates": ["y","x","z"],
   "system": {
     "type": "GeodeticCRS",
     "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
@@ -585,13 +585,13 @@ Example of a domain object with [`"Grid"`][domain-types] domain type:
     "t": { "values": ["2008-01-01T04:00:00Z"] }
   },
   "referencing": [{
-    "components": ["t"],
+    "coordinates": ["t"],
     "system": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "components": ["y","x","z"],
+    "coordinates": ["y","x","z"],
     "system": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
@@ -609,7 +609,7 @@ Example of a domain object with [`"Trajectory"`][domain-types] domain type:
   "axes": {
     "composite": {
       "dataType": "tuple",
-      "components": ["t","x","y"],
+      "coordinates": ["t","x","y"],
       "values": [
         ["2008-01-01T04:00:00Z", 1, 20],
         ["2008-01-01T04:30:00Z", 2, 21]
@@ -617,13 +617,13 @@ Example of a domain object with [`"Trajectory"`][domain-types] domain type:
     }
   },
   "referencing": [{
-    "components": ["t"],
+    "coordinates": ["t"],
     "system": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
     }
   }, {
-    "components": ["x","y"],
+    "coordinates": ["x","y"],
     "system": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
@@ -651,7 +651,7 @@ Example:
   "shape": [4, 2],
   "axisNames": ["y", "x"],
   "values": [
-    12.3, 12.5, 11.5, 23.1, 
+    12.3, 12.5, 11.5, 23.1,
     null, null, 10.1, 9.1
   ]  
 }
@@ -703,7 +703,7 @@ Example:
     21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
     31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-    
+
     51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
     61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
     71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
@@ -742,7 +742,7 @@ Example:
   "values": [
      1,  2,  3,
     11, 12, 13,
-    
+
     51, 52, 53,
     61, 62, 63
   ]
@@ -760,7 +760,7 @@ Example:
   "values": [
     10,
     20,
-  
+
     60,
     70
   ]
@@ -797,7 +797,7 @@ A CoverageJSON object with the type `"CoverageCollection"` is a coverage collect
 - A coverage collection object MAY have a member with the name `"parameterGroups"` where the value is an array of ParameterGroup objects.
 - A coverage collection object MAY have a member with the name `"referencing"` where the value is an array of reference system connection objects.
 
-Example: 
+Example:
 
 See the [Coverage Collection Example](https://covjson.org/spec/#coverage-collection)
 
@@ -935,7 +935,7 @@ The file extension SHALL be `covjson`.
     "axes": {
       "x" : { "values": [-10.1] },
       "y" : { "values": [ -40.2] },
-      "z" : { "values": [ 
+      "z" : { "values": [
               5.4562, 8.9282, 14.8802, 20.8320, 26.7836, 32.7350,
               38.6863, 44.6374, 50.5883, 56.5391, 62.4897, 68.4401,
               74.3903, 80.3404, 86.2902, 92.2400, 98.1895, 104.1389,
@@ -943,13 +943,13 @@ The file extension SHALL be `covjson`.
       "t" : { "values": ["2013-01-13T11:12:20Z"] }
     },
     "referencing": [{
-      "components": ["x","y"],
+      "coordinates": ["x","y"],
       "system": {
         "type": "GeodeticCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
       }
     }, {
-      "components": ["z"],
+      "coordinates": ["z"],
       "system": {
         "type": "VerticalCRS",
         "cs": {
@@ -965,7 +965,7 @@ The file extension SHALL be `covjson`.
         }
       }
     }, {
-      "components": ["t"],
+      "coordinates": ["t"],
       "system": {
         "type": "TemporalRS",
         "calendar": "Gregorian"
@@ -1051,13 +1051,13 @@ The file extension SHALL be `covjson`.
     }
   },
   "referencing": [{
-    "components": ["x","y"],
+    "coordinates": ["x","y"],
     "system": {
       "type": "GeodeticCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
     }
   }, {
-    "components": ["z"],
+    "coordinates": ["z"],
     "system": {
       "type": "VerticalCRS",
       "cs": {
@@ -1073,7 +1073,7 @@ The file extension SHALL be `covjson`.
       }
     }
   }, {
-    "components": ["t"],
+    "coordinates": ["t"],
     "system": {
       "type": "TemporalRS",
       "calendar": "Gregorian"
