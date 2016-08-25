@@ -64,6 +64,7 @@ Requirements for all domain types defined in this specification:
 
 ### Overview of domain types
 
+{:.table}
 Domain Type          | x | y | z | t | composite
 ---------------------|---|---|---|---|----------
 Grid                 | + | + |[+]|[+]
@@ -79,6 +80,7 @@ MultiPolygon         |   |   |[1]|[1]| +
 Trajectory           |   |   |[1]|   | +
 Section              |   |   | + |   | +
 
+{:.table}
 Symbol | Description
 -----|--------------------
 1   | Axis with one coordinate
