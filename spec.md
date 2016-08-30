@@ -75,7 +75,7 @@ A CoverageJSON grid coverage of global air temperature:
     "referencing": [{
       "coordinates": ["x","y"],
       "system": {
-        "type": "GeodeticCRS",
+        "type": "GeographicCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"        
       }
     }, {
@@ -342,21 +342,46 @@ and `"SST_stddev"`:
 ```
 
 ## 5. Reference system objects
+Reference system objects are used to provide information about how to interpret coordinate values within the domain. Coordinates are usually geospatial or temporal in nature, but may also be categorical (based on identifiers). All reference system objects MUST have a member `"type"`, which takes one of the values from the sections below.
 
-Referencing values in some system is achieved with reference systems, which are typically spatial or temporal,
-but can also be identifier-based.
-The following defines common types of such reference systems.
+### 5.1. Geospatial Coordinate Reference Systems
+Geospatial coordinate reference systems (CRSs) link coordinate values to the Earth.
 
-### 5.1. Spatial Reference Systems
+#### 5.1.1 Geographic Coordinate Reference Systems
+Geographic CRSs anchor coordinate values to an ellipsoidal approximation of the Earth. They have coordinate axes of geodetic longitude and geodetic latitude, and perhaps height above the ellipsoid (i.e. they can be two- or three-dimensional). The origin of the CRS is on the surface of the ellipsoid.
 
-Example of a geodetic CRS:
+ - The value of the `"type"` member MUST be "GeographicCRS"
+ - The object MAY have an `"id"` member, whose value MUST be a string and SHOULD be a common identifier for the reference system.
+
+Note that sometimes (e.g. for numerical model data) the exact CRS may not be known or may be undefined. In this case the `"id"` may be omitted, but the `"type"` still indicates that this is a geographic CRS. Therefore clients can still use geodetic longitude, geodetic latitude (and maybe height) axes, even if they can't accurately georeference the information.
+
+If a Coverage conforms to one of the defined [domain types][domain-types] then the coordinate identifier `"x"` is used to denote geodetic longitude, `"y"` is used for geodetic latitude and `z` for ellipsoidal height.
+
+Example of a two-dimensional geographic CRS (longitude-latitude):
 
 ```json
 {
-  "type": "GeodeticCRS",
+  "type": "GeographicCRS",
   "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
 }
 ```
+
+Example of a three-dimensional geographic CRS (latitude-longitude-height):
+
+```json
+{
+  "type": "GeographicCRS",
+  "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+}
+```
+
+#### 5.1.2 Projected Coordinate Reference Systems
+Projected CRSs use two coordinates to denote positions on a Cartesian plane, which is derived from projecting the ellipsoid according to some defined transformation.
+
+ - The value of the `"type"` member MUST be "ProjectedCRS"
+ - The object MAY have an `"id"` member, whose value MUST be a string and SHOULD be a common identifier for the reference system.
+
+If a Coverage conforms to one of the defined [domain types][domain-types] then the coordinate identifier `"x"` is used to denote easting and `"y"` is used for northing.
 
 Example of a projected CRS (here [British National Grid](http://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/)):
 
@@ -367,7 +392,20 @@ Example of a projected CRS (here [British National Grid](http://spatialreference
 }
 ```
 
-Example of a vertical CRS with embedded detail information:
+#### 5.1.3 Vertical Coordinate Reference Systems
+Vertical CRSs use a single coordinate to denote some measure of height or depth, usually approximately oriented with gravity.
+
+Example of a vertical CRS, here representing height above the NAV88 datum:
+
+```json
+{
+  "type": "VerticalCRS",
+  "id": "http://www.opengis.net/def/crs/EPSG/0/5703"
+}
+```
+
+#### 5.1.4 Providing inline definitions of CRSs
+Sometimes there may be no well-known identifier for a geospatial CRS. Or the data provider may wish to make the CoverageJSON file more self-contained by avoiding external lookups. In this case a full inline definition of the CRS in JSON (instead of, or in addition to the `"id"`). This has not yet been fully defined in this specification, but we recommend following the OGC WKT structure, for example:
 
 ```json
 {
@@ -394,6 +432,8 @@ Example of a vertical CRS with embedded detail information:
   }
 }
 ```
+
+In future work, a mapping from OGC WKT2 to JSON may be defined, and may be adopted into the CoverageJSON specification.
 
 
 ### 5.2. Temporal Reference Systems
@@ -436,7 +476,7 @@ Identifier-based reference systems (identifier RS) .
 - An identifier RS object MAY have a member `"description"` where the value MUST be an i18n object that is the (perhaps lengthy) description of the reference system.
 - An identifier RS object MUST have a member `"targetConcept"` where the value is an object that MUST have a member `"label"` and MAY have a member `"description"` where the value of each MUST be an i18n object that is the name or description, respectively, of the concept which is referenced in the system.
 - An identifier RS object MAY have a member `"identifiers"` where the value is an object where each key is an identifier referenced by the identifier RS and each value an object describing the referenced concept, equal to `"targetConcept"`.
-- Domain values associated to an identifier RS MUST be strings.
+- Coordinate values associated with an identifier RS MUST be strings.
 
 Example of a geographic identifier reference system:
 
@@ -564,7 +604,7 @@ Example of a reference system connection object:
 {
   "coordinates": ["y","x","z"],
   "system": {
-    "type": "GeodeticCRS",
+    "type": "GeographicCRS",
     "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
   }
 }
@@ -593,7 +633,7 @@ Example of a domain object with [`"Grid"`][domain-types] domain type:
   }, {
     "coordinates": ["y","x","z"],
     "system": {
-      "type": "GeodeticCRS",
+      "type": "GeographicCRS",
       "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
     }
   }]
@@ -625,7 +665,7 @@ Example of a domain object with [`"Trajectory"`][domain-types] domain type:
   }, {
     "coordinates": ["x","y"],
     "system": {
-      "type": "GeodeticCRS",
+      "type": "GeographicCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
     }
   }]
@@ -945,7 +985,7 @@ The file extension SHALL be `covjson`.
     "referencing": [{
       "coordinates": ["x","y"],
       "system": {
-        "type": "GeodeticCRS",
+        "type": "GeographicCRS",
         "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
       }
     }, {
@@ -1053,7 +1093,7 @@ The file extension SHALL be `covjson`.
   "referencing": [{
     "coordinates": ["x","y"],
     "system": {
-      "type": "GeodeticCRS",
+      "type": "GeographicCRS",
       "id": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
     }
   }, {
