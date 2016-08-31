@@ -342,7 +342,7 @@ and `"SST_stddev"`:
 ```
 
 ## 5. Reference system objects
-Reference system objects are used to provide information about how to interpret coordinate values within the domain. Coordinates are usually geospatial or temporal in nature, but may also be categorical (based on identifiers). All reference system objects MUST have a member `"type"`, which takes one of the values from the sections below.
+Reference system objects are used to provide information about how to interpret coordinate values within the domain. Coordinates are usually geospatial or temporal in nature, but may also be categorical (based on identifiers). All reference system objects MUST have a member `"type"`, which MUST be either: (i) one of the values from the sections below; or (ii) a URI identifier for the type of the reference system (see "Extensions" below).
 
 ### 5.1. Geospatial Coordinate Reference Systems
 Geospatial coordinate reference systems (CRSs) link coordinate values to the Earth.
@@ -394,6 +394,9 @@ Example of a projected CRS (here [British National Grid](http://spatialreference
 
 #### 5.1.3 Vertical Coordinate Reference Systems
 Vertical CRSs use a single coordinate to denote some measure of height or depth, usually approximately oriented with gravity.
+
+- The value of the `"type"` member MUST be "VerticalCRS"
+- The object MAY have an `"id"` member, whose value MUST be a string and SHOULD be a common identifier for the reference system.
 
 Example of a vertical CRS, here representing height above the NAV88 datum:
 
