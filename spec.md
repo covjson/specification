@@ -342,7 +342,7 @@ and `"SST_stddev"`:
 ```
 
 ## 5. Reference system objects
-Reference system objects are used to provide information about how to interpret coordinate values within the domain. Coordinates are usually geospatial or temporal in nature, but may also be categorical (based on identifiers). All reference system objects MUST have a member `"type"`, which MUST be either: (i) one of the values from the sections below; or (ii) a URI identifier for the type of the reference system (see "Extensions" below).
+Reference system objects are used to provide information about how to interpret coordinate values within the domain. Coordinates are usually geospatial or temporal in nature, but may also be categorical (based on identifiers). All reference system objects MUST have a member `"type"`, the possible values of which are given in the sections below. Custom values MAY be used as detailed in the "Extensions" section below.
 
 ### 5.1. Geospatial Coordinate Reference Systems
 Geospatial coordinate reference systems (CRSs) link coordinate values to the Earth.
@@ -408,7 +408,7 @@ Example of a vertical CRS, here representing height above the NAV88 datum:
 ```
 
 #### 5.1.4 Providing inline definitions of CRSs
-Sometimes there may be no well-known identifier for a geospatial CRS. Or the data provider may wish to make the CoverageJSON file more self-contained by avoiding external lookups. In this case a full inline definition of the CRS in JSON (instead of, or in addition to the `"id"`). This has not yet been fully defined in this specification, but we recommend following the OGC WKT structure, for example:
+Sometimes there may be no well-known identifier for a geospatial CRS. Or the data provider may wish to make the CoverageJSON file more self-contained by avoiding external lookups. In this case a full inline definition of the CRS in JSON (instead of, or in addition to the `"id"`). This has not yet been fully defined in this specification, but we recommend following the OGC Well-Known Text (WKT) structure, for example:
 
 ```json
 {
@@ -528,7 +528,7 @@ Its general structure is:
 }
 ```
 
-- The value of the type member MUST be `"Domain"`.
+- The value of the `"type"` member MUST be `"Domain"`.
 - For interoperability reasons it is RECOMMENDED that a domain object has the member `"domainType"` with a string value to indicate that the domain follows a certain structure (e.g. a time series, a vertical profile, a spatio-temporal 4D grid). See the ["Common CoverageJSON Domain Types Specification"][domain-types], which forms part of this specification, for details. Custom domain types may be used as recommended in the section "Extensions".
 - A domain object MUST have the member `"axes"` which has as value an object where each key is an axis identifier and each value an axis object as defined below.
 - A domain object MAY have the member `"referencing"` where the value is an array of reference system connection objects as defined below.
@@ -598,8 +598,8 @@ Example of an axis object with Polygon values:
 
 A reference system connection object creates a link between values within domain axes and a reference system to be able to interpret those values, e.g. as coordinates in a certain coordinate reference system.
 
-- A reference system connection object MUST have a member `"coordinates"` which has as value an array of coordinate identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers MAY be relevant, e.g. for 2D/3D coordinate reference systems.
-- A reference system connection object MUST have a member `"system"` which has as value a reference system object. At minimum, a reference system object MUST have a `"type"` member, where common type values and additional type-dependent members are defined in section 5. Custom types MAY be used as recommended in section "Extensions".
+- A reference system connection object MUST have a member `"coordinates"` which has as value an array of coordinate identifiers that are referenced in this object. Depending on the type of referencing, the ordering of the identifiers MAY be relevant, e.g. for 2D/3D coordinate reference systems. In this case, the order of the identifiers MUST match the order of axes in the coordinate reference system.
+- A reference system connection object MUST have a member `"system"` whose value MUST be a Reference System Object (defined in section 5 above).
 
 Example of a reference system connection object:
 
