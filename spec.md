@@ -414,6 +414,16 @@ It is recommended that a Well-Known Text Coordinate Reference System String, con
 
 The attribute name shall be `"WKTCRS"`.
 
+```json
+{
+  "WKTCRS": "VERTCRS["NAVD88 height",
+  VDATUM["North American Vertical Datum 1988"],
+  CS[vertical,1],
+    AXIS["gravity-related height (H)",up],
+    LENGTHUNIT["metre",1.0]]"
+}
+```
+
 
 ### 5.2. Temporal Reference Systems
 
