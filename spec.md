@@ -461,7 +461,7 @@ In this specification, only a string-based notation for time values is defined.
   a client SHOULD interpret those dates in that reduced precision.
 
 Example:
-ep
+
 ```json
 {
   "type": "TemporalRS",
