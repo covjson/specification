@@ -408,35 +408,11 @@ Example of a vertical CRS, here representing height above the NAV88 datum:
 ```
 
 #### 5.1.4 Providing inline definitions of CRSs
-Sometimes there may be no well-known identifier for a geospatial CRS. Or the data provider may wish to make the CoverageJSON file more self-contained by avoiding external lookups. In this case a full inline definition of the CRS in JSON (instead of, or in addition to the `"id"`). This has not yet been fully defined in this specification, but we recommend following the OGC Well-Known Text (WKT) structure, for example:
+Sometimes there may be no well-known identifier for a geospatial CRS. Or the data provider may wish to make the CoverageJSON file more self-contained by avoiding external lookups. In this case a full inline definition of the CRS in JSON (instead of, or in addition to the `"id"`) may be provided. 
 
-```json
-{
-  "type": "VerticalCRS",
-  "id": "http://www.opengis.net/def/crs/EPSG/0/5703",
-  "datum": {
-    "id": "http://www.opengis.net/def/datum/EPSG/0/5103",
-    "label": {
-      "en": "North American Vertical Datum 1988"
-    }
-  },
-  "cs": {
-    "id": "http://www.opengis.net/def/cs/EPSG/0/6499",
-    "csAxes": [{
-      "id": "http://www.opengis.net/def/axis/EPSG/0/114",
-      "name": {
-        "en": "Gravity-related height"
-      },
-      "direction": "up",
-      "unit": {
-        "symbol": "m"
-      }
-    }]
-  }
-}
-```
+It is recommended that a Well-Known Text Coordinate Reference System String, conforming to the OGC WKT-CRS and ISO19162 joint  specification is included as a string attribute.
 
-In future work, a mapping from OGC WKT2 to JSON may be defined, and may be adopted into the CoverageJSON specification.
+The attribute name shall be `"WKTCRS"`.
 
 
 ### 5.2. Temporal Reference Systems
