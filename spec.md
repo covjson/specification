@@ -414,16 +414,13 @@ It is recommended that a Well-Known Text Coordinate Reference System String, con
 
 The attribute name shall be `"WKTCRS"`.
 
+The following example inlcudes escape characters for all of the double quote characters in the WKT-CRS, which are required.  It also includes escaped line returns and extra whitespace; whilst these are not required for WKT-CRS they do aid readability.
+
 ```json
 {
-  "WKTCRS": "VERTCRS["NAVD88 height",
-  VDATUM["North American Vertical Datum 1988"],
-  CS[vertical,1],
-    AXIS["gravity-related height (H)",up],
-    LENGTHUNIT["metre",1.0]]"
+	"WKTCRS": "VERTCRS[\"NAVD88 height\",\\n  VDATUM[\"North American Vertical Datum 1988\"],\\n  CS[vertical, 1],\\n    AXIS[\"gravity-related height (H)\", up],\\n    LENGTHUNIT[\"metre\", 1.0]]"
 }
 ```
-
 
 ### 5.2. Temporal Reference Systems
 
