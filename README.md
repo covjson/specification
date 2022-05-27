@@ -1,10 +1,6 @@
 # CoverageJSON
 
-[![Join the chat at https://gitter.im/covjson/specification](https://badges.gitter.im/covjson/specification.svg)](https://gitter.im/covjson/specification?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-This repository hosts the experimental CoverageJSON specification that is currently being developed.
-
-**Feedback is very welcome!** Please use either the [issues](https://github.com/covjson/specification/issues), [join the gitter chat](https://gitter.im/covjson/specification), or [send us an email](mailto:m.riechert@reading.ac.uk,j.d.blower@reading.ac.uk?Subject=CoverageJSON%20feedback).
+**NOTE: All further development continues in https://github.com/opengeospatial/CoverageJSON within the OGC. This repository will remain for future reference only.**
 
 ## What is CoverageJSON?
 
