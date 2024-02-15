@@ -371,7 +371,7 @@ Example of a three-dimensional geographic CRS (latitude-longitude-height):
 ```json
 {
   "type": "GeographicCRS",
-  "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+  "id": "https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::4979"
 }
 ```
 
@@ -383,12 +383,12 @@ Projected CRSs use two coordinates to denote positions on a Cartesian plane, whi
 
 If a Coverage conforms to one of the defined [domain types][domain-types] then the coordinate identifier `"x"` is used to denote easting and `"y"` is used for northing.
 
-Example of a projected CRS (here [British National Grid](http://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/)):
+Example of a projected CRS (here [British National Grid](https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::27700)):
 
 ```json
 {
   "type": "ProjectedCRS",
-  "id": "http://www.opengis.net/def/crs/EPSG/0/27700"
+  "id": "https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::27700"
 }
 ```
 
@@ -403,7 +403,7 @@ Example of a vertical CRS, here representing height above the NAV88 datum:
 ```json
 {
   "type": "VerticalCRS",
-  "id": "http://www.opengis.net/def/crs/EPSG/0/5703"
+  "id": "https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::5703"
 }
 ```
 
@@ -608,7 +608,7 @@ Example of a reference system connection object:
   "coordinates": ["y","x","z"],
   "system": {
     "type": "GeographicCRS",
-    "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+    "id": "https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::4979"
   }
 }
 ```
@@ -637,7 +637,7 @@ Example of a domain object with [`"Grid"`][domain-types] domain type:
     "coordinates": ["y","x","z"],
     "system": {
       "type": "GeographicCRS",
-      "id": "http://www.opengis.net/def/crs/EPSG/0/4979"
+      "id": "https://www.epsg-registry.org/export.htm?wkt=urn:ogc:def:crs:EPSG::4979"
     }
   }]
 }
